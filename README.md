@@ -1,4 +1,4 @@
-[![Beanis](assets/logo/logo-no-background.svg)](https://github.com/BeanieODM/beanie)
+[![Beanis](https://raw.githubusercontent.com/andreim14/beanis/main/assets/logo/logo-no-background.svg)](https://github.com/andreim14/beanis)
 
 <div align="center">
 
