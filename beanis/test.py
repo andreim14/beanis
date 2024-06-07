@@ -22,7 +22,7 @@ class Product(Document):
 # This is an asynchronous example, so we will access it from an async function
 async def example():
     # Beanis uses Redis async client under the hood
-    client = Redis(host="192.168.1.11", port=6379, db=0)
+    client = Redis(host="localhost", port=6379, db=0)
 
     # Initialize beanis with the Product document class
     await init_beanis(database=client, document_models=[Product])
