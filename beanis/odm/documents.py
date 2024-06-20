@@ -244,8 +244,9 @@ class Document(
         Delete the document
 
         """
-
-        await cls.get_settings().motor_db.delete(document_id)
+        output = cls.get_settings().motor_db.delete(document_id)
+        if inspect.iscoroutine(output):
+            await output
 
     @classmethod
     def delete_all(
