@@ -230,13 +230,22 @@ class Document(
         return self.insert()
 
     @wrap_with_actions(EventTypes.DELETE)
-    def delete(self):
+    def delete_self(self):
         """
         Delete the document
 
         """
 
-        self.get_settings().motor_db.delete(self.id)
+        self.delete(self.id)
+
+    @classmethod
+    def delete(cls, document_id):
+        """
+        Delete the document
+
+        """
+
+        cls.get_settings().motor_db.delete(document_id)
 
     @classmethod
     def delete_all(
