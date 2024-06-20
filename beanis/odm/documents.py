@@ -230,22 +230,22 @@ class Document(
         return self.insert()
 
     @wrap_with_actions(EventTypes.DELETE)
-    def delete_self(self):
+    async def delete_self(self):
         """
         Delete the document
 
         """
 
-        self.delete(self.id)
+        await self.delete(self.id)
 
     @classmethod
-    def delete(cls, document_id):
+    async def delete(cls, document_id):
         """
         Delete the document
 
         """
 
-        cls.get_settings().motor_db.delete(document_id)
+        await cls.get_settings().motor_db.delete(document_id)
 
     @classmethod
     def delete_all(
