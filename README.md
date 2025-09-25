@@ -3,7 +3,7 @@
 [![Beanis](https://raw.githubusercontent.com/andreim14/beanis/main/assets/logo/logo-no-background.svg)](https://github.com/andreim14/beanis)
 
 <div align="center">
-  <a href="https://pypi.python.org/pypi/beanis">![pypi](https://img.shields.io/pypi/v/beanis)</a>
+  <a href="https://pypi.python.org/pypi/beanis"><img src="https://img.shields.io/pypi/v/beanis" alt="PyPI version"></a>
 </div>
 
 **Stop writing boilerplate Redis code. Focus on your application logic.**
