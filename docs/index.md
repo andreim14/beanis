@@ -1,38 +1,18 @@
-[![Beanie](https://raw.githubusercontent.com/roman-right/beanie/main/assets/logo/white_bg.svg)](https://github.com/roman-right/beanie)
+[![Beanis](https://raw.githubusercontent.com/andreim14/beanis/main/assets/logo/logo-no-background.svg)](https://github.com/andreim14/beanis)
 
-[![shields badge](https://shields.io/badge/-docs-blue)](https://beanie-odm.dev)
-[![pypi](https://img.shields.io/pypi/v/beanie.svg)](https://pypi.python.org/pypi/beanie)
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G0PS833)
-
-## 📢 Important Update 📢
-
-We are excited to announce that Beanie is transitioning from solo development to a team-based approach! This move will help us enhance the project with new features and more collaborative development.
-
-At this moment we are establishing a board of members that will decide all the future steps of the project. We are looking for contributors and maintainers to join the board.
-
-### Join Us
-If you are interested in contributing or want to stay updated, please join our Discord channel. We're looking forward to your ideas and contributions!
-
-[Join our Discord](https://discord.gg/AwwTrbCASP)
-
-Let’s make Beanie better, together!
+<div align="center">
+  <a href="https://pypi.python.org/pypi/beanis"><img src="https://img.shields.io/pypi/v/beanis" alt="PyPI version"></a>
+</div>
 
 ## Overview
 
-[Beanie](https://github.com/roman-right/beanie) - is an asynchronous Python object-document mapper (ODM) for MongoDB. Data models are based on [Pydantic](https://pydantic-docs.helpmanual.io/).
+[Beanis](https://github.com/andreim14/beanis) - **"Beanie for Redis"** - is an asynchronous Python object-document mapper (ODM) for Redis. Data models are based on [Pydantic](https://pydantic-docs.helpmanual.io/).
 
-When using Beanie each database collection has a corresponding `Document` that
-is used to interact with that collection. In addition to retrieving data,
-Beanie allows you to add, update, or delete documents from the collection as
-well.
+When using Beanis each document has a corresponding `Document` class that is used to interact with Redis. In addition to retrieving data, Beanis allows you to add, update, or delete documents as well.
 
-Beanie saves you time by removing boilerplate code, and it helps you focus on
-the parts of your app that actually matter.
+Beanis saves you time by removing boilerplate code, and it helps you focus on the parts of your app that actually matter.
 
-Data and schema migrations are supported by Beanie out of the box.
-
-There is a synchronous version of Beanie ODM - [Bunnet](https://github.com/roman-right/bunnet)
+**Works with vanilla Redis** - no RedisJSON or RediSearch modules required!
 
 ## Installation
 
@@ -47,16 +27,15 @@ pip install beanis
 ```shell
 poetry add beanis
 ```
-## Example
+
+## Quick Example
 
 ```python
 import asyncio
 from typing import Optional
-
-from motor.motor_asyncio import AsyncIOMotorClient
+from redis.asyncio import Redis
 from pydantic import BaseModel
-
-from beanis import Document, Indexed, init_beanie
+from beanis import Document, init_beanis
 
 
 class Category(BaseModel):
@@ -67,69 +46,75 @@ class Category(BaseModel):
 class Product(Document):
     name: str  # You can use normal types just like in pydantic
     description: Optional[str] = None
-    price: Indexed(float)  # You can also specify that a field should correspond to an index
+    price: float
     category: Category  # You can include pydantic models as well
+    stock: int = 0
+
+    class Settings:
+        name = "products"
 
 
 # This is an asynchronous example, so we will access it from an async function
 async def example():
-    # Beanie uses Motor async client under the hood 
-    client = AsyncIOMotorClient("mongodb://user:pass@host:27017")
+    # Beanis uses Redis async client
+    client = Redis(host="localhost", port=6379, db=0, decode_responses=True)
 
     # Initialize beanis with the Product document class
-    await init_beanie(database=client.db_name, document_models=[Product])
+    await init_beanis(database=client, document_models=[Product])
 
-    chocolate = Category(name="Chocolate", description="A preparation of roasted and ground cacao seeds.")
-    # Beanie documents work just like pydantic models
-    tonybar = Product(name="Tony's", price=5.95, category=chocolate)
-    # And can be inserted into the database
-    await tonybar.insert()
+    chocolate = Category(
+        name="Chocolate",
+        description="A preparation of roasted and ground cacao seeds."
+    )
 
-    # You can find documents with pythonic syntax
-    product = await Product.find_one(Product.price < 10)
+    # Beanis documents work just like pydantic models
+    product = Product(name="Tony's Chocolonely", price=5.95, category=chocolate, stock=100)
 
-    # And update them
-    await product.set({Product.name: "Gold bar"})
+    # And can be inserted into Redis
+    await product.insert()
+
+    # You can retrieve documents by ID
+    found = await Product.get(product.id)
+
+    # Update documents
+    await product.update(price=6.95, stock=150)
+
+    # Get all products
+    all_products = await Product.all()
+
+    # Clean up
+    await client.close()
 
 
 if __name__ == "__main__":
     asyncio.run(example())
 ```
 
-## Links
+## Key Features
 
-### Documentation
+- ✅ **Beanie-like API** - Familiar interface for MongoDB/Beanie developers
+- ✅ **Works with vanilla Redis** - No modules required
+- ✅ **Type Safety** - Full Pydantic validation
+- ✅ **Fast** - Only 8% overhead vs raw Redis
+- ✅ **Custom Encoders** - Store NumPy arrays, PyTorch tensors, any type
+- ✅ **TTL Support** - Built-in expiration
+- ✅ **Batch Operations** - Efficient pipelines
+- ✅ **Event Hooks** - Before/after insert, update, delete
 
-- **[Doc](https://beanie-odm.dev/)** - Tutorial, API documentation, and development guidelines.
+## Documentation
 
-### Example Projects
+For detailed documentation, visit the main [README](../README.md) or check out:
 
-- **[fastapi-cosmos-beanie](https://github.com/tonybaloney/ants-azure-demos/tree/master/fastapi-cosmos-beanie)** - FastAPI + Beanie ODM + Azure Cosmos Demo Application by [Anthony Shaw](https://github.com/tonybaloney)
-- **[fastapi-beanie-jwt](https://github.com/flyinactor91/fastapi-beanie-jwt)** - 
-  Sample FastAPI server with JWT auth and Beanie ODM by [Michael duPont](https://github.com/flyinactor91)
-- **[Shortify](https://github.com/IHosseini083/Shortify)** - URL shortener RESTful API (FastAPI + Beanie ODM + JWT & OAuth2) by [
-Iliya Hosseini](https://github.com/IHosseini083)
-- **[LCCN Predictor](https://github.com/baoliay2008/lccn_predictor)** - Leetcode contest rating predictor (FastAPI + Beanie ODM + React) by [L. Bao](https://github.com/baoliay2008)
+- [Custom Encoders Guide](../CUSTOM_ENCODERS.md) - Store any Python type
+- [Getting Started](getting-started.md) - Complete tutorial
+- [Tutorial](tutorial/defining-a-document.md) - Step-by-step guides
 
-### Articles
+## Credits
 
-- **[Announcing Beanie - MongoDB ODM](https://dev.to/romanright/announcing-beanie-mongodb-odm-56e)**
-- **[Build a Cocktail API with Beanie and MongoDB](https://developer.mongodb.com/article/beanie-odm-fastapi-cocktails/)**
-- **[MongoDB indexes with Beanie](https://dev.to/romanright/mongodb-indexes-with-beanie-43e8)**
-- **[Beanie Projections. Reducing network and database load.](https://dev.to/romanright/beanie-projections-reducing-network-and-database-load-3bih)**
-- **[Beanie 1.0 - Query Builder](https://dev.to/romanright/announcing-beanie-1-0-mongodb-odm-with-query-builder-4mbl)**
-- **[Beanie 1.8 - Relations, Cache, Actions and more!](https://dev.to/romanright/announcing-beanie-odm-18-relations-cache-actions-and-more-24ef)**
+Beanis is inspired by [Beanie](https://github.com/BeanieODM/beanie) - the amazing MongoDB ODM.
 
-### Resources
+We took the Beanie philosophy and adapted it for Redis, creating a simple yet powerful ODM that works with vanilla Redis.
 
-- **[GitHub](https://github.com/roman-right/beanie)** - GitHub page of the
-  project
-- **[Changelog](https://beanie-odm.dev/changelog)** - list of all
-  the valuable changes
-- **[Discord](https://discord.gg/AwwTrbCASP)** - ask your questions, share
-  ideas or just say `Hello!!`
+## License
 
-----
-Supported by [JetBrains](https://jb.gg/OpenSource)
-
-[![JetBrains](https://raw.githubusercontent.com/roman-right/beanie/main/assets/logo/jetbrains.svg)](https://jb.gg/OpenSource)
+Apache License 2.0
