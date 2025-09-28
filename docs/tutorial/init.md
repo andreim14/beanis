@@ -1,44 +1,160 @@
-Beanie uses Motor as an async database engine. 
-To initialize previously created documents, you should provide a Motor database instance 
-and a list of your document models to the `init_beanie(...)` function, as it is shown in the example:
+# Initialization
+
+Before you can use Beanis, you need to initialize it with your Redis client and document models.
+
+## Basic Initialization
 
 ```python
-from beanis import init_beanie, Document
-from motor.motor_asyncio import AsyncIOMotorClient
+import asyncio
+from redis.asyncio import Redis
+from beanis import Document, init_beanis
 
 
-class Sample(Document):
+class Product(Document):
     name: str
+    price: float
+
+    class Settings:
+        name = "products"
 
 
 async def init():
-    # Create Motor client
-    client = AsyncIOMotorClient(
-        "mongodb://user:pass@host:27017"
+    # Create Redis client
+    # IMPORTANT: decode_responses=True is required!
+    client = Redis(
+        host="localhost",
+        port=6379,
+        db=0,
+        decode_responses=True
     )
 
-    # Initialize beanis with the Sample document class and a database
-    await init_beanie(database=client.db_name, document_models=[Sample])
+    # Initialize Beanis
+    await init_beanis(database=client, document_models=[Product])
+
+
+if __name__ == "__main__":
+    asyncio.run(init())
 ```
 
-This creates the collection (if necessary) and sets up any indexes that are defined.
+## Multiple Document Models
 
-
-`init_beanie` supports not only a list of classes as the document_models argument, 
-but also strings with dot-separated paths:
+You can register multiple document models at once:
 
 ```python
-await init_beanie(
-        database=client.db_name,
-        document_models=[
-            "app.models.DemoDocument",
-        ],
-    )
+from beanis import init_beanis
+
+
+class Product(Document):
+    name: str
+    price: float
+
+
+class User(Document):
+    name: str
+    email: str
+
+
+class Order(Document):
+    user_id: str
+    product_ids: List[str]
+
+
+await init_beanis(
+    database=client,
+    document_models=[Product, User, Order]
+)
 ```
 
-### Warning
+## Redis Client Configuration
 
-`init_beanie` supports the parameter named `allow_index_dropping` that will drop indexes from your collections. 
-`allow_index_dropping` is by default set to `False`. If you set this to `True`, 
-ensure that you are not managing your indexes in another manner. 
-If you are, these will be deleted when setting `allow_index_dropping=True`.
+### Basic Configuration
+
+```python
+from redis.asyncio import Redis
+
+client = Redis(
+    host="localhost",
+    port=6379,
+    db=0,  # Redis database number (0-15)
+    decode_responses=True,  # Required!
+    password="your-password",  # If Redis has auth
+)
+```
+
+### Connection Pool
+
+For production, use a connection pool:
+
+```python
+from redis.asyncio import Redis, ConnectionPool
+
+pool = ConnectionPool(
+    host="localhost",
+    port=6379,
+    db=0,
+    decode_responses=True,
+    max_connections=50,
+)
+
+client = Redis(connection_pool=pool)
+```
+
+### Redis URL
+
+You can also use a connection URL:
+
+```python
+client = Redis.from_url(
+    "redis://localhost:6379/0",
+    decode_responses=True
+)
+```
+
+## Application Integration
+
+### FastAPI Example
+
+```python
+from fastapi import FastAPI
+from redis.asyncio import Redis
+from beanis import init_beanis
+from contextlib import asynccontextmanager
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    client = Redis(
+        host="localhost",
+        port=6379,
+        db=0,
+        decode_responses=True
+    )
+    await init_beanis(database=client, document_models=[Product, User])
+
+    yield
+
+    # Shutdown
+    await client.close()
+
+
+app = FastAPI(lifespan=lifespan)
+
+
+@app.get("/products")
+async def get_products():
+    products = await Product.all()
+    return products
+```
+
+## Important Notes
+
+1. **Always use `decode_responses=True`** - Beanis requires string responses from Redis
+2. **Initialize once** - Call `init_beanis` once at application startup
+3. **Close connections** - Always close the Redis client on shutdown
+
+## Next Steps
+
+- [Defining Documents](defining-a-document.md) - Learn about document models
+- [Insert Operations](insert.md) - Create documents
+- [Find Operations](find.md) - Query documents

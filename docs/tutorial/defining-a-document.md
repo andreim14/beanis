@@ -1,15 +1,10 @@
-# Defining a document
+# Defining a Document
 
-The `Document` class in Beanie is responsible for mapping and handling the data
-from the collection. It is inherited from the `BaseModel` Pydantic class, so it
-follows the same data typing and parsing behavior.
+The `Document` class in Beanis is responsible for mapping and handling data in Redis. It is inherited from the `BaseModel` Pydantic class, so it follows the same data typing and parsing behavior.
 
 ```python
 from typing import Optional
-
-import pymongo
 from pydantic import BaseModel
-
 from beanis import Document, Indexed
 
 
@@ -21,23 +16,17 @@ class Category(BaseModel):
 class Product(Document):  # This is the model
     name: str
     description: Optional[str] = None
-    price: Indexed(float, pymongo.DESCENDING)
+    price: Indexed(float)  # Indexed for range queries
     category: Category
+    stock: int = 0
 
     class Settings:
-        name = "products"
-        indexes = [
-            [
-                ("name", pymongo.TEXT),
-                ("description", pymongo.TEXT),
-            ],
-        ]
-
+        name = "products"  # Redis key prefix
 ```
 
 ## Fields
 
-As it was mentioned before, the `Document` class is inherited from the Pydantic `BaseModel` class. 
+As mentioned before, the `Document` class is inherited from the Pydantic `BaseModel` class.
 It uses all the same patterns of `BaseModel`. But also it has special types of fields:
 
 - id
@@ -45,18 +34,18 @@ It uses all the same patterns of `BaseModel`. But also it has special types of f
 
 ### id
 
-`id` field of the `Document` class reflects the unique `_id` field of the MongoDB document. 
-Each object of the `Document` type has this field. 
-The default type of this is [PydanticObjectId](../api-documentation/fields.md/#pydanticobjectid).
+The `id` field of the `Document` class reflects the unique identifier for the Redis document.
+Each object of the `Document` type has this field.
+The default type is `str` (UUID is auto-generated if not provided).
 
 ```python
 class Sample(Document):
     num: int
     description: str
 
-foo = await Sample.find_one(Sample.num > 5)
+foo = await Sample.find(Sample.num > 5).first_or_none()
 
-print(foo.id)  # This will print id
+print(foo.id)  # This will print the id
 
 bar = await Sample.get(foo.id)  # get by id
 ```
@@ -65,7 +54,6 @@ If you prefer another type, you can set it up too. For example, UUID:
 
 ```python
 from uuid import UUID, uuid4
-
 from pydantic import Field
 
 
@@ -80,183 +68,144 @@ class Sample(Document):
 To set up an index over a single field, the `Indexed` function can be used to wrap the type:
 
 ```python
-from beanis import Indexed
+from beanis import Document, Indexed
 
 
 class Sample(Document):
-    num: Indexed(int)
+    num: Indexed(int)  # Indexed for exact match queries
+    price: Indexed(float)  # Indexed for range queries
     description: str
 ```
 
-The `Indexed` function takes an optional argument `index_type`, which may be set to a pymongo index type:
+**How indexing works in Redis:**
+
+- **Numeric fields** (int, float): Stored in Redis Sorted Sets for range queries
+- **String/categorical fields**: Stored in Redis Sets for exact match queries
+
+**Example queries:**
 
 ```python
-class Sample(Document):
-    description: Indexed(str, index_type=pymongo.TEXT)
-```
+# Range query on indexed field (uses Redis Sorted Set)
+products = await Product.find(
+    Product.price >= 10.0,
+    Product.price <= 50.0
+).to_list()
 
-The `Indexed` function also supports pymongo `IndexModel` kwargs arguments ([PyMongo Documentation](https://pymongo.readthedocs.io/en/stable/api/pymongo/operations.html#pymongo.operations.IndexModel)). 
- 
-For example, to create a `unique` index:
-
-```python
-class Sample(Document):
-    name: Indexed(str, unique=True)
+# Exact match on indexed field (uses Redis Set)
+electronics = await Product.find(
+    Product.category == "electronics"
+).to_list()
 ```
 
 ## Settings
 
-The inner class `Settings` is used to configure:
-
-- MongoDB collection name
-- Indexes
-- Encoders
-- Use of `revision_id`
-- Use of cache
-- Use of state management
-- Validation on save
-- Configure if nulls should be saved to the database
-- Configure nesting depth for linked documents on the fetch operation
-
-### Collection name
-
-To set MongoDB collection name, you can use the `name` field of the `Settings` inner class.
+The inner `Settings` class is used to configure the document behavior:
 
 ```python
-class Sample(Document):
-    num: int
-    description: str
+class Product(Document):
+    name: str
+    price: float
 
     class Settings:
-        name = "samples"
+        name = "products"  # Redis key prefix (default: class name)
+        key_prefix = "prod"  # Alternative: custom prefix
+        default_ttl = 3600  # Default TTL in seconds (optional)
+        keep_nulls = False  # Don't store None values (default: True)
 ```
 
-### Indexes
+### Available Settings
 
-The `indexes` field of the inner `Settings` class is responsible for the indexes' setup. 
-It is a list where items can be:
+- **name** or **key_prefix**: Redis key prefix (e.g., "Product:123")
+- **default_ttl**: Default expiration time in seconds
+- **keep_nulls**: Whether to store fields with None values
+- **use_validation_on_fetch**: Validate data when reading from Redis (default: False for performance)
 
-- Single key. Name of the document's field (this is equivalent to using the Indexed function described above)
-- List of (key, direction) pairs. Key - string, name of the document's field. Direction - pymongo direction (
-  example: `pymongo.ASCENDING`)
-- `pymongo.IndexModel` instance - the most flexible
-  option. [PyMongo Documentation](https://pymongo.readthedocs.io/en/stable/api/pymongo/operations.html#pymongo.operations.IndexModel)
+## Complex Types
+
+Beanis automatically handles complex Pydantic types:
 
 ```python
-class DocumentTestModelWithIndex(Document):
-    test_int: int
-    test_list: List[SubDocument]
-    test_str: str
+from typing import List, Dict, Optional
+from pydantic import BaseModel
+from datetime import datetime
+from decimal import Decimal
+from uuid import UUID
 
-    class Settings:
-        indexes = [
-            "test_int",
-            [
-                ("test_int", pymongo.ASCENDING),
-                ("test_str", pymongo.DESCENDING),
-            ],
-            IndexModel(
-                [("test_str", pymongo.DESCENDING)],
-                name="test_string_index_DESCENDING",
-            ),
-        ]
+
+class Address(BaseModel):
+    street: str
+    city: str
+    country: str
+
+
+class Product(Document):
+    name: str
+    price: Decimal  # Precise decimal values
+    tags: List[str]  # Lists
+    metadata: Dict[str, str]  # Dictionaries
+    category: Category  # Nested Pydantic models
+    address: Optional[Address] = None  # Optional nested models
+    created_at: datetime  # Datetime fields
+    product_id: UUID  # UUID fields
 ```
 
-### Encoders
+All these types are automatically serialized to/from Redis!
 
-The `bson_encoders` field of the inner `Settings` class defines how the Python types are going to be represented 
-when saved in the database. The default conversions can be overridden with this.
+## Custom Types
 
-The `ip` field in the following example is converted to String by default:
+For types not natively supported (like NumPy arrays, PyTorch tensors), use custom encoders:
 
 ```python
-from ipaddress import IPv4Address
+from beanis import Document, register_type
+import numpy as np
+import base64
+import pickle
 
 
-class Sample(Document):
-    ip: IPv4Address
-```
-> **Note:** Default conversions are defined in `beanie.odm.utils.bson.ENCODERS_BY_TYPE`.
-
-However, if you want the `ip` field to be represented as Integer in the database, 
-you need to override the default encoders like this:
-
-```python
-from ipaddress import IPv4Address
+# Register custom encoder/decoder
+register_type(
+    np.ndarray,
+    encoder=lambda arr: base64.b64encode(pickle.dumps(arr)).decode(),
+    decoder=lambda s: pickle.loads(base64.b64decode(s.encode()))
+)
 
 
-class Sample(Document):
-    ip: IPv4Address
-
-    class Settings:
-        bson_encoders = {
-          IPv4Address: int
-        }
-```
-
-You can also define your own function for the encoding:
-
-```python
-from ipaddress import IPv4Address
+class MLModel(Document):
+    name: str
+    weights: Any  # Can store NumPy arrays!
 
 
-def ipv4address_to_int(v: IPv4Address):
-    return int(v)
-
-class Sample(Document):
-    ip: IPv4Address
-
-    class Settings:
-        bson_encoders = {
-          IPv4Address: ipv4address_to_int
-        }
+model = MLModel(name="model_v1", weights=np.random.rand(100, 100))
+await model.insert()  # NumPy array is automatically encoded
 ```
 
-### Keep nulls
+See the [Custom Encoders Guide](../../CUSTOM_ENCODERS.md) for more details.
 
-By default, Beanie saves fields with `None` value as `null` in the database.
+## Document Storage
 
-But if you don't want to save `null` values, you can set `keep_nulls` to `False` in the `Settings` class:
+Beanis stores documents as **Redis Hashes**, which provides:
 
-```python
-class Sample(Document):
-    num: int
-    description: Optional[str] = None
+- Field-level access (`HGET`, `HSET` individual fields)
+- Atomic increment/decrement operations
+- Efficient memory usage
+- Native Redis commands compatibility
 
-    class Settings:
-        keep_nulls = False
+**Example Redis structure for `Product:123`:**
+
+```
+HGETALL Product:123
+{
+    "name": "Tony's Chocolonely",
+    "price": "5.95",
+    "stock": "100",
+    "category": "{\"name\":\"Chocolate\",\"description\":\"Roasted cacao\"}",
+    "_class_name": "myapp.models.Product"
+}
 ```
 
-### Nested Documents Depth
+## Next Steps
 
-It is possible to define nested linked documents with Beanie. Sometimes this can lead to infinite recursion. To prevent this, or to decrease the database load, you can limit the maximum nesting depth. By default, it is set to 3, which means it will fetch up to 3 levels of nested documents.
-
-You can configure:
-
-- maximum depth for all linked documents
-- depth for a specific linked document
-
-Maximum:
-```python
-class Sample(Document):
-    num: int
-    category: Link[Category]
-
-    class Settings:
-        max_nesting_depth = 2  
-        # Maximum nesting depth for all linked documents of this model
-```
-
-Specific:
-```python
-class Sample(Document):
-    num: int
-    category: Link[Category]
-
-    class Settings:
-        max_nesting_depths_per_field = {
-            "category": 1  # Nesting depth for a specific field
-        }
-```
-
-Also, you can limit the nesting depth during find operations. You can read more about this [here](/tutorial/relations/#nested-links).
+- [Initialization](init.md) - Set up Beanis with Redis
+- [Insert Operations](insert.md) - Create documents
+- [Find Operations](find.md) - Query documents
+- [Update Operations](update.md) - Modify documents
