@@ -1,206 +1,156 @@
-To populate the database, please run the examples from the [previous section of the tutorial](inserting-into-the-database.md) 
-as we will be using the same setup here.
+# Find Documents
 
-## Finding documents
+Beanis provides a powerful query interface for finding documents in Redis.
 
-The basic syntax for finding multiple documents in the database is to call the class method `find()` 
-or it's synonym `find_many()` with some search criteria (see next section): 
+## Find One
+
+Get a single document by ID:
 
 ```python
-findresult = Product.find(search_criteria)
+product = await Product.get("product_id_123")
+if product:
+    print(product.name)
 ```
 
-This returns a `FindMany` object, which can be used to access the results in different ways. 
-To loop through the results, use a `async for` loop:
+## Find with Conditions
+
+Query documents using indexed fields:
 
 ```python
-async for result in Product.find(search_criteria):
-    print(result)
-```
+from beanis import Document, Indexed
 
-If you prefer a list of the results, then you can call `to_list()` method:
-
-```python
-result = await Product.find(search_criteria).to_list()
-```
-
-To get the first document, you can use `.first_or_none()` method. 
-It returns the first found document or `None`, if no documents were found.
-
-```python
-result = await Product.find(search_criteria).first_or_none()
-```
-
-### Search criteria
-
-As search criteria, Beanie supports Python-based syntax.
-For comparisons Python comparison operators can be used on the class fields (and nested
-fields):
-
-```python
-products = await Product.find(Product.price < 10).to_list()
-```
-
-This is supported for the following operators: `==`, `>`, `>=`, `<`, `<=`, `!=`.
-Other MongoDB query operators can be used with the included wrappers. 
-For example, the `$in` operator can be used as follows:
-
-```python
-from beanis.operators import In
-
-products = await Product.find(
-    In(Product.category.name, ["Chocolate", "Fruits"])
-).to_list()
-```
-
-The whole list of the find query operators can be found [here](../api-documentation/operators/find.md).
-
-For more complex cases native PyMongo syntax is also supported:
-
-```python
-products = await Product.find({"price": 1000}).to_list()
-```
-
-## Finding single documents
-
-Sometimes you will only need to find a single document. 
-If you are searching by `id`, then you can use the [get](../api-documentation/document.md/#documentget) method:
-
-```python
-bar = await Product.get("608da169eb9e17281f0ab2ff")
-```
-
-To find a single document via a single search criterion,
-you can use the [find_one](../api-documentation/interfaces.md/#findinterfacefind_one) method:
-
-```python
-bar = await Product.find_one(Product.name == "Peanut Bar")
-```
-
-## Syncing from the Database
-
-If you wish to apply changes from the database to the document, utilize the [sync](../api-documentation/document.md/#documentsync) method:
-
-```python
-await bar.sync()
-```
-
-Two merging strategies are available: `local` and `remote`.
-
-### Remote Merge Strategy
-
-The remote merge strategy replaces the local document with the one from the database, disregarding local changes:
-
-```python
-from beanis import MergeStrategy
-
-await bar.sync(merge_strategy=MergeStrategy.remote)
-```
-The remote merge strategy is the default.
-
-### Local Merge Strategy
-
-The local merge strategy retains changes made locally to the document and updates other fields from the database.
-**BE CAREFUL**: it may raise an `ApplyChangesException` in case of a merging conflict.
-
-```python
-from beanis import MergeStrategy
-
-await bar.sync(merge_strategy=MergeStrategy.local)
-```
-
-## More complex queries
-
-### Multiple search criteria
-
-If you have multiple criteria to search against, 
-you can pass them as separate arguments to any of the `find` functions:
-
-```python
-chocolates = await Product.find(
-    Product.category.name == "Chocolate",
-    Product.price < 5
-).to_list()
-```
-
-
-Alternatively, you can chain `find` methods:
-
-```python
-chocolates = await Product
-              .find(Product.category.name == "Chocolate")
-              .find(Product.price < 5).to_list()
-```
-
-### Sorting
-
-Sorting can be done with the [sort](../api-documentation/query.md/#findmanysort) method.
-
-You can pass it one or multiple fields to sort by. You may optionally specify a `+` or `-` 
-(denoting ascending and descending respectively).
-
-```python
-chocolates = await Product.find(
-    Product.category.name == "Chocolate").sort(-Product.price,+Product.name).to_list()
-```
-
-You can also specify fields as strings or as tuples:
-
-```python
-chocolates = await Product.find(
-    Product.category.name == "Chocolate").sort("-price","+name").to_list()
-
-chocolates = await Product.find(
-    Product.category.name == "Chocolate").sort(
-    [
-        (Product.price, pymongo.DESCENDING),
-        (Product.name, pymongo.ASCENDING),
-    ]
-).to_list()
-```
-
-### Skip and limit
-
-To skip a certain number of documents, or limit the total number of elements returned, 
-the `skip` and `limit` methods can be used:
-```python
-chocolates = await Product.find(
-    Product.category.name == "Chocolate").skip(2).to_list()
-
-chocolates = await Product.find(
-    Product.category.name == "Chocolate").limit(2).to_list()
-```
-
-### Projections
-
-When only a part of a document is required, projections can save a lot of database bandwidth and processing.
-For simple projections we can just define a pydantic model with the required fields and pass it to `project()` method:
-
-```python
-class ProductShortView(BaseModel):
+class Product(Document):
     name: str
-    price: float
-
-
-chocolates = await Product.find(
-    Product.category.name == "Chocolate").project(ProductShortView).to_list()
-```
-
-For more complex projections an inner `Settings` class with a `projection` field can be added:
-
-```python
-class ProductView(BaseModel):
-    name: str
-    category: str
-
+    price: Indexed(float)  # Must be indexed for queries
+    category: Indexed(str)
+    
     class Settings:
-        projection = {"name": 1, "category": "$category.name"}
+        name = "products"
 
+# Range query on numeric field
+products = await Product.find(
+    Product.price >= 10.0,
+    Product.price <= 50.0
+).to_list()
 
-chocolates = await Product.find(
-    Product.category.name == "Chocolate").project(ProductView).to_list()
+# Exact match on categorical field  
+electronics = await Product.find(
+    Product.category == "electronics"
+).to_list()
 ```
 
-### Finding all documents
+## Query Methods
 
-If you ever want to find all documents, you can use the `find_all()` class method. This is equivalent to `find({})`.
+### to_list()
+
+Get all matching documents as a list:
+
+```python
+products = await Product.find(Product.price < 100).to_list()
+```
+
+### first_or_none()
+
+Get the first matching document or None:
+
+```python
+product = await Product.find(Product.price > 1000).first_or_none()
+if product:
+    print(product.name)
+```
+
+### limit()
+
+Limit the number of results:
+
+```python
+# Get first 10 products
+products = await Product.find(Product.price > 10).limit(10).to_list()
+```
+
+## Get All Documents
+
+Retrieve all documents (uses sorted set tracking):
+
+```python
+# Get all products
+all_products = await Product.all()
+
+# With pagination
+page1 = await Product.all(limit=10)
+page2 = await Product.all(skip=10, limit=10)
+
+# Sort descending (newest first)
+recent = await Product.all(sort_desc=True, limit=5)
+```
+
+## Count Documents
+
+Count total documents:
+
+```python
+count = await Product.count()
+print(f"Total products: {count}")
+```
+
+## Check Existence
+
+Check if a document exists:
+
+```python
+exists = await Product.exists("product_id_123")
+if exists:
+    print("Product exists")
+```
+
+## Batch Get
+
+Get multiple documents by their IDs:
+
+```python
+ids = ["id1", "id2", "id3"]
+products = await Product.get_many(ids)
+
+for product in products:
+    if product:  # Some IDs might not exist
+        print(product.name)
+```
+
+## Important Notes
+
+1. **Indexed fields required for queries** - Only indexed fields support `find()` queries
+2. **Exact match vs range queries**:
+   - Numeric fields (int, float): Support range queries (>, <, >=, <=, ==)
+   - String fields: Support exact match only (==)
+3. **all() uses document tracking** - Returns documents in insertion order
+
+## Query Examples
+
+### Find by price range:
+```python
+affordable = await Product.find(
+    Product.price >= 5.0,
+    Product.price <= 20.0
+).to_list()
+```
+
+### Find by category:
+```python
+books = await Product.find(Product.category == "books").to_list()
+```
+
+### Find with limit:
+```python
+top_10 = await Product.find(Product.price > 0).limit(10).to_list()
+```
+
+### Find first match:
+```python
+expensive = await Product.find(Product.price > 1000).first_or_none()
+```
+
+## Next Steps
+
+- [Update Operations](update.md) - Modify documents
+- [Delete Operations](delete.md) - Remove documents
+- [Indexes](indexes.md) - Learn about indexing
