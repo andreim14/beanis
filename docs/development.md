@@ -1,6 +1,6 @@
 # Development
 
-Hopefully, you have landed here because you would like to help out with the development of Beanie. Whether through adding new features, fixing bugs, or extending documentation, your help is really appreciated! Please read this page carefully. If you have any questions, drop by on [the Discord](https://discord.com/invite/29mMrEBvr4).
+Hopefully, you have landed here because you would like to help out with the development of Beanis. Whether through adding new features, fixing bugs, or extending documentation, your help is really appreciated! Please read this page carefully. If you have any questions, open an issue on [GitHub](https://github.com/andreim14/beanis/issues).
 
 Also, please read the [Code of Conduct](code-of-conduct.md).
 
@@ -8,38 +8,50 @@ Also, please read the [Code of Conduct](code-of-conduct.md).
 
 We assume you are familiar with the general forking and pull request workflow for submitting to open-source projects. If not, don't worry, there are plenty of good guides available. Maybe check out [this one](https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow).
 
-All the dependencies and build configs are set in the `pyproject.toml` file. There are three main dependency sections there:
+All the dependencies and build configs are set in the `pyproject.toml` file. There are two main dependency sections there:
 
-- dependencies: for the dependencies required to run Beanie
+- dependencies: for the dependencies required to run Beanis
 - test: for the dependencies required to run tests
-- doc: for the dependencies required to build the documentation
 
-And there are other extra dependency sections for Beanie batteries. For example, the `queue` section contains dependencies that extend features of Beanie with a queue.
-
-To install all required dependencies, including test dependencies, in a virtual environment, run the following command in the root directory of the Beanie project:
+To install all required dependencies, including test dependencies, in a virtual environment, run the following command in the root directory of the Beanis project:
 
 ```shell
 pip install -e .[test]
 ```
 
-To install dependencies required for building the documentation, run:
+### Redis connection
+
+To run tests and use Beanis in general, you will need an accessible Redis database. All tests assume that the database is hosted locally on port `6379` and do not require authentication.
+
+You can run Redis locally using Docker:
 
 ```shell
-pip install -e .[doc]
+docker run -d -p 6379:6379 redis:latest
 ```
 
-### Database connection
-
-To run tests and use Beanie in general, you will need an accessible MongoDB database. To use migrations, you will need a connection to a Replica Set or Mongos instance. All tests assume that the database is hosted locally on port `27017` and do not require authentication.
+Or install Redis natively:
+- **macOS**: `brew install redis && brew services start redis`
+- **Linux**: `sudo apt-get install redis-server && sudo service redis-server start`
+- **Windows**: Use [Redis on Windows](https://redis.io/docs/getting-started/installation/install-redis-on-windows/)
 
 ## Testing
 
-Beanie uses [pytest](https://docs.pytest.org) for unit testing. To ensure the stability of Beanie, each added feature must be tested in a separate unit test, even if it looks like other tests are covering it now. This strategy guarantees that:
+Beanis uses [pytest](https://docs.pytest.org) for unit testing. To ensure the stability of Beanis, each added feature must be tested in a separate unit test, even if it looks like other tests are covering it now. This strategy guarantees that:
 
 - All the features will be covered and stay covered.
 - There is independence from other features and test cases.
 
-To run the test suite, make sure that you have MongoDB running and run `pytest`.
+To run the test suite, make sure that you have Redis running and run `pytest`:
+
+```shell
+pytest
+```
+
+To run tests with coverage:
+
+```shell
+pytest --cov=beanis --cov-report=html
+```
 
 ## Submitting new code
 
@@ -47,7 +59,7 @@ You can submit your changes through a pull request on GitHub. Please take into a
 
 ### Use pre-commit
 
-To ensure code consistency, Beanie uses Black and Ruff through pre-commit. To set it up, run:
+To ensure code consistency, Beanis uses Black and Ruff through pre-commit. To set it up, run:
 
 ```shell
 pre-commit install
@@ -63,13 +75,116 @@ To make the pull request reviewing easier and keep the version tree clean, your 
 
 Please write clear documentation for any new functionality you add. Docstrings will be converted to the API documentation, but more human-friendly documentation might also be needed! See the section below.
 
+### Add tests
+
+All new features and bug fixes must include tests. Tests should:
+- Be isolated and independent
+- Cover both success and failure cases
+- Use descriptive names
+- Clean up after themselves (delete test data)
+
 ## Working on the documentation
 
-The documentation is generated using `pydoc-markdown`. To see a preview of any edits you make, you can run:
+The documentation is located in the `docs/` folder and written in Markdown.
+
+### Documentation structure
+
+- `docs/index.md` - Main documentation landing page
+- `docs/getting-started.md` - Getting started guide
+- `docs/tutorial/` - Step-by-step tutorials
+- `docs/api/` - API reference (auto-generated)
+
+### Preview documentation locally
+
+You can preview documentation changes by serving the `docs/` folder with any static file server:
 
 ```shell
-pydoc-markdown --server
+# Using Python's built-in server
+cd docs && python -m http.server 8000
 ```
 
-and visit the printed address (usually `localhost:8000`) in your browser. Beware, the auto-recompiling might not work for everyone.
-This will automatically generate the API documentation from the source. All other documentation should be written by hand. The documentation is compiled using `mkdocs` behind the scenes. To change the table of contents or other options, check out `pydoc-markdown.yml`.
+Then visit `http://localhost:8000` in your browser.
+
+## Project structure
+
+```
+beanis/
+├── beanis/               # Main package
+│   ├── odm/              # ODM core
+│   │   ├── documents.py  # Document base class
+│   │   ├── fields.py     # Field types
+│   │   ├── operators/    # Query operators
+│   │   ├── queries/      # Query builders
+│   │   └── utils/        # Utilities (encoder, decoder)
+│   └── executors/        # Background executors
+├── tests/                # Test suite
+│   ├── odm/              # ODM tests
+│   ├── migrations/       # Migration tests (legacy)
+│   └── fastapi/          # FastAPI integration tests
+├── docs/                 # Documentation
+└── benchmarks/           # Performance benchmarks
+```
+
+## Contributing guidelines
+
+### Code style
+
+- Follow PEP 8
+- Use type hints for all functions
+- Write docstrings for public APIs
+- Keep functions small and focused
+
+### Git commit messages
+
+- Use present tense ("Add feature" not "Added feature")
+- Use imperative mood ("Move cursor to..." not "Moves cursor to...")
+- First line should be 50 characters or less
+- Reference issues and pull requests liberally
+
+Example:
+```
+Add custom encoder support for NumPy arrays
+
+- Register encoders/decoders for custom types
+- Store type metadata with encoded values
+- Auto-register NumPy and PyTorch types
+
+Fixes #123
+```
+
+### Pull request process
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Add tests for your changes
+5. Run tests (`pytest`)
+6. Run pre-commit checks (`pre-commit run --all-files`)
+7. Commit your changes
+8. Push to your fork (`git push origin feature/amazing-feature`)
+9. Open a pull request
+
+## Performance considerations
+
+When contributing, keep these performance tips in mind:
+
+1. **Use Redis pipelines** - Batch operations when possible
+2. **Minimize Redis round trips** - Fetch data in bulk
+3. **Profile changes** - Run benchmarks for performance-critical code
+4. **Avoid unnecessary validation** - Skip validation on reads when safe
+5. **Use msgspec** - It's 2x faster than orjson for serialization
+
+Run benchmarks:
+```shell
+python benchmarks/benchmark_vs_plain_redis.py
+```
+
+## Questions?
+
+If you have questions about contributing, please:
+
+1. Check existing [GitHub issues](https://github.com/andreim14/beanis/issues)
+2. Open a new issue with the `question` label
+3. Provide context and examples
+
+Thank you for contributing to Beanis! 🎉
