@@ -94,6 +94,23 @@ The documentation is located in the `docs/` folder and written in Markdown.
 - `docs/tutorial/` - Step-by-step tutorials
 - `docs/api/` - API reference (auto-generated)
 
+### Regenerating API documentation
+
+The API documentation in `docs/api/` is auto-generated from docstrings in the source code using [pydoc-markdown](https://niklasrosenstein.github.io/pydoc-markdown/).
+
+To regenerate the API documentation after updating docstrings:
+
+```shell
+pydoc-markdown
+```
+
+This will:
+1. Extract docstrings from the `beanis` package
+2. Generate markdown files in `docs/build/content/api-documentation/`
+3. Copy the files to `docs/api/`
+
+The configuration is in `pydoc-markdown.yml`. If you add new modules, update this file accordingly.
+
 ### Preview documentation locally
 
 You can preview documentation changes by serving the `docs/` folder with any static file server:

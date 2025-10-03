@@ -37,6 +37,8 @@ renderer:
       source: docs/getting-started.md
     - title: Tutorial
       children:
+        - title: Tutorial Overview
+          source: docs/tutorial/README.md
         - title: Defining a document
           source: docs/tutorial/defining-a-document.md
         - title: Initialization
@@ -45,62 +47,40 @@ renderer:
           source: docs/tutorial/insert.md
         - title: Finding documents
           source: docs/tutorial/find.md
-        - title: Lazy parsing
-          source: docs/tutorial/lazy_parse.md
-        - title: Updating & Deleting
+        - title: Updating documents
           source: docs/tutorial/update.md
+        - title: Deleting documents
+          source: docs/tutorial/delete.md
         - title: Indexes
           source: docs/tutorial/indexes.md
-        - title: Multi-model pattern
-          source: docs/tutorial/multi-model.md
-        - title: Inheritance
-          source: docs/tutorial/inheritance.md
-        - title: Aggregation
-          source: docs/tutorial/aggregate.md
-        - title: Relations
-          source: docs/tutorial/relations.md
-        - title: Views
-          source: docs/tutorial/views.md
-        - title: Time Series
-          source: docs/tutorial/time_series.md
         - title: Event-based actions
           source: docs/tutorial/actions.md
-        - title: Cache
-          source: docs/tutorial/cache.md
-        - title: Revision
-          source: docs/tutorial/revision.md
-        - title: State Management
-          source: docs/tutorial/state_management.md
-        - title: On save validation
-          source: docs/tutorial/on_save_validation.md
-        - title: Migrations
-          source: docs/tutorial/migrations.md
-    - title: Batteries
-      children:
-        - title: Queue
-          source: docs/batteries/queue.md
     - title: API Documentation
       children:
         - title: Document
           contents:
             - beanis.odm.documents.*
-        - title: Query
-          contents:
-            - beanis.odm.queries.*
         - title: Interfaces
           contents:
             - beanis.odm.interfaces.*
-        - title: Operators
-          children:
-            - title: Find
-              contents:
-                - beanis.odm.operators.find.*
-            - title: Update
-              contents:
-                - beanis.odm.operators.update.*
+        - title: Indexes
+          contents:
+            - beanis.odm.indexes.*
+        - title: Actions
+          contents:
+            - beanis.odm.actions.*
         - title: Fields
           contents:
             - beanis.odm.fields.*
+        - title: Custom Encoders
+          contents:
+            - beanis.odm.custom_encoders.*
+        - title: Custom Types
+          contents:
+            - beanis.odm.custom_types.*
+        - title: Utils
+          contents:
+            - beanis.odm.utils.init.*
     - title: Development
       source: docs/development.md
     - title: Code of conduct
