@@ -1,407 +1,488 @@
-<a name="beanie.odm.documents"></a>
-# beanie.odm.documents
+<a id="beanis.odm.documents"></a>
 
-<a name="beanie.odm.documents.Document"></a>
-## Document Objects
+## beanis.odm.documents
 
-```python
-class Document(BaseModel,  UpdateMethods)
-```
+<a id="beanis.odm.documents.Document"></a>
 
-Document Mapping class.
-
-Fields:
-
-- `id` - MongoDB document ObjectID "_id" field.
-Mapped to the PydanticObjectId class
-
-Inherited from:
-
-- Pydantic BaseModel
-- [UpdateMethods](https://roman-right.github.io/beanie/api/interfaces/`aggregatemethods`)
-
-<a name="beanie.odm.documents.Document.insert"></a>
-#### insert
+### Document
 
 ```python
- | async insert(session: Optional[ClientSession] = None) -> DocType
+class Document(LazyModel, SettersInterface, InheritanceInterface,
+               OtherGettersInterface)
 ```
 
-Insert the document (self) to the collection
+> Document Mapping class for Redis.
+> 
+> Uses Redis Hashes for storage by default, with support for
+> secondary indexes, TTL, and batch operations.
 
-**Returns**:
+<a id="beanis.odm.documents.Document.get"></a>
 
-Document
-
-<a name="beanie.odm.documents.Document.create"></a>
-#### create
+#### Document.get
 
 ```python
- | async create(session: Optional[ClientSession] = None) -> DocType
+@classmethod
+async def get(cls: Type["DocType"], document_id: Any) -> Optional["DocType"]
 ```
 
-The same as self.insert()
+> Get document by id, returns None if document does not exist
+> 
+> **Arguments**:
+> 
+> - `document_id`: str - document id
+> 
+> **Returns**:
+> 
+> Union["Document", None]
 
-**Returns**:
+<a id="beanis.odm.documents.Document.exists"></a>
 
-Document
-
-<a name="beanie.odm.documents.Document.insert_one"></a>
-#### insert\_one
+#### Document.exists
 
 ```python
- | @classmethod
- | async insert_one(cls: Type[DocType], document: DocType, session: Optional[ClientSession] = None) -> InsertOneResult
+@classmethod
+async def exists(cls: Type["DocType"], document_id: Any) -> bool
 ```
 
-Insert one document to the collection
+> Check if a document exists by ID
+> 
+> **Arguments**:
+> 
+> - `document_id`: str - document id
+> 
+> **Returns**:
+> 
+> bool
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.insert"></a>
 
-- `document`: Document - document to insert
-- `session`: ClientSession - pymongo session
-
-**Returns**:
-
-InsertOneResult
-
-<a name="beanie.odm.documents.Document.insert_many"></a>
-#### insert\_many
+#### Document.insert
 
 ```python
- | @classmethod
- | async insert_many(cls: Type[DocType], documents: List[DocType], session: Optional[ClientSession] = None) -> InsertManyResult
+async def insert(ttl: Optional[int] = None) -> DocType
 ```
 
-Insert many documents to the collection
+> Insert the document (self) to Redis
+> 
+> **Arguments**:
+> 
+> - `ttl`: Optional[int] - TTL in seconds
+> 
+> **Returns**:
+> 
+> Document
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.insert_one"></a>
 
-- `documents`: List["Document"] - documents to insert
-- `session`: ClientSession - pymongo session
-
-**Returns**:
-
-InsertManyResult
-
-<a name="beanie.odm.documents.Document.get"></a>
-#### get
+#### Document.insert\_one
 
 ```python
- | @classmethod
- | async get(cls: Type[DocType], document_id: PydanticObjectId, session: Optional[ClientSession] = None) -> Optional[DocType]
+@classmethod
+async def insert_one(cls: Type[DocType],
+                     document: DocType,
+                     ttl: Optional[int] = None) -> Optional[DocType]
 ```
 
-Get document by id
+> Insert one document to Redis
+> 
+> **Arguments**:
+> 
+> - `document`: Document - document to insert
+> - `ttl`: Optional[int] - TTL in seconds
+> 
+> **Returns**:
+> 
+> DocType
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.insert_many"></a>
 
-- `document_id`: PydanticObjectId - document id
-- `session`: Optional[ClientSession] - pymongo session
-
-**Returns**:
-
-Union["Document", None]
-
-<a name="beanie.odm.documents.Document.find_one"></a>
-#### find\_one
+#### Document.insert\_many
 
 ```python
- | @classmethod
- | find_one(cls, *args: Union[Dict[str, Any], Mapping[str, Any], bool], *, projection_model: Optional[Type[BaseModel]] = None, session: Optional[ClientSession] = None) -> FindOne
+@classmethod
+async def insert_many(cls: Type[DocType],
+                      documents: Iterable[DocType],
+                      ttl: Optional[int] = None) -> List[DocType]
 ```
 
-Find one document by criteria.
-Returns [FindOne](https://roman-right.github.io/beanie/api/queries/`findone`) query object
+> Insert many documents to Redis using pipeline
+> 
+> **Arguments**:
+> 
+> - `documents`: List["Document"] - documents to insert
+> - `ttl`: Optional[int] - TTL in seconds for all documents
+> 
+> **Returns**:
+> 
+> List[DocType]
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.get_many"></a>
 
-- `args`: *Union[Dict[str, Any],
-Mapping[str, Any], bool] - search criteria
-- `projection_model`: Optional[Type[BaseModel]] - projection model
-- `session`: Optional[ClientSession] - pymongo session instance
-
-**Returns**:
-
-[FindOne](https://roman-right.github.io/beanie/api/queries/`findone`) - find query instance
-
-<a name="beanie.odm.documents.Document.find_many"></a>
-#### find\_many
+#### Document.get\_many
 
 ```python
- | @classmethod
- | find_many(cls, *args: Union[Dict[str, Any], Mapping[str, Any], bool], *, skip: Optional[int] = None, limit: Optional[int] = None, sort: Union[None, str, List[Tuple[str, SortDirection]]] = None, projection_model: Optional[Type[BaseModel]] = None, session: Optional[ClientSession] = None) -> FindMany
+@classmethod
+async def get_many(cls: Type[DocType],
+                   document_ids: List[Any]) -> List[Optional[DocType]]
 ```
 
-Find many documents by criteria.
-Returns [FindMany](https://roman-right.github.io/beanie/api/queries/`findmany`) query object
+> Get many documents by IDs using pipeline
+> 
+> Optimized with msgspec (2x faster than orjson) and model_construct() (skip validation)
+> 
+> Performance: 3-4x faster than orjson + model_validate approach
+> 
+> **Arguments**:
+> 
+> - `document_ids`: List[str] - list of document IDs
+> 
+> **Returns**:
+> 
+> List[Optional[DocType]]
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.save"></a>
 
-- `args`: *Union[Dict[str, Any],
-Mapping[str, Any], bool] - search criteria
-- `skip`: Optional[int] - The number of documents to omit.
-- `limit`: Optional[int] - The maximum number of results to return.
-- `sort`: Union[None, str, List[Tuple[str, SortDirection]]] - A key
-or a list of (key, direction) pairs specifying the sort order
-for this query.
-- `projection_model`: Optional[Type[BaseModel]] - projection model
-- `session`: Optional[ClientSession] - pymongo session
-
-**Returns**:
-
-[FindMany](https://roman-right.github.io/beanie/api/queries/`findmany`) - query instance
-
-<a name="beanie.odm.documents.Document.find"></a>
-#### find
+#### Document.save
 
 ```python
- | @classmethod
- | find(cls, *args: Union[Dict[str, Any], Mapping[str, Any], bool], *, skip: Optional[int] = None, limit: Optional[int] = None, sort: Union[None, str, List[Tuple[str, SortDirection]]] = None, projection_model: Optional[Type[BaseModel]] = None, session: Optional[ClientSession] = None) -> FindMany
+def save() -> DocType
 ```
 
-The same as find_many
+> Update an existing model in Redis or insert it if it does not yet exist.
+> 
+> **Returns**:
+> 
+> Document
 
-<a name="beanie.odm.documents.Document.find_all"></a>
-#### find\_all
+<a id="beanis.odm.documents.Document.update"></a>
+
+#### Document.update
 
 ```python
- | @classmethod
- | find_all(cls, skip: Optional[int] = None, limit: Optional[int] = None, sort: Union[None, str, List[Tuple[str, SortDirection]]] = None, projection_model: Optional[Type[BaseModel]] = None, session: Optional[ClientSession] = None) -> FindMany
+async def update(**fields) -> DocType
 ```
 
-Get all the documents
+> Update specific fields of the document
+> 
+> **Arguments**:
+> 
+> - `fields`: Field names and values to update
+> 
+> **Returns**:
+> 
+> Document
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.get_field"></a>
 
-- `skip`: Optional[int] - The number of documents to omit.
-- `limit`: Optional[int] - The maximum number of results to return.
-- `sort`: Union[None, str, List[Tuple[str, SortDirection]]] - A key
-or a list of (key, direction) pairs specifying the sort order
-for this query.
-- `projection_model`: Optional[Type[BaseModel]] - projection model
-- `session`: Optional[ClientSession] - pymongo session
-
-**Returns**:
-
-[FindMany](https://roman-right.github.io/beanie/api/queries/`findmany`) - query instance
-
-<a name="beanie.odm.documents.Document.all"></a>
-#### all
+#### Document.get\_field
 
 ```python
- | @classmethod
- | all(cls, skip: Optional[int] = None, limit: Optional[int] = None, sort: Union[None, str, List[Tuple[str, SortDirection]]] = None, projection_model: Optional[Type[BaseModel]] = None, session: Optional[ClientSession] = None) -> FindMany
+async def get_field(field_name: str) -> Any
 ```
 
-the same as find_all
+> Get a specific field value from Redis without loading the entire document
+> 
+> **Arguments**:
+> 
+> - `field_name`: Name of the field
+> 
+> **Returns**:
+> 
+> Field value
 
-<a name="beanie.odm.documents.Document.replace"></a>
-#### replace
+<a id="beanis.odm.documents.Document.set_field"></a>
+
+#### Document.set\_field
 
 ```python
- | async replace(session: Optional[ClientSession] = None) -> DocType
+async def set_field(field_name: str, value: Any) -> None
 ```
 
-Fully update the document in the database
+> Set a specific field value in Redis
+> 
+> **Arguments**:
+> 
+> - `field_name`: Name of the field
+> - `value`: Value to set
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.increment_field"></a>
 
-- `session`: Optional[ClientSession] - pymongo session.
-
-**Returns**:
-
-None
-
-<a name="beanie.odm.documents.Document.save"></a>
-#### save
+#### Document.increment\_field
 
 ```python
- | async save(session: Optional[ClientSession] = None) -> DocType
+async def increment_field(field_name: str,
+                          amount: Union[int, float] = 1) -> Union[int, float]
 ```
 
-Update an existing model in the database or insert it if it does not yet exist.
+> Increment a numeric field atomically
+> 
+> **Arguments**:
+> 
+> - `field_name`: Name of the field
+> - `amount`: Amount to increment by
+> 
+> **Returns**:
+> 
+> New value
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.set_ttl"></a>
 
-- `session`: Optional[ClientSession] - pymongo session.
-
-**Returns**:
-
-None
-
-<a name="beanie.odm.documents.Document.replace_many"></a>
-#### replace\_many
+#### Document.set\_ttl
 
 ```python
- | @classmethod
- | async replace_many(cls: Type[DocType], documents: List[DocType], session: Optional[ClientSession] = None) -> None
+async def set_ttl(seconds: int) -> bool
 ```
 
-Replace list of documents
+> Set TTL (time to live) for this document
+> 
+> **Arguments**:
+> 
+> - `seconds`: TTL in seconds
+> 
+> **Returns**:
+> 
+> bool - True if TTL was set
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.get_ttl"></a>
 
-- `documents`: List["Document"]
-- `session`: Optional[ClientSession] - pymongo session.
-
-**Returns**:
-
-None
-
-<a name="beanie.odm.documents.Document.update"></a>
-#### update
+#### Document.get\_ttl
 
 ```python
- | async update(*args, *, session: Optional[ClientSession] = None) -> None
+async def get_ttl() -> Optional[int]
 ```
 
-Partially update the document in the database
+> Get the remaining TTL for this document
+> 
+> **Returns**:
+> 
+> Optional[int] - TTL in seconds, -1 if no TTL, -2 if key doesn't exist
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.persist"></a>
 
-- `args`: *Union[dict, Mapping] - the modifications to apply.
-- `session`: ClientSession - pymongo session.
-
-**Returns**:
-
-None
-
-<a name="beanie.odm.documents.Document.update_all"></a>
-#### update\_all
+#### Document.persist
 
 ```python
- | @classmethod
- | update_all(cls, *args: Union[dict, Mapping], *, session: Optional[ClientSession] = None) -> UpdateMany
+async def persist() -> bool
 ```
 
-Partially update all the documents
+> Remove TTL from this document (make it persistent)
+> 
+> **Returns**:
+> 
+> bool - True if TTL was removed
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.delete_self"></a>
 
-- `args`: *Union[dict, Mapping] - the modifications to apply.
-- `session`: ClientSession - pymongo session.
-
-**Returns**:
-
-UpdateMany query
-
-<a name="beanie.odm.documents.Document.delete"></a>
-#### delete
+#### Document.delete\_self
 
 ```python
- | async delete(session: Optional[ClientSession] = None) -> DeleteResult
+@wrap_with_actions(EventTypes.DELETE)
+async def delete_self(skip_actions=None)
 ```
 
-Delete the document
+> Delete the document
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.delete"></a>
 
-- `session`: Optional[ClientSession] - pymongo session.
-
-**Returns**:
-
-DeleteResult - pymongo DeleteResult instance.
-
-<a name="beanie.odm.documents.Document.delete_all"></a>
-#### delete\_all
+#### Document.delete
 
 ```python
- | @classmethod
- | async delete_all(cls, session: Optional[ClientSession] = None) -> DeleteResult
+@classmethod
+async def delete(cls, document_id)
 ```
 
-Delete all the documents
+> Delete a document by ID
+> 
+> **Arguments**:
+> 
+> - `document_id`: str - document id
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.delete_many"></a>
 
-- `session`: Optional[ClientSession] - pymongo session.
-
-**Returns**:
-
-DeleteResult - pymongo DeleteResult instance.
-
-<a name="beanie.odm.documents.Document.aggregate"></a>
-#### aggregate
+#### Document.delete\_many
 
 ```python
- | @classmethod
- | aggregate(cls, aggregation_pipeline: list, projection_model: Type[BaseModel] = None, session: Optional[ClientSession] = None) -> AggregationQuery
+@classmethod
+async def delete_many(cls, document_ids: List[Any]) -> int
 ```
 
-Aggregate over collection.
-Returns [AggregationQuery](https://roman-right.github.io/beanie/api/queries/`aggregationquery`) query object
+> Delete many documents by IDs
+> 
+> **Arguments**:
+> 
+> - `document_ids`: List[str] - list of document IDs
+> 
+> **Returns**:
+> 
+> int - number of documents deleted
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.delete_all"></a>
 
-- `aggregation_pipeline`: list - aggregation pipeline
-- `projection_model`: Type[BaseModel]
-- `session`: Optional[ClientSession]
-
-**Returns**:
-
-[AggregationQuery](https://roman-right.github.io/beanie/api/queries/`aggregationquery`)
-
-<a name="beanie.odm.documents.Document.count"></a>
-#### count
+#### Document.delete\_all
 
 ```python
- | @classmethod
- | async count(cls) -> int
+@classmethod
+async def delete_all(cls) -> int
 ```
 
-Number of documents in the collections
-The same as find_all().count()
+> Delete all documents of this class
+> 
+> **Returns**:
+> 
+> int - number of documents deleted
 
-**Returns**:
+<a id="beanis.odm.documents.Document.count"></a>
 
-int
-
-<a name="beanie.odm.documents.Document.init_collection"></a>
-#### init\_collection
+#### Document.count
 
 ```python
- | @classmethod
- | async init_collection(cls, database: AsyncIOMotorDatabase, allow_index_dropping: bool) -> None
+@classmethod
+async def count(cls) -> int
 ```
 
-Internal CollectionMeta class creator
+> Count all documents of this class
+> 
+> **Returns**:
+> 
+> int - number of documents
 
-**Arguments**:
+<a id="beanis.odm.documents.Document.find"></a>
 
-- `database`: AsyncIOMotorDatabase - motor database instance
-- `allow_index_dropping`: bool - if index dropping is allowed
-
-**Returns**:
-
-None
-
-<a name="beanie.odm.documents.Document.get_motor_collection"></a>
-#### get\_motor\_collection
+#### Document.find
 
 ```python
- | @classmethod
- | get_motor_collection(cls) -> AsyncIOMotorCollection
+@classmethod
+async def find(cls: Type[DocType], **filters) -> List[DocType]
 ```
 
-Get Motor Collection to access low level control
+> Find documents by indexed fields
+> 
+> Examples:
+>     # Exact match on indexed field
+>     products = await Product.find(category="electronics")
+> 
+>     # Range query on numeric indexed field
+>     products = await Product.find(price__gte=10, price__lte=100)
+> 
+> **Arguments**:
+> 
+> - `filters`: Field filters (supports __gte, __lte for numeric fields)
+> 
+> **Returns**:
+> 
+> List[DocType]
 
-**Returns**:
+<a id="beanis.odm.documents.Document.all"></a>
 
-AsyncIOMotorCollection
-
-<a name="beanie.odm.documents.Document.inspect_collection"></a>
-#### inspect\_collection
+#### Document.all
 
 ```python
- | @classmethod
- | async inspect_collection(cls, session: Optional[ClientSession] = None) -> InspectionResult
+@classmethod
+async def all(cls: Type[DocType],
+              skip: int = 0,
+              limit: Optional[int] = None,
+              sort_desc: bool = False) -> List[DocType]
 ```
 
-Check, if documents, stored in the MongoDB collection
-are compatible with the Document schema
+> Get all documents of this class
+> 
+> **Arguments**:
+> 
+> - `skip`: Number of documents to skip
+> - `limit`: Maximum number of documents to return
+> - `sort_desc`: Sort by insertion time descending
+> 
+> **Returns**:
+> 
+> List[DocType]
 
-**Returns**:
+<a id="beanis.odm.documents.Document.use_state_management"></a>
 
-InspectionResult
+#### Document.use\_state\_management
+
+```python
+@classmethod
+def use_state_management(cls) -> bool
+```
+
+> Is state management turned on
+> 
+> **Returns**:
+> 
+> bool
+
+<a id="beanis.odm.documents.Document.state_management_save_previous"></a>
+
+#### Document.state\_management\_save\_previous
+
+```python
+@classmethod
+def state_management_save_previous(cls) -> bool
+```
+
+> Should we save the previous state after a commit to database
+> 
+> **Returns**:
+> 
+> bool
+
+<a id="beanis.odm.documents.Document.state_management_replace_objects"></a>
+
+#### Document.state\_management\_replace\_objects
+
+```python
+@classmethod
+def state_management_replace_objects(cls) -> bool
+```
+
+> Should objects be replaced when using state management
+> 
+> **Returns**:
+> 
+> bool
+
+<a id="beanis.odm.documents.Document.get_saved_state"></a>
+
+#### Document.get\_saved\_state
+
+```python
+def get_saved_state() -> Optional[Dict[str, Any]]
+```
+
+> Saved state getter. It is protected property.
+> 
+> **Returns**:
+> 
+> Optional[Dict[str, Any]] - saved state
+
+<a id="beanis.odm.documents.Document.get_previous_saved_state"></a>
+
+#### Document.get\_previous\_saved\_state
+
+```python
+def get_previous_saved_state() -> Optional[Dict[str, Any]]
+```
+
+> Previous state getter. It is a protected property.
+> 
+> **Returns**:
+> 
+> Optional[Dict[str, Any]] - previous state
+
+<a id="beanis.odm.documents.Document.get_settings"></a>
+
+#### Document.get\_settings
+
+```python
+@classmethod
+def get_settings(cls) -> ItemSettings
+```
+
+> Get document settings, which was created on
+> 
+> the initialization step
+> 
+> **Returns**:
+> 
+> ItemSettings class
 

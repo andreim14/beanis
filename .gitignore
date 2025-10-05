@@ -174,7 +174,6 @@ fabric.properties
 
 .idea
 .pytest_cache
-docs/api
 docs/_rst
 tags
 

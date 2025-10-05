@@ -1,253 +1,102 @@
-<a name="beanie.odm.interfaces.update"></a>
-# beanie.odm.interfaces.update
+<a id="beanis.odm.interfaces.detector"></a>
 
-<a name="beanie.odm.interfaces.update.UpdateMethods"></a>
-## UpdateMethods Objects
+## beanis.odm.interfaces.detector
 
-```python
-class UpdateMethods()
-```
+<a id="beanis.odm.interfaces.getters"></a>
 
-Update methods
+## beanis.odm.interfaces.getters
 
-<a name="beanie.odm.interfaces.update.UpdateMethods.set"></a>
-#### set
+<a id="beanis.odm.interfaces.getters.OtherGettersInterface"></a>
+
+### OtherGettersInterface
 
 ```python
- | set(expression: Dict[Union[ExpressionField, str], Any], session: Optional[ClientSession] = None)
+class OtherGettersInterface()
 ```
 
-Set values
+<a id="beanis.odm.interfaces.getters.OtherGettersInterface.get_redis_client"></a>
 
-Example:
+#### OtherGettersInterface.get\_redis\_client
 
 ```python
-
-class Sample(Document):
-    one: int
-
-await Document.find(Sample.one == 1).set({Sample.one: 100})
-
+@classmethod
+def get_redis_client(cls) -> "Redis"
 ```
 
-Uses [Set operator](https://roman-right.github.io/beanie/api/operators/update/`set`)
+> Get the Redis async client
 
-**Arguments**:
+<a id="beanis.odm.interfaces.getters.OtherGettersInterface.get_collection_name"></a>
 
-- `expression`: Dict[Union[ExpressionField, str], Any] - keys and
-values to set
-- `session`: Optional[ClientSession] - pymongo session
-
-**Returns**:
-
-self
-
-<a name="beanie.odm.interfaces.update.UpdateMethods.current_date"></a>
-#### current\_date
+#### OtherGettersInterface.get\_collection\_name
 
 ```python
- | current_date(expression: Dict[Union[ExpressionField, str], Any], session: Optional[ClientSession] = None)
+@classmethod
+def get_collection_name(cls)
 ```
 
-Set current date
+> Get the key prefix (replaces collection name)
 
-Uses [CurrentDate operator](https://roman-right.github.io/beanie/api/operators/update/`currentdate`)
+<a id="beanis.odm.interfaces.getters.OtherGettersInterface.get_bson_encoders"></a>
 
-**Arguments**:
-
-- `expression`: Dict[Union[ExpressionField, str], Any]
-- `session`: Optional[ClientSession] - pymongo session
-
-**Returns**:
-
-self
-
-<a name="beanie.odm.interfaces.update.UpdateMethods.inc"></a>
-#### inc
+#### OtherGettersInterface.get\_bson\_encoders
 
 ```python
- | inc(expression: Dict[Union[ExpressionField, str], Any], session: Optional[ClientSession] = None)
+@classmethod
+def get_bson_encoders(cls)
 ```
 
-Increment
+> Legacy method - kept for backward compatibility
 
-Example:
+<a id="beanis.odm.interfaces.getters.OtherGettersInterface.get_link_fields"></a>
+
+#### OtherGettersInterface.get\_link\_fields
 
 ```python
-
-class Sample(Document):
-    one: int
-
-await Document.find(Sample.one == 1).inc({Sample.one: 100})
-
+@classmethod
+def get_link_fields(cls)
 ```
 
-Uses [Inc operator](https://roman-right.github.io/beanie/api/operators/update/`inc`)
+> Legacy method - links not supported in Redis ODM
 
-**Arguments**:
+<a id="beanis.odm.interfaces.setters"></a>
 
-- `expression`: Dict[Union[ExpressionField, str], Any]
-- `session`: Optional[ClientSession] - pymongo session
+## beanis.odm.interfaces.setters
 
-**Returns**:
+<a id="beanis.odm.interfaces.setters.SettersInterface"></a>
 
-self
-
-<a name="beanie.odm.interfaces.aggregate"></a>
-# beanie.odm.interfaces.aggregate
-
-<a name="beanie.odm.interfaces.aggregate.AggregateMethods"></a>
-## AggregateMethods Objects
+### SettersInterface
 
 ```python
-class AggregateMethods()
+class SettersInterface()
 ```
 
-Aggregate methods
+<a id="beanis.odm.interfaces.setters.SettersInterface.set_database"></a>
 
-<a name="beanie.odm.interfaces.aggregate.AggregateMethods.sum"></a>
-#### sum
+#### SettersInterface.set\_database
 
 ```python
- | async sum(field: Union[str, ExpressionField], session: Optional[ClientSession] = None) -> float
+@classmethod
+def set_database(cls, database)
 ```
 
-Sum of values of the given field
+> Redis client setter
 
-Example:
+<a id="beanis.odm.interfaces.setters.SettersInterface.set_collection_name"></a>
+
+#### SettersInterface.set\_collection\_name
 
 ```python
-
-class Sample(Document):
-    price: int
-    count: int
-
-sum_count = await Document.find(Sample.price <= 100).sum(Sample.count)
-
+@classmethod
+def set_collection_name(cls, name: str)
 ```
 
-**Arguments**:
+> Key prefix setter (replaces collection name)
 
-- `field`: Union[str, ExpressionField]
-- `session`: Optional[ClientSession] - pymongo session
+<a id="beanis.odm.interfaces.clone"></a>
 
-**Returns**:
+## beanis.odm.interfaces.clone
 
-float - sum
+<a id="beanis.odm.interfaces.inheritance"></a>
 
-<a name="beanie.odm.interfaces.aggregate.AggregateMethods.avg"></a>
-#### avg
-
-```python
- | async avg(field, session: Optional[ClientSession] = None) -> float
-```
-
-Average of values of the given field
-
-Example:
-
-```python
-
-class Sample(Document):
-    price: int
-    count: int
-
-avg_count = await Document.find(Sample.price <= 100).avg(Sample.count)
-```
-
-**Arguments**:
-
-- `field`: Union[str, ExpressionField]
-- `session`: Optional[ClientSession] - pymongo session
-
-**Returns**:
-
-float - avg
-
-<a name="beanie.odm.interfaces.aggregate.AggregateMethods.max"></a>
-#### max
-
-```python
- | async max(field: Union[str, ExpressionField], session: Optional[ClientSession] = None) -> Any
-```
-
-Max of the values of the given field
-
-Example:
-
-```python
-
-class Sample(Document):
-    price: int
-    count: int
-
-max_count = await Document.find(Sample.price <= 100).max(Sample.count)
-```
-
-**Arguments**:
-
-- `field`: Union[str, ExpressionField]
-- `session`: Optional[ClientSession] - pymongo session
-
-**Returns**:
-
-float - max
-
-<a name="beanie.odm.interfaces.aggregate.AggregateMethods.min"></a>
-#### min
-
-```python
- | async min(field: Union[str, ExpressionField], session: Optional[ClientSession] = None) -> Any
-```
-
-Min of the values of the given field
-
-Example:
-
-```python
-
-class Sample(Document):
-    price: int
-    count: int
-
-min_count = await Document.find(Sample.price <= 100).min(Sample.count)
-```
-
-**Arguments**:
-
-- `field`: Union[str, ExpressionField]
-- `session`: Optional[ClientSession] - pymongo session
-
-**Returns**:
-
-float - max
-
-<a name="beanie.odm.interfaces.session"></a>
-# beanie.odm.interfaces.session
-
-<a name="beanie.odm.interfaces.session.SessionMethods"></a>
-## SessionMethods Objects
-
-```python
-class SessionMethods()
-```
-
-Session methods
-
-<a name="beanie.odm.interfaces.session.SessionMethods.set_session"></a>
-#### set\_session
-
-```python
- | set_session(session: Optional[ClientSession] = None)
-```
-
-Set pymongo session
-
-**Arguments**:
-
-- `session`: Optional[ClientSession] - pymongo session
-
-**Returns**:
-
-
+## beanis.odm.interfaces.inheritance
 

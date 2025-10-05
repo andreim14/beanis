@@ -1,48 +1,51 @@
-<a name="beanie.odm.fields"></a>
-# beanie.odm.fields
+<a id="beanis.odm.fields"></a>
 
-<a name="beanie.odm.fields.Indexed"></a>
-#### Indexed
+## beanis.odm.fields
 
-```python
-Indexed(typ, index_type=ASCENDING, **kwargs)
-```
+<a id="beanis.odm.fields.ExpressionField"></a>
 
-Returns a subclass of `typ` with an extra attribute `_indexed` as a tuple:
-- Index 0: `index_type` such as `pymongo.ASCENDING`
-- Index 1: `kwargs` passed to `IndexModel`
-When instantiated the type of the result will actually be `typ`.
-
-<a name="beanie.odm.fields.PydanticObjectId"></a>
-## PydanticObjectId Objects
-
-```python
-class PydanticObjectId(ObjectId)
-```
-
-Object Id field. Compatible with Pydantic.
-
-<a name="beanie.odm.fields.ExpressionField"></a>
-## ExpressionField Objects
+### ExpressionField
 
 ```python
 class ExpressionField(str)
 ```
 
-<a name="beanie.odm.fields.ExpressionField.__getattr__"></a>
-#### \_\_getattr\_\_
+> Simple field expression for Redis ODM
+> Removed query operator support (use indexing instead)
+
+<a id="beanis.odm.fields.ExpressionField.__getitem__"></a>
+
+#### ExpressionField.\_\_getitem\_\_
 
 ```python
- | __getattr__(item)
+def __getitem__(item)
 ```
 
-Get sub field
+> Get sub field
+> 
+> **Arguments**:
+> 
+> - `item`: name of the subfield
+> 
+> **Returns**:
+> 
+> ExpressionField
 
-**Arguments**:
+<a id="beanis.odm.fields.ExpressionField.__getattr__"></a>
 
-- `item`: name of the subfield
+#### ExpressionField.\_\_getattr\_\_
 
-**Returns**:
+```python
+def __getattr__(item)
+```
 
-ExpressionField
+> Get sub field
+> 
+> **Arguments**:
+> 
+> - `item`: name of the subfield
+> 
+> **Returns**:
+> 
+> ExpressionField
 
