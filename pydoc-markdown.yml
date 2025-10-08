@@ -55,6 +55,8 @@ renderer:
           source: docs/tutorial/indexes.md
         - title: Event-based actions
           source: docs/tutorial/actions.md
+        - title: Custom encoders
+          source: docs/tutorial/custom-encoders.md
     - title: API Documentation
       children:
         - title: Document

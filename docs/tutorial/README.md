@@ -105,6 +105,16 @@ Run custom logic on document lifecycle:
 
 **Learn hooks** → [actions.md](actions.md)
 
+#### [Custom Encoders](custom-encoders.md)
+Serialize complex Python types to Redis:
+- NumPy arrays, PyTorch tensors
+- Custom classes and dataclasses
+- Binary data (images, audio)
+- Performance optimization
+- Versioning and error handling
+
+**Learn custom encoders** → [custom-encoders.md](custom-encoders.md)
+
 ## Quick Start Example
 
 ```python
@@ -159,6 +169,7 @@ async def example():
 Start with the basics above, then explore:
 7. [Indexes](indexes.md) - Optimize queries
 8. [Event Hooks](actions.md) - Lifecycle events
+9. [Custom Encoders](custom-encoders.md) - Complex type serialization
 
 ## Key Concepts
 
