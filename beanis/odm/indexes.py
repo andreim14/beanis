@@ -7,21 +7,57 @@ using native Redis data structures:
 - Sorted Sets for numeric fields (range queries)
 """
 
-from typing import Any, Dict, List, Optional, Type, Union, get_args, get_origin
-from pydantic import BaseModel
+from typing import Any, Dict, List, Optional, Type, Union, get_args, get_origin, Tuple
+from pydantic import BaseModel, field_validator, field_serializer
+import json
 
 from beanis.odm.utils.pydantic import IS_PYDANTIC_V2
 
 if IS_PYDANTIC_V2:
     from typing import Annotated, get_args as typing_get_args
+    from pydantic import model_serializer
 else:
     from typing_extensions import Annotated, get_args as typing_get_args
+
+
+class GeoPoint(BaseModel):
+    """
+    Represents a geographic point with longitude and latitude
+
+    Usage:
+        class Store(Document):
+            name: str
+            location: Indexed[GeoPoint]  # Geo index
+
+        store = Store(name="HQ", location=GeoPoint(longitude=-122.4, latitude=37.8))
+    """
+    longitude: float
+    latitude: float
+
+    @field_validator('longitude')
+    @classmethod
+    def validate_longitude(cls, v: float) -> float:
+        if not -180 <= v <= 180:
+            raise ValueError('Longitude must be between -180 and 180')
+        return v
+
+    @field_validator('latitude')
+    @classmethod
+    def validate_latitude(cls, v: float) -> float:
+        if not -90 <= v <= 90:
+            raise ValueError('Latitude must be between -90 and 90')
+        return v
+
+    def as_tuple(self) -> Tuple[float, float]:
+        """Return (longitude, latitude) tuple for Redis GEOADD"""
+        return (self.longitude, self.latitude)
 
 
 class IndexType:
     """Types of indexes supported"""
     SET = "set"  # For categorical/string fields (exact match)
     SORTED_SET = "zset"  # For numeric fields (range queries)
+    GEO = "geo"  # For geo-spatial fields (location-based queries)
 
 
 class IndexedField:
@@ -32,11 +68,12 @@ class IndexedField:
         class Product(Document):
             category: Annotated[str, IndexedField()]  # Set index
             price: Annotated[float, IndexedField()]   # Sorted Set index
+            location: Annotated[GeoPoint, IndexedField()]  # Geo index
     """
 
     def __init__(self, index_type: Optional[str] = None):
         """
-        :param index_type: Type of index ("set" or "zset").
+        :param index_type: Type of index ("set", "zset", or "geo").
                           If None, auto-detect based on field type
         """
         self.index_type = index_type
@@ -103,6 +140,7 @@ class IndexManager:
         Determine the index type based on field type
 
         - Numeric types (int, float) -> Sorted Set (zset)
+        - GeoPoint types -> Geo index
         - String/categorical types -> Set
         """
         if indexed_field.index_type:
@@ -120,6 +158,11 @@ class IndexManager:
                 return IndexType.SET
             field_type = field_info.outer_type_
 
+        # Handle Annotated types
+        if get_origin(field_type) is Annotated:
+            args = get_args(field_type)
+            field_type = args[0] if args else field_type
+
         # Handle Optional types
         if get_origin(field_type) is Union:
             args = get_args(field_type)
@@ -127,7 +170,9 @@ class IndexManager:
             field_type = next((arg for arg in args if arg is not type(None)), str)
 
         # Determine index type
-        if field_type in (int, float):
+        if field_type == GeoPoint or (isinstance(field_type, type) and issubclass(field_type, GeoPoint)):
+            return IndexType.GEO
+        elif field_type in (int, float):
             return IndexType.SORTED_SET
         else:
             return IndexType.SET
@@ -162,6 +207,30 @@ class IndexManager:
                 # Can't convert to float, skip indexing
                 pass
 
+        elif index_type == IndexType.GEO:
+            # Add to Geo index
+            index_key = IndexManager.get_index_key(document_class, field_name)
+
+            # Decode the value if it's in encoded format
+            geo_value = value
+            if isinstance(value, str) and value.startswith("__type__:GeoPoint:"):
+                # Extract the JSON part
+                encoded_json = value.split(":", 2)[2]
+                geo_data = json.loads(encoded_json)
+                geo_value = GeoPoint(**geo_data)
+
+            if isinstance(geo_value, GeoPoint):
+                await redis_client.geoadd(
+                    index_key,
+                    (geo_value.longitude, geo_value.latitude, document_id)
+                )
+            elif isinstance(geo_value, dict) and 'longitude' in geo_value and 'latitude' in geo_value:
+                # Handle dict representation
+                await redis_client.geoadd(
+                    index_key,
+                    (geo_value['longitude'], geo_value['latitude'], document_id)
+                )
+
     @staticmethod
     async def remove_from_index(
         redis_client,
@@ -186,6 +255,11 @@ class IndexManager:
             # Remove from Sorted Set
             index_key = IndexManager.get_index_key(document_class, field_name)
             await redis_client.zrem(index_key, document_id)
+
+        elif index_type == IndexType.GEO:
+            # Remove from Geo index
+            index_key = IndexManager.get_index_key(document_class, field_name)
+            await redis_client.zrem(index_key, document_id)  # GEOADD uses sorted sets internally
 
     @staticmethod
     async def update_indexes(
@@ -221,6 +295,9 @@ class IndexManager:
                 elif index_type == IndexType.SORTED_SET:
                     index_key = IndexManager.get_index_key(document_class, field_name)
                     pipe.zrem(index_key, document_id)
+                elif index_type == IndexType.GEO:
+                    index_key = IndexManager.get_index_key(document_class, field_name)
+                    pipe.zrem(index_key, document_id)
 
             # Add to new index
             if new_value is not None:
@@ -234,6 +311,21 @@ class IndexManager:
                         pipe.zadd(index_key, {document_id: score})
                     except (ValueError, TypeError):
                         pass  # Skip if can't convert to float
+                elif index_type == IndexType.GEO:
+                    index_key = IndexManager.get_index_key(document_class, field_name)
+
+                    # Decode the value if it's in encoded format
+                    geo_value = new_value
+                    if isinstance(new_value, str) and new_value.startswith("__type__:GeoPoint:"):
+                        # Extract the JSON part
+                        encoded_json = new_value.split(":", 2)[2]
+                        geo_data = json.loads(encoded_json)
+                        geo_value = GeoPoint(**geo_data)
+
+                    if isinstance(geo_value, GeoPoint):
+                        pipe.geoadd(index_key, (geo_value.longitude, geo_value.latitude, document_id))
+                    elif isinstance(geo_value, dict) and 'longitude' in geo_value and 'latitude' in geo_value:
+                        pipe.geoadd(index_key, (geo_value['longitude'], geo_value['latitude'], document_id))
 
         # Execute all operations in a single round-trip
         await pipe.execute()
@@ -265,6 +357,9 @@ class IndexManager:
                 index_key = IndexManager.get_index_key(document_class, field_name, value)
                 pipe.srem(index_key, document_id)
             elif index_type == IndexType.SORTED_SET:
+                index_key = IndexManager.get_index_key(document_class, field_name)
+                pipe.zrem(index_key, document_id)
+            elif index_type == IndexType.GEO:
                 index_key = IndexManager.get_index_key(document_class, field_name)
                 pipe.zrem(index_key, document_id)
 
@@ -329,6 +424,113 @@ class IndexManager:
 
         return []
 
+    @staticmethod
+    async def find_by_geo_radius(
+        redis_client,
+        document_class: Type,
+        field_name: str,
+        longitude: float,
+        latitude: float,
+        radius: float,
+        unit: str = "km"
+    ) -> List[str]:
+        """
+        Find document IDs within a radius of a geo location
+
+        :param field_name: Name of the geo-indexed field
+        :param longitude: Center point longitude
+        :param latitude: Center point latitude
+        :param radius: Search radius
+        :param unit: Distance unit - 'm', 'km', 'mi', 'ft' (default: 'km')
+
+        Usage:
+            nearby = await IndexManager.find_by_geo_radius(
+                redis_client, Store, "location",
+                longitude=-122.4, latitude=37.8,
+                radius=10, unit="km"
+            )
+        """
+        indexed_fields = IndexManager.get_indexed_fields(document_class)
+
+        if field_name not in indexed_fields:
+            raise ValueError(f"Field '{field_name}' is not indexed")
+
+        indexed_field = indexed_fields[field_name]
+        index_type = IndexManager.determine_index_type(document_class, field_name, indexed_field)
+
+        if index_type != IndexType.GEO:
+            raise ValueError(f"Field '{field_name}' is not a geo index")
+
+        index_key = IndexManager.get_index_key(document_class, field_name)
+
+        # Use GEORADIUS command
+        members = await redis_client.georadius(
+            index_key,
+            longitude,
+            latitude,
+            radius,
+            unit=unit
+        )
+
+        # Convert bytes to strings if needed
+        return [
+            m.decode() if isinstance(m, bytes) else m
+            for m in members
+        ]
+
+    @staticmethod
+    async def find_by_geo_radius_with_distance(
+        redis_client,
+        document_class: Type,
+        field_name: str,
+        longitude: float,
+        latitude: float,
+        radius: float,
+        unit: str = "km"
+    ) -> List[Tuple[str, float]]:
+        """
+        Find document IDs within a radius with their distances
+
+        Returns list of (document_id, distance) tuples
+
+        Usage:
+            nearby = await IndexManager.find_by_geo_radius_with_distance(
+                redis_client, Store, "location",
+                longitude=-122.4, latitude=37.8,
+                radius=10, unit="km"
+            )
+            for doc_id, distance in nearby:
+                print(f"{doc_id}: {distance} km away")
+        """
+        indexed_fields = IndexManager.get_indexed_fields(document_class)
+
+        if field_name not in indexed_fields:
+            raise ValueError(f"Field '{field_name}' is not indexed")
+
+        indexed_field = indexed_fields[field_name]
+        index_type = IndexManager.determine_index_type(document_class, field_name, indexed_field)
+
+        if index_type != IndexType.GEO:
+            raise ValueError(f"Field '{field_name}' is not a geo index")
+
+        index_key = IndexManager.get_index_key(document_class, field_name)
+
+        # Use GEORADIUS command with WITHDIST
+        members = await redis_client.georadius(
+            index_key,
+            longitude,
+            latitude,
+            radius,
+            unit=unit,
+            withdist=True
+        )
+
+        # Convert bytes to strings if needed
+        return [
+            (m[0].decode() if isinstance(m[0], bytes) else m[0], float(m[1]))
+            for m in members
+        ]
+
 
 # Convenience type for indexed fields
 def Indexed(field_type: Type, **kwargs) -> Type:
@@ -341,3 +543,25 @@ def Indexed(field_type: Type, **kwargs) -> Type:
             price: Indexed[float]   # Sorted Set index
     """
     return Annotated[field_type, IndexedField(**kwargs)]
+
+
+# Register GeoPoint encoder/decoder
+def _register_geopoint_encoder():
+    """Register encoder/decoder for GeoPoint to handle Redis serialization"""
+    try:
+        from beanis.odm.custom_encoders import register_type
+
+        def encode_geopoint(gp: GeoPoint) -> str:
+            return json.dumps({"longitude": gp.longitude, "latitude": gp.latitude})
+
+        def decode_geopoint(s: str) -> GeoPoint:
+            data = json.loads(s)
+            return GeoPoint(**data)
+
+        register_type(GeoPoint, encoder=encode_geopoint, decoder=decode_geopoint)
+    except ImportError:
+        pass  # Custom encoders module not available yet
+
+
+# Auto-register GeoPoint encoder on module import
+_register_geopoint_encoder()

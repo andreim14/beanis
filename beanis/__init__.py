@@ -16,7 +16,7 @@ from beanis.odm.documents import (
     Document,
     MergeStrategy,
 )
-from beanis.odm.indexes import IndexedField, Indexed
+from beanis.odm.indexes import IndexedField, Indexed, GeoPoint
 
 from beanis.odm.utils.init import init_beanis
 from beanis.odm.custom_encoders import (
@@ -35,6 +35,7 @@ __all__ = [
     # Indexes
     "IndexedField",
     "Indexed",
+    "GeoPoint",
     # Actions
     "before_event",
     "after_event",

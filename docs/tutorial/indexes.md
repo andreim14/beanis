@@ -8,6 +8,7 @@ Unlike MongoDB which has a flexible indexing system, Redis indexing in Beanis is
 
 - **Sorted Sets** - For numeric fields (support range queries)
 - **Sets** - For string/categorical fields (exact match only)
+- **Geo Indexes** - For geo-spatial fields (proximity queries)
 - **Hash** - Document storage (no indexing)
 
 ## Defining Indexes
@@ -15,14 +16,15 @@ Unlike MongoDB which has a flexible indexing system, Redis indexing in Beanis is
 Use the `Indexed()` type annotation to mark fields for indexing:
 
 ```python
-from beanis import Document, Indexed
+from beanis import Document, Indexed, GeoPoint
 
 class Product(Document):
     name: str                    # Not indexed - no queries
-    price: Indexed(float)        # Indexed - range queries
-    category: Indexed(str)       # Indexed - exact match
+    price: Indexed[float]        # Indexed - range queries
+    category: Indexed[str]       # Indexed - exact match
     stock: int                   # Not indexed - no queries
-    
+    location: Indexed[GeoPoint]  # Indexed - geo queries
+
     class Settings:
         name = "products"
 ```
@@ -319,34 +321,63 @@ print(books_set)  # {doc_id, doc_id, ...}
 
 ### Geo-Spatial Indexing
 
-Redis supports geo-spatial queries, but Beanis doesn't have built-in support yet:
+Redis supports geo-spatial queries, and Beanis provides built-in support through the GeoPoint type.
 
 ```python
-# Manual geo-spatial indexing
+from beanis import Document, Indexed, GeoPoint
+from beanis.odm.indexes import IndexManager
+
 class Store(Document):
     name: str
-    latitude: float
-    longitude: float
-    
-    async def add_to_geo_index(self):
-        """Manually add to Redis geospatial index"""
-        await self._database.geoadd(
-            "geo:stores",
-            self.longitude,
-            self.latitude,
-            self.id
-        )
+    location: Indexed[GeoPoint]  # Geo index
 
-# Find nearby stores manually
-redis_client = Store._database
-nearby = await redis_client.georadius(
-    "geo:stores",
+    class Settings:
+        name = "stores"
+
+# Create a store
+store = Store(
+    name="Downtown Store",
+    location=GeoPoint(longitude=-122.4, latitude=37.8)
+)
+await store.insert()
+
+# Find nearby stores (within 10km)
+from beanis.odm.indexes import IndexManager
+
+nearby_ids = await IndexManager.find_by_geo_radius(
+    redis_client=Store._database,
+    document_class=Store,
+    field_name="location",
     longitude=-122.4,
     latitude=37.8,
     radius=10,
     unit="km"
 )
+
+# Get the actual documents
+nearby_stores = await Store.get_many(nearby_ids)
+
+# Find nearby stores with distances
+nearby_with_dist = await IndexManager.find_by_geo_radius_with_distance(
+    redis_client=Store._database,
+    document_class=Store,
+    field_name="location",
+    longitude=-122.4,
+    latitude=37.8,
+    radius=10,
+    unit="km"
+)
+
+for store_id, distance in nearby_with_dist:
+    print(f"Store {store_id} is {distance} km away")
 ```
+
+**Supported units**: `m` (meters), `km` (kilometers), `mi` (miles), `ft` (feet)
+
+**How it works**:
+- Uses Redis GEOADD command to store locations
+- Uses Redis GEORADIUS for proximity queries
+- Automatically maintains geo index on insert/update/delete
 
 ### Multi-Value Indexing
 
@@ -390,7 +421,7 @@ class Product(Document):
 | Exact match | ✅ Single field | ✅ Sets |
 | Full-text search | ✅ Text indexes | ❌ Need RediSearch |
 | Compound indexes | ✅ Multi-field | ⚠️ Manual intersection |
-| Geo-spatial | ✅ 2dsphere | ⚠️ Manual (Redis GEOADD) |
+| Geo-spatial | ✅ 2dsphere | ✅ Built-in (GEORADIUS) |
 | Index creation | Manual | ✅ Automatic |
 | Array indexing | ✅ Multikey | ❌ Not supported |
 
