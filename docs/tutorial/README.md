@@ -115,6 +115,16 @@ Serialize complex Python types to Redis:
 
 **Learn custom encoders** → [custom-encoders.md](custom-encoders.md)
 
+#### [Geo-Spatial Indexing](geo-spatial.md)
+Build location-based features with sub-millisecond queries:
+- Store/restaurant locators
+- Delivery radius validation
+- Real-time vehicle tracking
+- Geo-fencing applications
+- Complete delivery service example with benchmarks
+
+**Learn geo-spatial** → [geo-spatial.md](geo-spatial.md)
+
 ## Quick Start Example
 
 ```python
@@ -170,6 +180,7 @@ Start with the basics above, then explore:
 7. [Indexes](indexes.md) - Optimize queries
 8. [Event Hooks](actions.md) - Lifecycle events
 9. [Custom Encoders](custom-encoders.md) - Complex type serialization
+10. [Geo-Spatial Indexing](geo-spatial.md) - Location-based features
 
 ## Key Concepts
 

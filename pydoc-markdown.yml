@@ -57,6 +57,8 @@ renderer:
           source: docs/tutorial/actions.md
         - title: Custom encoders
           source: docs/tutorial/custom-encoders.md
+        - title: Geo-spatial indexing
+          source: docs/tutorial/geo-spatial.md
     - title: API Documentation
       children:
         - title: Document
