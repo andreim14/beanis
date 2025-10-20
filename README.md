@@ -584,9 +584,14 @@ pytest tests/test_core.py::test_insert_and_get
 
 ## Credits
 
-Beanis is inspired by [Beanie](https://github.com/BeanieODM/beanie) - the amazing MongoDB ODM.
+Beanis is a fork of [Beanie](https://github.com/BeanieODM/beanie) - the amazing MongoDB ODM created by Roman Right and contributors.
 
-We took the Beanie philosophy and adapted it for Redis, creating a simple yet powerful ODM that works with vanilla Redis.
+We took the Beanie codebase and completely reimagined it for Redis, replacing MongoDB operations with Redis commands while preserving the elegant API design. If you're using MongoDB, check out the original [Beanie](https://github.com/BeanieODM/beanie) - it's awesome!
+
+**Special thanks to:**
+- Roman Right and the Beanie community for creating the foundation
+- All Beanie contributors whose code inspired this project
+- The Redis and Pydantic teams for their excellent libraries
 
 [![Beanie](https://raw.githubusercontent.com/roman-right/beanie/main/assets/logo/white_bg.svg)](https://github.com/BeanieODM/beanie)
 
