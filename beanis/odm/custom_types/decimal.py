@@ -1,12 +1,12 @@
 import decimal
 
-import bson
 import pydantic
 from typing_extensions import Annotated
 
+# Simplified Decimal support for Redis (no BSON dependency)
 DecimalAnnotation = Annotated[
     decimal.Decimal,
     pydantic.BeforeValidator(
-        lambda v: v.to_decimal() if isinstance(v, bson.Decimal128) else v
+        lambda v: decimal.Decimal(str(v)) if not isinstance(v, decimal.Decimal) else v
     ),
 ]

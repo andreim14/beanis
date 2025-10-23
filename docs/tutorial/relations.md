@@ -21,7 +21,7 @@ Also, backward links are supported:
 Direct link to the document:
 
 ```python
-from beanie import Document, Link
+from beanis import Document, Link
 
 
 class Door(Document):
@@ -39,7 +39,7 @@ Optional direct link to the document:
 ```python
 from typing import Optional
 
-from beanie import Document, Link
+from beanis import Document, Link
 
 
 class Door(Document):
@@ -57,7 +57,7 @@ List of the links:
 ```python
 from typing import List
 
-from beanie import Document, Link
+from beanis import Document, Link
 
 
 class Window(Document):
@@ -75,17 +75,20 @@ Optional list of the links:
 
 ```python
 from typing import List, Optional
- 
-from beanie import Document, Link
- 
+
+from beanis import Document, Link
+
+
 class Window(Document):
     x: int = 10
     y: int = 10
- 
+
+
 class Yard(Document):
     v: int = 10
     y: int = 10
- 
+
+
 class House(Document):
     name: str
     door: Link[Door]
@@ -190,8 +193,9 @@ It works the same way with `fetch_links` equal to `True` and `False` and for `fi
 With Beanie you can set up nested links. Document can even link to itself. This can lead to infinite recursion. To prevent this, or to decrease the database load, you can limit the nesting depth during find operations.
 
 ```python
-from beanie import Document, Link
+from beanis import Document, Link
 from typing import Optional
+
 
 class SelfLinkedSample(Document):
     name: str
@@ -271,7 +275,7 @@ To init the back link you should have a document with the direct or list of link
 ```python
 from typing import List
 
-from beanie import Document, BackLink, Link
+from beanis import Document, BackLink, Link
 from pydantic import Field
 
 
@@ -280,13 +284,13 @@ class House(Document):
     door: Link["Door"]
     owners: List[Link["Person"]]
 
-    
+
 class Door(Document):
     height: int = 2
     width: int = 1
     house: BackLink[House] = Field(original_field="door")
 
-    
+
 class Person(Document):
     name: str
     house: List[BackLink[House]] = Field(original_field="owners")

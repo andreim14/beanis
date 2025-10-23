@@ -7,22 +7,15 @@ class SettersInterface:
     _document_settings: ClassVar[Optional[DocumentSettings]]
 
     @classmethod
-    def set_collection(cls, collection):
-        """
-        Collection setter
-        """
-        cls._document_settings.motor_collection = collection
-
-    @classmethod
     def set_database(cls, database):
         """
-        Database setter
+        Redis client setter
         """
-        cls._document_settings.motor_db = database
+        cls._document_settings.redis_client = database
 
     @classmethod
     def set_collection_name(cls, name: str):
         """
-        Collection name setter
+        Key prefix setter (replaces collection name)
         """
-        cls._document_settings.name = name  # type: ignore
+        cls._document_settings.key_prefix = name

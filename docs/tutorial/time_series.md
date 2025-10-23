@@ -7,7 +7,7 @@ You can set up a timeseries collection using the inner `Settings` class.
 ```python
 from datetime import datetime
 
-from beanie import Document, TimeSeriesConfig, Granularity
+from beanis import Document, TimeSeriesConfig, Granularity
 from pydantic import Field
 
 
@@ -17,12 +17,12 @@ class Sample(Document):
 
     class Settings:
         timeseries = TimeSeriesConfig(
-            time_field="ts", #  Required
-            meta_field="meta", #  Optional
-            granularity=Granularity.hours, #  Optional
-            bucket_max_span_seconds=3600,  #  Optional
-            bucket_rounding_seconds=3600,  #  Optional
-            expire_after_seconds=2  #  Optional
+            time_field="ts",  # Required
+            meta_field="meta",  # Optional
+            granularity=Granularity.hours,  # Optional
+            bucket_max_span_seconds=3600,  # Optional
+            bucket_rounding_seconds=3600,  # Optional
+            expire_after_seconds=2  # Optional
         )
 ```
 

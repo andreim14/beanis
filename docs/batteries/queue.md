@@ -21,7 +21,7 @@ runner.start()
 ## Installation
 
 ```shell
-pip install beanie[queue]
+pip install beanis[queue]
 ```
 
 ## Task

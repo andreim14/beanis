@@ -19,11 +19,12 @@ from typing import (
     Tuple,
 )
 
-import bson
+#import bson  # Removed for Redis
 import pydantic
 
 import beanis
 from beanis.odm.utils.pydantic import IS_PYDANTIC_V2, get_model_fields
+from beanis.odm.custom_encoders import CustomEncoderRegistry
 
 SingleArgCallable = Callable[[Any], Any]
 DEFAULT_CUSTOM_ENCODERS: MutableMapping[type, SingleArgCallable] = {
@@ -36,22 +37,25 @@ DEFAULT_CUSTOM_ENCODERS: MutableMapping[type, SingleArgCallable] = {
     pathlib.PurePath: str,
     pydantic.SecretBytes: pydantic.SecretBytes.get_secret_value,
     pydantic.SecretStr: pydantic.SecretStr.get_secret_value,
-    datetime.date: lambda d: datetime.datetime.combine(d, datetime.time.min),
-    datetime.timedelta: operator.methodcaller("total_seconds"),
+    datetime.date: lambda d: d.isoformat(),  # Convert to ISO string
+    datetime.time: lambda t: t.isoformat(),  # Convert to ISO string
+    datetime.timedelta: lambda td: td.total_seconds(),  # Convert to seconds (float)
+    datetime.datetime: lambda dt: dt.isoformat(),  # Convert to ISO string
     enum.Enum: operator.attrgetter("value"),
+    decimal.Decimal: str,  # Convert Decimal to string to preserve precision
+    uuid.UUID: str,  # Convert UUID to string
 }
 if IS_PYDANTIC_V2:
     from pydantic_core import Url
 
     DEFAULT_CUSTOM_ENCODERS[Url] = str
 
-BSON_SCALAR_TYPES = (
+REDIS_SCALAR_TYPES = (
     type(None),
     str,
     int,
     float,
-    datetime.datetime,
-    bson.ObjectId,
+    bool,  # Added bool as scalar
 )
 
 
@@ -88,17 +92,30 @@ class Encoder:
         return obj_dict
 
     def encode(self, obj: Any) -> Any:
+        # 1. Check document-specific custom encoders first
         if self.custom_encoders:
             encoder = _get_encoder(obj, self.custom_encoders)
             if encoder is not None:
                 return encoder(obj)
 
-        if isinstance(obj, BSON_SCALAR_TYPES):
-            return obj
+        # 2. Check global custom encoder registry (user-registered types)
+        obj_type = type(obj)
+        encoder_func = CustomEncoderRegistry.get_encoder(obj_type)
+        if encoder_func is not None:
+            # Store type metadata with encoded value so decoder knows what type to use
+            # Format: "__type__:TypeName:encoded_value"
+            encoded_value = encoder_func(obj)
+            return f"__type__:{obj_type.__name__}:{encoded_value}"
 
+        # 3. Check DEFAULT_CUSTOM_ENCODERS (before scalar check)
+        # This is important for types like Enum that might inherit from scalars (str, int, etc.)
         encoder = _get_encoder(obj, DEFAULT_CUSTOM_ENCODERS)
         if encoder is not None:
             return encoder(obj)
+
+        # 4. Check if it's a Redis scalar type
+        if isinstance(obj, REDIS_SCALAR_TYPES):
+            return obj
 
         if isinstance(obj, beanis.Document):
             return self._encode_document(obj)

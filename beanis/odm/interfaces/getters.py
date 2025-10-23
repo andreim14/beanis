@@ -1,8 +1,10 @@
 from abc import abstractmethod
-
-from redis import Redis
+from typing import TYPE_CHECKING
 
 from beanis.odm.settings.base import ItemSettings
+
+if TYPE_CHECKING:
+    from redis.asyncio import Redis
 
 
 class OtherGettersInterface:
@@ -12,17 +14,21 @@ class OtherGettersInterface:
         pass
 
     @classmethod
-    def get_motor_collection(cls) -> Redis:
-        return cls.get_settings().motor_db
+    def get_redis_client(cls) -> "Redis":
+        """Get the Redis async client"""
+        return cls.get_settings().redis_client
 
     @classmethod
     def get_collection_name(cls):
-        return cls.get_settings().name
+        """Get the key prefix (replaces collection name)"""
+        return cls.get_settings().key_prefix or cls.__name__
 
     @classmethod
     def get_bson_encoders(cls):
+        """Legacy method - kept for backward compatibility"""
         return cls.get_settings().bson_encoders
 
     @classmethod
     def get_link_fields(cls):
+        """Legacy method - links not supported in Redis ODM"""
         return None
