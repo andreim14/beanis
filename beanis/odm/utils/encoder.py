@@ -5,7 +5,6 @@ import enum
 import ipaddress
 import operator
 import pathlib
-import re
 import uuid
 from enum import Enum
 from typing import (
@@ -23,8 +22,8 @@ from typing import (
 import pydantic
 
 import beanis
-from beanis.odm.utils.pydantic import IS_PYDANTIC_V2, get_model_fields
 from beanis.odm.custom_encoders import CustomEncoderRegistry
+from beanis.odm.utils.pydantic import IS_PYDANTIC_V2, get_model_fields
 
 SingleArgCallable = Callable[[Any], Any]
 DEFAULT_CUSTOM_ENCODERS: MutableMapping[type, SingleArgCallable] = {
@@ -80,7 +79,6 @@ class Encoder:
         if obj._class_id:
             obj_dict[settings.class_id] = obj._class_id
 
-        link_fields = obj.get_link_fields() or {}
         sub_encoder = Encoder(
             # don't propagate self.exclude to subdocuments
             custom_encoders=settings.bson_encoders,

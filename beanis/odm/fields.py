@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Dict, Tuple
 
+
 @dataclass(frozen=True)
 class IndexedAnnotation:
     _indexed: Tuple[int, Dict[str, Any]]

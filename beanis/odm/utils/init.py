@@ -1,4 +1,5 @@
 import sys
+from typing import TYPE_CHECKING
 
 from beanis.odm.documents import DocType, Document
 from beanis.odm.fields import ExpressionField
@@ -8,7 +9,6 @@ from beanis.odm.utils.pydantic import (
     get_model_fields,
     parse_model,
 )
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from redis.asyncio import Redis
@@ -32,7 +32,6 @@ from pydantic import BaseModel
 
 from beanis.exceptions import Deprecation
 from beanis.odm.actions import ActionRegistry
-
 from beanis.odm.registry import DocsRegistry
 
 

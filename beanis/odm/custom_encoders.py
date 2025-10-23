@@ -3,9 +3,8 @@ Custom encoder/decoder registration system for Beanis
 
 Allows users to register custom serialization logic for any Python type.
 """
-from typing import Any, Callable, Dict, Type, Tuple, Optional
 import importlib.util
-
+from typing import Any, Callable, Dict, Optional, Tuple, Type
 
 # Type aliases for clarity
 EncoderFunc = Callable[[Any], str]  # Converts object to string for Redis
@@ -141,9 +140,10 @@ def _auto_register_common_types() -> None:
     # NumPy support
     if importlib.util.find_spec("numpy") is not None:
         try:
-            import numpy as np
             import base64
             import pickle
+
+            import numpy as np
 
             register_type(
                 np.ndarray,
@@ -156,9 +156,10 @@ def _auto_register_common_types() -> None:
     # PyTorch support
     if importlib.util.find_spec("torch") is not None:
         try:
-            import torch
             import base64
             import pickle
+
+            import torch
 
             register_type(
                 torch.Tensor,

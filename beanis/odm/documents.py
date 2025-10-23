@@ -1,5 +1,4 @@
 import importlib
-import inspect
 import time
 import uuid
 from enum import Enum
@@ -34,6 +33,7 @@ from beanis.odm.actions import (
     EventTypes,
     wrap_with_actions,
 )
+from beanis.odm.indexes import IndexManager
 from beanis.odm.interfaces.detector import ModelType
 from beanis.odm.interfaces.getters import OtherGettersInterface
 from beanis.odm.interfaces.inheritance import InheritanceInterface
@@ -52,7 +52,6 @@ from beanis.odm.utils.state import (
     previous_saved_state_needed,
     saved_state_needed,
 )
-from beanis.odm.indexes import IndexManager
 
 if IS_PYDANTIC_V2:
     pass
@@ -60,7 +59,7 @@ if IS_PYDANTIC_V2:
 if TYPE_CHECKING:
     pass
 
-FindType = TypeVar("FindType", bound=Union["Document", "View"])
+FindType = TypeVar("FindType", bound="Document")
 DocType = TypeVar("DocType", bound="Document")
 P = ParamSpec("P")
 R = TypeVar("R")
@@ -412,7 +411,6 @@ class Document(
         Cached at class level for performance
         """
         if not hasattr(cls, '_complex_fields_cache'):
-            import json as stdlib_json
             model_fields = get_model_fields(cls)
             complex_fields = set()
 
@@ -424,7 +422,7 @@ class Document(
                     field_type = field_info.outer_type_
 
                 # Check if it's a complex type (dict, list, BaseModel)
-                from typing import get_origin, get_args, Union
+                from typing import Union, get_args, get_origin
                 origin = get_origin(field_type)
 
                 # Unwrap Optional (which is Union[X, None])
@@ -463,7 +461,7 @@ class Document(
                 else:
                     field_type = field_info.outer_type_
 
-                from typing import get_origin, get_args, Union
+                from typing import Union, get_args, get_origin
                 origin = get_origin(field_type)
                 is_optional = False
 
@@ -595,9 +593,9 @@ class Document(
                             field_type, is_optional = field_types_cache[field_name]
                             origin = get_origin(field_type)
                             # Convert list→set or list→tuple if needed
-                            if origin == set and isinstance(parsed, list):
+                            if origin is set and isinstance(parsed, list):
                                 db_data[field_name] = set(parsed)
-                            elif origin == tuple and isinstance(parsed, list):
+                            elif origin is tuple and isinstance(parsed, list):
                                 db_data[field_name] = tuple(parsed)
                     except (msgspec.DecodeError, TypeError, ValueError):
                         pass  # Not JSON, keep as is
@@ -605,11 +603,11 @@ class Document(
                 elif not decoder_used and not use_validation and field_types_cache and field_name in field_types_cache and isinstance(field_value, str):
                     field_type, is_optional = field_types_cache[field_name]
                     try:
-                        if field_type == int:
+                        if field_type is int:
                             db_data[field_name] = int(field_value)
-                        elif field_type == float:
+                        elif field_type is float:
                             db_data[field_name] = float(field_value)
-                        elif field_type == bool:
+                        elif field_type is bool:
                             db_data[field_name] = field_value.lower() in ('true', '1', 'yes')
                     except (ValueError, AttributeError):
                         pass  # Keep original value if conversion fails

@@ -7,17 +7,30 @@ using native Redis data structures:
 - Sorted Sets for numeric fields (range queries)
 """
 
-from typing import Any, Dict, List, Optional, Type, Union, get_args, get_origin, Tuple
-from pydantic import BaseModel, field_validator, field_serializer
 import json
+from typing import (
+    Any,
+    Dict,
+    List,
+    Optional,
+    Tuple,
+    Type,
+    Union,
+    get_args,
+    get_origin,
+)
+
+from pydantic import BaseModel, field_validator
 
 from beanis.odm.utils.pydantic import IS_PYDANTIC_V2
 
 if IS_PYDANTIC_V2:
-    from typing import Annotated, get_args as typing_get_args
-    from pydantic import model_serializer
+    from typing import Annotated
+    from typing import get_args as typing_get_args
+
 else:
-    from typing_extensions import Annotated, get_args as typing_get_args
+    from typing_extensions import Annotated
+    from typing_extensions import get_args as typing_get_args
 
 
 class GeoPoint(BaseModel):
