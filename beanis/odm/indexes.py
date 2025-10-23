@@ -1,0 +1,343 @@
+"""
+Redis-based indexing system using Sets and Sorted Sets
+
+This module provides secondary indexing capabilities for Beanis documents
+using native Redis data structures:
+- Sets for categorical/string fields (exact match lookups)
+- Sorted Sets for numeric fields (range queries)
+"""
+
+from typing import Any, Dict, List, Optional, Type, Union, get_args, get_origin
+from pydantic import BaseModel
+
+from beanis.odm.utils.pydantic import IS_PYDANTIC_V2
+
+if IS_PYDANTIC_V2:
+    from typing import Annotated, get_args as typing_get_args
+else:
+    from typing_extensions import Annotated, get_args as typing_get_args
+
+
+class IndexType:
+    """Types of indexes supported"""
+    SET = "set"  # For categorical/string fields (exact match)
+    SORTED_SET = "zset"  # For numeric fields (range queries)
+
+
+class IndexedField:
+    """
+    Marks a field as indexed for secondary index support
+
+    Usage:
+        class Product(Document):
+            category: Annotated[str, IndexedField()]  # Set index
+            price: Annotated[float, IndexedField()]   # Sorted Set index
+    """
+
+    def __init__(self, index_type: Optional[str] = None):
+        """
+        :param index_type: Type of index ("set" or "zset").
+                          If None, auto-detect based on field type
+        """
+        self.index_type = index_type
+
+    def __repr__(self):
+        return f"IndexedField(index_type={self.index_type})"
+
+
+class IndexManager:
+    """
+    Manages secondary indexes for documents using Redis Sets and Sorted Sets
+    """
+
+    @staticmethod
+    def get_index_key(document_class: Type, field_name: str, value: Any = None) -> str:
+        """
+        Generate Redis key for an index
+
+        For Set indexes: idx:Product:category:electronics
+        For Sorted Set indexes: idx:Product:price
+        """
+        class_name = document_class.__name__
+
+        if value is not None:
+            # Set index (categorical)
+            return f"idx:{class_name}:{field_name}:{value}"
+        else:
+            # Sorted Set index (numeric)
+            return f"idx:{class_name}:{field_name}"
+
+    @staticmethod
+    def get_indexed_fields(document_class: Type) -> Dict[str, IndexedField]:
+        """
+        Extract all indexed fields from a document class
+
+        Returns dict: {field_name: IndexedField}
+        """
+        indexed_fields = {}
+
+        if IS_PYDANTIC_V2:
+            # Pydantic v2: Check metadata
+            for field_name, field_info in document_class.model_fields.items():
+                if hasattr(field_info, 'metadata') and field_info.metadata:
+                    for metadata_item in field_info.metadata:
+                        if isinstance(metadata_item, IndexedField):
+                            indexed_fields[field_name] = metadata_item
+                            break
+        else:
+            # Pydantic v1: Check outer_type_ for Annotated
+            for field_name, field_info in document_class.__fields__.items():
+                field_type = field_info.outer_type_
+                if get_origin(field_type) is Annotated:
+                    args = typing_get_args(field_type)
+                    for arg in args[1:]:  # Skip first arg (the actual type)
+                        if isinstance(arg, IndexedField):
+                            indexed_fields[field_name] = arg
+                            break
+
+        return indexed_fields
+
+    @staticmethod
+    def determine_index_type(document_class: Type, field_name: str, indexed_field: IndexedField) -> str:
+        """
+        Determine the index type based on field type
+
+        - Numeric types (int, float) -> Sorted Set (zset)
+        - String/categorical types -> Set
+        """
+        if indexed_field.index_type:
+            return indexed_field.index_type
+
+        # Get the field type from model
+        if IS_PYDANTIC_V2:
+            field_info = document_class.model_fields.get(field_name)
+            if not field_info:
+                return IndexType.SET
+            field_type = field_info.annotation
+        else:
+            field_info = document_class.__fields__.get(field_name)
+            if not field_info:
+                return IndexType.SET
+            field_type = field_info.outer_type_
+
+        # Handle Optional types
+        if get_origin(field_type) is Union:
+            args = get_args(field_type)
+            # Get non-None type
+            field_type = next((arg for arg in args if arg is not type(None)), str)
+
+        # Determine index type
+        if field_type in (int, float):
+            return IndexType.SORTED_SET
+        else:
+            return IndexType.SET
+
+    @staticmethod
+    async def add_to_index(
+        redis_client,
+        document_class: Type,
+        document_id: str,
+        field_name: str,
+        value: Any,
+        index_type: str
+    ):
+        """
+        Add document ID to the appropriate index
+        """
+        if value is None:
+            return  # Don't index None values
+
+        if index_type == IndexType.SET:
+            # Add to Set index
+            index_key = IndexManager.get_index_key(document_class, field_name, value)
+            await redis_client.sadd(index_key, document_id)
+
+        elif index_type == IndexType.SORTED_SET:
+            # Add to Sorted Set with value as score
+            index_key = IndexManager.get_index_key(document_class, field_name)
+            try:
+                score = float(value)
+                await redis_client.zadd(index_key, {document_id: score})
+            except (ValueError, TypeError):
+                # Can't convert to float, skip indexing
+                pass
+
+    @staticmethod
+    async def remove_from_index(
+        redis_client,
+        document_class: Type,
+        document_id: str,
+        field_name: str,
+        value: Any,
+        index_type: str
+    ):
+        """
+        Remove document ID from the appropriate index
+        """
+        if value is None:
+            return
+
+        if index_type == IndexType.SET:
+            # Remove from Set index
+            index_key = IndexManager.get_index_key(document_class, field_name, value)
+            await redis_client.srem(index_key, document_id)
+
+        elif index_type == IndexType.SORTED_SET:
+            # Remove from Sorted Set
+            index_key = IndexManager.get_index_key(document_class, field_name)
+            await redis_client.zrem(index_key, document_id)
+
+    @staticmethod
+    async def update_indexes(
+        redis_client,
+        document_class: Type,
+        document_id: str,
+        old_values: Optional[Dict[str, Any]],
+        new_values: Dict[str, Any]
+    ):
+        """
+        Update all indexes when a document changes
+        Uses Redis pipeline for batch operations (performance optimization)
+
+        :param old_values: Previous field values (for removal from old indexes)
+        :param new_values: New field values (for adding to new indexes)
+        """
+        indexed_fields = IndexManager.get_indexed_fields(document_class)
+
+        # Use pipeline for batch operations
+        pipe = redis_client.pipeline()
+
+        for field_name, indexed_field in indexed_fields.items():
+            index_type = IndexManager.determine_index_type(document_class, field_name, indexed_field)
+
+            old_value = old_values.get(field_name) if old_values else None
+            new_value = new_values.get(field_name)
+
+            # Remove from old index if value changed
+            if old_value is not None and old_value != new_value:
+                if index_type == IndexType.SET:
+                    index_key = IndexManager.get_index_key(document_class, field_name, old_value)
+                    pipe.srem(index_key, document_id)
+                elif index_type == IndexType.SORTED_SET:
+                    index_key = IndexManager.get_index_key(document_class, field_name)
+                    pipe.zrem(index_key, document_id)
+
+            # Add to new index
+            if new_value is not None:
+                if index_type == IndexType.SET:
+                    index_key = IndexManager.get_index_key(document_class, field_name, new_value)
+                    pipe.sadd(index_key, document_id)
+                elif index_type == IndexType.SORTED_SET:
+                    index_key = IndexManager.get_index_key(document_class, field_name)
+                    try:
+                        score = float(new_value)
+                        pipe.zadd(index_key, {document_id: score})
+                    except (ValueError, TypeError):
+                        pass  # Skip if can't convert to float
+
+        # Execute all operations in a single round-trip
+        await pipe.execute()
+
+    @staticmethod
+    async def remove_all_indexes(
+        redis_client,
+        document_class: Type,
+        document_id: str,
+        values: Dict[str, Any]
+    ):
+        """
+        Remove document from all indexes (for deletion)
+        Uses Redis pipeline for batch operations (performance optimization)
+        """
+        indexed_fields = IndexManager.get_indexed_fields(document_class)
+
+        # Use pipeline for batch operations
+        pipe = redis_client.pipeline()
+
+        for field_name, indexed_field in indexed_fields.items():
+            index_type = IndexManager.determine_index_type(document_class, field_name, indexed_field)
+            value = values.get(field_name)
+
+            if value is None:
+                continue
+
+            if index_type == IndexType.SET:
+                index_key = IndexManager.get_index_key(document_class, field_name, value)
+                pipe.srem(index_key, document_id)
+            elif index_type == IndexType.SORTED_SET:
+                index_key = IndexManager.get_index_key(document_class, field_name)
+                pipe.zrem(index_key, document_id)
+
+        # Execute all operations in a single round-trip
+        await pipe.execute()
+
+    @staticmethod
+    async def find_by_index(
+        redis_client,
+        document_class: Type,
+        field_name: str,
+        value: Any = None,
+        min_value: Any = None,
+        max_value: Any = None
+    ) -> List[str]:
+        """
+        Find document IDs using an index
+
+        For Set indexes (categorical):
+            find_by_index(redis, Product, "category", value="electronics")
+
+        For Sorted Set indexes (numeric range):
+            find_by_index(redis, Product, "price", min_value=10, max_value=100)
+        """
+        indexed_fields = IndexManager.get_indexed_fields(document_class)
+
+        if field_name not in indexed_fields:
+            raise ValueError(f"Field '{field_name}' is not indexed")
+
+        indexed_field = indexed_fields[field_name]
+        index_type = IndexManager.determine_index_type(document_class, field_name, indexed_field)
+
+        if index_type == IndexType.SET:
+            # Exact match using Set
+            if value is None:
+                raise ValueError("value is required for Set index queries")
+
+            index_key = IndexManager.get_index_key(document_class, field_name, value)
+            members = await redis_client.smembers(index_key)
+
+            # Convert bytes to strings if needed
+            return [
+                m.decode() if isinstance(m, bytes) else m
+                for m in members
+            ]
+
+        elif index_type == IndexType.SORTED_SET:
+            # Range query using Sorted Set
+            index_key = IndexManager.get_index_key(document_class, field_name)
+
+            # Use -inf and +inf as defaults
+            min_score = float(min_value) if min_value is not None else float('-inf')
+            max_score = float(max_value) if max_value is not None else float('+inf')
+
+            members = await redis_client.zrangebyscore(index_key, min_score, max_score)
+
+            # Convert bytes to strings if needed
+            return [
+                m.decode() if isinstance(m, bytes) else m
+                for m in members
+            ]
+
+        return []
+
+
+# Convenience type for indexed fields
+def Indexed(field_type: Type, **kwargs) -> Type:
+    """
+    Helper function to create an indexed field
+
+    Usage:
+        class Product(Document):
+            category: Indexed[str]  # Set index
+            price: Indexed[float]   # Sorted Set index
+    """
+    return Annotated[field_type, IndexedField(**kwargs)]

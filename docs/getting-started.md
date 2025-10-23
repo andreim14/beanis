@@ -7,13 +7,13 @@ You can simply install Beanie from the [PyPI](https://pypi.org/project/beanie/):
 ### PIP
 
 ```shell
-pip install beanie
+pip install beanis
 ```
 
 ### Poetry
 
 ```shell
-poetry add beanie
+poetry add beanis
 ```
 
 ## Initialization
@@ -33,7 +33,7 @@ import motor.motor_asyncio
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel
 
-from beanie import Document, Indexed, init_beanie
+from beanis import Document, Indexed, init_beanie
 
 
 class Category(BaseModel):
@@ -43,17 +43,17 @@ class Category(BaseModel):
 
 # This is the model that will be saved to the database
 class Product(Document):
-    name: str                          # You can use normal types just like in pydantic
+    name: str  # You can use normal types just like in pydantic
     description: Optional[str] = None
-    price: Indexed(float)              # You can also specify that a field should correspond to an index
-    category: Category                 # You can include pydantic models as well
+    price: Indexed(float)  # You can also specify that a field should correspond to an index
+    category: Category  # You can include pydantic models as well
 
 
-# Call this from within your event loop to get beanie setup.
+# Call this from within your event loop to get beanis setup.
 async def init():
     # Create Motor client
     client = AsyncIOMotorClient("mongodb://user:pass@host:27017")
 
-    # Init beanie with the Product document class
+    # Init beanis with the Product document class
     await init_beanie(database=client.db_name, document_models=[Product])
 ```

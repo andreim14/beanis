@@ -1,5 +1,3 @@
-from beanis.migrations.controllers.free_fall import free_fall_migration
-from beanis.migrations.controllers.iterative import iterative_migration
 from beanis.odm.actions import (
     After,
     Before,
@@ -18,18 +16,25 @@ from beanis.odm.documents import (
     Document,
     MergeStrategy,
 )
+from beanis.odm.indexes import IndexedField, Indexed
 
-from beanis.odm.settings.timeseries import Granularity, TimeSeriesConfig
 from beanis.odm.utils.init import init_beanis
+from beanis.odm.custom_encoders import (
+    register_encoder,
+    register_decoder,
+    register_type,
+    CustomEncoderRegistry,
+)
 
-__version__ = "0.0.1"
+__version__ = "0.0.8"
 __all__ = [
     # ODM
     "Document",
     "init_beanis",
-    "TimeSeriesConfig",
-    "Granularity",
     "MergeStrategy",
+    # Indexes
+    "IndexedField",
+    "Indexed",
     # Actions
     "before_event",
     "after_event",
@@ -42,9 +47,11 @@ __all__ = [
     "Before",
     "After",
     "Update",
-    # Migrations
-    "iterative_migration",
-    "free_fall_migration",
     # Custom Types
     "DecimalAnnotation",
+    # Custom Encoders
+    "register_encoder",
+    "register_decoder",
+    "register_type",
+    "CustomEncoderRegistry",
 ]

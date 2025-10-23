@@ -46,7 +46,7 @@ Other MongoDB query operators can be used with the included wrappers.
 For example, the `$in` operator can be used as follows:
 
 ```python
-from beanie.operators import In
+from beanis.operators import In
 
 products = await Product.find(
     In(Product.category.name, ["Chocolate", "Fruits"])
@@ -92,7 +92,7 @@ Two merging strategies are available: `local` and `remote`.
 The remote merge strategy replaces the local document with the one from the database, disregarding local changes:
 
 ```python
-from beanie import MergeStrategy
+from beanis import MergeStrategy
 
 await bar.sync(merge_strategy=MergeStrategy.remote)
 ```
@@ -104,7 +104,7 @@ The local merge strategy retains changes made locally to the document and update
 **BE CAREFUL**: it may raise an `ApplyChangesException` in case of a merging conflict.
 
 ```python
-from beanie import MergeStrategy
+from beanis import MergeStrategy
 
 await bar.sync(merge_strategy=MergeStrategy.local)
 ```

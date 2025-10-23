@@ -3,7 +3,6 @@ from typing import List, Optional
 from pydantic import Field
 
 from beanis.odm.settings.base import ItemSettings
-from beanis.odm.settings.timeseries import TimeSeriesConfig
 from beanis.odm.utils.pydantic import IS_PYDANTIC_V2
 
 if IS_PYDANTIC_V2:
@@ -18,10 +17,12 @@ class DocumentSettings(ItemSettings):
     use_revision: bool = False
     single_root_inheritance: bool = False
 
-    merge_indexes: bool = False
-    timeseries: Optional[TimeSeriesConfig] = None
-
     lazy_parsing: bool = False
+
+    # Performance optimization: Skip validation on fetch (data from Redis is trusted)
+    # When False, uses model_construct() for 30-50% speedup
+    # When True, uses model_validate() for full validation (safer, slower)
+    use_validation_on_fetch: bool = False
 
     keep_nulls: bool = True
 

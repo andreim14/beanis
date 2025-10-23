@@ -8,7 +8,10 @@ from beanis.odm.utils.pydantic import (
     get_model_fields,
     parse_model,
 )
-from redis import Redis
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from redis.asyncio import Redis
 
 
 if sys.version_info >= (3, 8):
@@ -41,16 +44,15 @@ class Output(BaseModel):
 class Initializer:
     def __init__(
         self,
-        database: Redis = None,
+        database: "Redis" = None,
         document_models: Optional[List[Union[Type["DocType"], str]]] = None,
     ):
         """
-        Beanie initializer
+        Beanis initializer
 
-        :param database: AsyncIOMotorDatabase - database instance
+        :param database: redis.asyncio.Redis - Redis async client instance
         :param document_models: List[Union[Type[DocType], str]] - model classes
         or strings with dot separated paths
-
 
         :return: None
         """
@@ -62,7 +64,7 @@ class Initializer:
         if document_models is None:
             raise ValueError("document_models parameter must be set")
 
-        self.database: Redis = database
+        self.database: "Redis" = database
 
         self.document_models: List[Union[Type[DocType]]] = [
             self.get_model(model) if isinstance(model, str) else model
@@ -190,7 +192,7 @@ class Initializer:
 
     def init_document_collection(self, cls):
         """
-        Init collection for the Document-based class
+        Init Redis client for the Document-based class
         :param cls:
         :return:
         """
@@ -198,8 +200,9 @@ class Initializer:
 
         document_settings = cls.get_settings()
 
-        if not document_settings.name:
-            document_settings.name = cls.__name__
+        # Set key prefix if not set
+        if not document_settings.key_prefix:
+            document_settings.key_prefix = cls.__name__
 
     async def init_document(self, cls: Type[Document]) -> Optional[Output]:
         """
@@ -282,26 +285,17 @@ class Initializer:
 
 
 async def init_beanis(
-    database: Redis = None,
+    database: "Redis" = None,
     document_models: Optional[
         List[Union[Type[Document], str]]
     ] = None,
-    allow_index_dropping: bool = False,
-    recreate_views: bool = False,
-    multiprocessing_mode: bool = False,
 ):
     """
-    Beanie initialization
+    Beanis initialization
 
-    :param database: AsyncIOMotorDatabase - motor database instance
-    :param connection_string: str - MongoDB connection string
+    :param database: redis.asyncio.Redis - Redis async client instance
     :param document_models: List[Union[Type[DocType], str]] - model classes
     or strings with dot separated paths
-    :param allow_index_dropping: bool - if index dropping is allowed.
-    Default False
-    :param recreate_views: bool - if views should be recreated. Default False
-    :param multiprocessing_mode: bool - if multiprocessing mode is on
-        it will patch the motor client to use process's event loop. Default False
     :return: None
     """
 

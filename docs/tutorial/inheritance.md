@@ -17,7 +17,7 @@ To set the root model you have to set `is_root = True` in the inner Settings cla
 from typing import Optional, List
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel
-from beanie import Document, Link, init_beanie
+from beanis import Document, Link, init_beanie
 
 
 class Vehicle(Document):
@@ -31,7 +31,7 @@ class Vehicle(Document):
     #                          Bus
     # shared attribute for all children
     color: str
-    
+
     class Settings:
         is_root = True
 
@@ -58,8 +58,8 @@ class Car(Vehicle, Fuelled):
 class Bus(Car, Fuelled):
     """Inheritance chain is Vehicle -> Car -> Bus, it is also stored in Vehicle collection"""
     seats: int
-    
-    
+
+
 class Owner(Document):
     vehicles: Optional[List[Link[Vehicle]]]
 ```

@@ -22,7 +22,7 @@ class Product(Document):
 # This is an asynchronous example, so we will access it from an async function
 async def example():
     # Beanis uses Redis async client under the hood
-    client = Redis(host="localhost", port=6379, db=0)
+    client = Redis(host="localhost", port=6379, db=0, decode_responses=True)
 
     # Initialize beanis with the Product document class
     await init_beanis(database=client, document_models=[Product])
@@ -39,8 +39,40 @@ async def example():
     await tonybar.insert()
 
     # You can find documents by their unique id
-    product = await Product.find("unique_magic_id")
-    print(product)
+    product = await Product.get("unique_magic_id")
+    print(f"Found product: {product}")
+
+    # Check if it exists
+    exists = await Product.exists("unique_magic_id")
+    print(f"Product exists: {exists}")
+
+    # Update a field
+    await product.update(price=6.95)
+    print(f"Updated price: {product.price}")
+
+    # Increment a numeric field
+    new_price = await product.increment_field("price", 1.0)
+    print(f"Price after increment: {new_price}")
+
+    # Set TTL
+    await product.set_ttl(3600)  # 1 hour
+    ttl = await product.get_ttl()
+    print(f"TTL: {ttl} seconds")
+
+    # Get all products
+    all_products = await Product.all()
+    print(f"Total products: {len(all_products)}")
+
+    # Count products
+    count = await Product.count()
+    print(f"Product count: {count}")
+
+    # Cleanup
+    await product.delete_self()
+    print("Product deleted")
+
+    # Close Redis connection
+    await client.close()
 
 
 if __name__ == "__main__":
