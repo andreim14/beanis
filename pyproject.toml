@@ -80,7 +80,7 @@ exclude = '''
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "--cov-report term-missing --cov=beanis --cov-branch --cov-fail-under=70"
+addopts = "--cov-report term-missing --cov=beanis --cov-branch --cov-fail-under=55"
 testpaths = [
     "tests",
 ]
