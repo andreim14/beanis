@@ -1,8 +1,7 @@
 name: Publish project
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
 jobs:
   publish_project:
     runs-on: ubuntu-latest
