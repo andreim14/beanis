@@ -20,13 +20,13 @@ jobs:
     - name: Install build tools
       run: |
         python -m pip install --upgrade pip
-        pip install flit
+        pip install build twine
 
     - name: Build package
-      run: flit build
+      run: python -m build
 
     - name: Publish to PyPI
       env:
-        FLIT_USERNAME: __token__
-        FLIT_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-      run: flit publish
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      run: twine upload dist/*
