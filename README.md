@@ -18,6 +18,17 @@
   <a href="https://redis.io"><img src="https://img.shields.io/badge/Redis-7.x-DC382D?logo=redis&logoColor=white" alt="Redis"></a>
 </div>
 
+<div align="center">
+  <b>
+    📚 <a href="https://andreim14.github.io/beanis/">Documentation</a> |
+    🚀 <a href="https://andreim14.github.io/beanis/getting-started/">Getting Started</a> |
+    📖 <a href="https://andreim14.github.io/beanis/tutorial/">Tutorial</a> |
+    🔧 <a href="https://andreim14.github.io/beanis/api-documentation/document/">API Reference</a>
+  </b>
+</div>
+
+---
+
 **Stop writing boilerplate Redis code. Focus on your application logic.**
 
 Beanis is an async Python ODM (Object-Document Mapper) for Redis that gives you Pydantic models, type safety, and a clean API - while staying fast and working with vanilla Redis.
