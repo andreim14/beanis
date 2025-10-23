@@ -245,10 +245,12 @@ class Document(
         redis_key = cls._get_redis_key_for_id(document_id)
         return await redis_client.exists(redis_key) > 0
 
-    async def insert(self: DocType, ttl: Optional[int] = None) -> DocType:
+    @wrap_with_actions(EventTypes.INSERT)
+    async def insert(self: DocType, ttl: Optional[int] = None, skip_actions=None) -> DocType:
         """
         Insert the document (self) to Redis
         :param ttl: Optional[int] - TTL in seconds
+        :param skip_actions: Optional[List] - actions to skip
         :return: Document
         """
         return await Document.insert_one(self, ttl=ttl)
@@ -636,10 +638,12 @@ class Document(
         """
         return self.insert()
 
-    async def update(self: DocType, **fields) -> DocType:
+    @wrap_with_actions(EventTypes.UPDATE)
+    async def update(self: DocType, skip_actions=None, **fields) -> DocType:
         """
         Update specific fields of the document
 
+        :param skip_actions: Optional[List] - actions to skip
         :param fields: Field names and values to update
         :return: Document
         """

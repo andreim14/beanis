@@ -245,6 +245,7 @@ class Initializer:
 
             self.init_document_collection(cls)
             self.init_document_fields(cls)
+            self.init_actions(cls)
 
             self.inited_classes.append(cls)
 
