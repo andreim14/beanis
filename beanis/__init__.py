@@ -22,7 +22,7 @@ from beanis.odm.documents import (
     Document,
     MergeStrategy,
 )
-from beanis.odm.indexes import GeoPoint, Indexed, IndexedField
+from beanis.odm.indexes import GeoPoint, Indexed, IndexedField, VectorField
 from beanis.odm.utils.init import init_beanis
 
 __version__ = "0.0.8"
@@ -35,6 +35,7 @@ __all__ = [
     "IndexedField",
     "Indexed",
     "GeoPoint",
+    "VectorField",
     # Actions
     "before_event",
     "after_event",

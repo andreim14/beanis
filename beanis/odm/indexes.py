@@ -73,6 +73,7 @@ class IndexType:
     SET = "set"  # For categorical/string fields (exact match)
     SORTED_SET = "zset"  # For numeric fields (range queries)
     GEO = "geo"  # For geo-spatial fields (location-based queries)
+    VECTOR = "vector"  # For vector similarity search (embeddings)
 
 
 class IndexedField:
@@ -95,6 +96,36 @@ class IndexedField:
 
     def __repr__(self):
         return f"IndexedField(index_type={self.index_type})"
+
+
+def VectorField(
+    dimensions: int,
+    algorithm: str = "HNSW",
+    distance_metric: str = "COSINE",
+    m: int = 16,
+    ef_construction: int = 200
+) -> IndexedField:
+    """
+    Helper to create a vector field for similarity search
+
+    Usage:
+        class Document(Document):
+            embedding: Annotated[List[float], VectorField(dimensions=1024)]
+
+    Args:
+        dimensions: Vector dimensionality (e.g., 1024 for Jina v4)
+        algorithm: "HNSW" (default) or "FLAT"
+        distance_metric: "COSINE" (default), "L2", or "IP" (inner product)
+        m: HNSW M parameter (connections per node)
+        ef_construction: HNSW ef_construction parameter
+    """
+    indexed_field = IndexedField(index_type=IndexType.VECTOR)
+    indexed_field.dimensions = dimensions
+    indexed_field.algorithm = algorithm
+    indexed_field.distance_metric = distance_metric
+    indexed_field.m = m
+    indexed_field.ef_construction = ef_construction
+    return indexed_field
 
 
 class IndexManager:
@@ -607,6 +638,97 @@ class IndexManager:
             (m[0].decode() if isinstance(m[0], bytes) else m[0], float(m[1]))
             for m in members
         ]
+
+    @staticmethod
+    async def find_by_vector_similarity(
+        redis_client,
+        document_class: Type,
+        field_name: str,
+        query_vector: List[float],
+        k: int = 10,
+        ef_runtime: Optional[int] = None
+    ) -> List[Tuple[str, float]]:
+        """
+        Find document IDs by vector similarity (KNN search)
+
+        Returns list of (document_id, similarity_score) tuples sorted by similarity
+
+        Usage:
+            query_embedding = model.encode(["search text"])[0].tolist()
+            results = await IndexManager.find_by_vector_similarity(
+                redis_client, Document, "embedding",
+                query_vector=query_embedding,
+                k=5
+            )
+            for doc_id, score in results:
+                doc = await Document.get(doc_id)
+                print(f"{doc.text}: {score}")
+
+        Args:
+            redis_client: Redis client instance
+            document_class: Document class to search
+            field_name: Name of the vector field
+            query_vector: Query vector as list of floats
+            k: Number of results to return
+            ef_runtime: HNSW ef_runtime parameter (optional, for tuning)
+        """
+        indexed_fields = IndexManager.get_indexed_fields(document_class)
+
+        if field_name not in indexed_fields:
+            raise ValueError(f"Field '{field_name}' is not indexed")
+
+        indexed_field = indexed_fields[field_name]
+        index_type = IndexManager.determine_index_type(
+            document_class, field_name, indexed_field
+        )
+
+        if index_type != IndexType.VECTOR:
+            raise ValueError(f"Field '{field_name}' is not a vector index")
+
+        # Get index name
+        class_name = document_class.__name__
+        index_name = f"idx:{class_name}:vector"
+
+        # Convert vector to bytes for Redis
+        import struct
+        vector_bytes = struct.pack(f"{len(query_vector)}f", *query_vector)
+
+        # Build FT.SEARCH query
+        # Format: *=>[KNN $K @field_name $BLOB AS score]
+        query_params = {
+            "K": k,
+            "BLOB": vector_bytes
+        }
+
+        # Add ef_runtime if specified (HNSW tuning)
+        ef_param = ""
+        if ef_runtime and hasattr(indexed_field, 'algorithm') and indexed_field.algorithm == "HNSW":
+            ef_param = f" EF_RUNTIME {ef_runtime}"
+
+        query = f"*=>[KNN $K @{field_name} $BLOB AS score{ef_param}]"
+
+        try:
+            # Execute search
+            results = await redis_client.ft(index_name).search(
+                query,
+                query_params
+            )
+
+            # Parse results
+            doc_scores = []
+            for doc in results.docs:
+                doc_id = doc.id
+                score = float(doc.score) if hasattr(doc, 'score') else 0.0
+                doc_scores.append((doc_id, score))
+
+            return doc_scores
+
+        except Exception as e:
+            # If index doesn't exist, return empty results
+            # This allows graceful handling during development
+            import logging
+            logging.warning(f"Vector search failed: {e}")
+            return []
 
 
 # Convenience type for indexed fields
