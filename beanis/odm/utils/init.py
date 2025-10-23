@@ -108,9 +108,7 @@ class Initializer:
                 f"module '{module_name}' has no class called '{class_name}'"
             )
 
-    def init_settings(
-        self, cls: Union[Type[Document]]
-    ):
+    def init_settings(self, cls: Union[Type[Document]]):
         """
         Init Settings
 
@@ -119,7 +117,9 @@ class Initializer:
         :return: None
         """
         settings_class = getattr(cls, "Settings", None)
-        settings_vars = {} if settings_class is None else dict(vars(settings_class))
+        settings_vars = (
+            {} if settings_class is None else dict(vars(settings_class))
+        )
         if issubclass(cls, Document):
             cls._document_settings = parse_model(ItemSettings, settings_vars)
 
@@ -286,9 +286,7 @@ class Initializer:
 
 async def init_beanis(
     database: "Redis" = None,
-    document_models: Optional[
-        List[Union[Type[Document], str]]
-    ] = None,
+    document_models: Optional[List[Union[Type[Document], str]]] = None,
 ):
     """
     Beanis initialization
@@ -299,7 +297,4 @@ async def init_beanis(
     :return: None
     """
 
-    await Initializer(
-        database=database,
-        document_models=document_models
-    )
+    await Initializer(database=database, document_models=document_models)

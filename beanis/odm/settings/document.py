@@ -1,4 +1,3 @@
-
 from pydantic import Field
 
 from beanis.odm.settings.base import ItemSettings

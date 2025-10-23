@@ -166,7 +166,9 @@ class Document(
         # Convert bytes keys/values to strings if needed
         if db_data and isinstance(next(iter(db_data.keys())), bytes):
             db_data = {
-                k.decode() if isinstance(k, bytes) else k: v.decode() if isinstance(v, bytes) else v
+                k.decode() if isinstance(k, bytes) else k: (
+                    v.decode() if isinstance(v, bytes) else v
+                )
                 for k, v in db_data.items()
             }
 
@@ -201,14 +203,19 @@ class Document(
             # Check for custom decoder first
             # Format: "__type__:TypeName:encoded_value"
             decoder_used = False
-            if isinstance(field_value, str) and field_value.startswith("__type__:"):
+            if isinstance(field_value, str) and field_value.startswith(
+                "__type__:"
+            ):
                 parts = field_value.split(":", 2)
                 if len(parts) == 3:
                     type_name = parts[1]
                     encoded_value = parts[2]
                     # Find decoder by type name
                     found_decoder = False
-                    for reg_type, decoder_func in CustomEncoderRegistry._decoders.items():
+                    for (
+                        reg_type,
+                        decoder_func,
+                    ) in CustomEncoderRegistry._decoders.items():
                         if reg_type.__name__ == type_name:
                             db_data[field_name] = decoder_func(encoded_value)
                             decoder_used = True
@@ -223,6 +230,7 @@ class Document(
             if not decoder_used and field_name in model_fields:
                 try:
                     import json
+
                     # Try parsing as JSON (for dicts, lists, nested objects)
                     parsed = json.loads(field_value)
                     db_data[field_name] = parsed
@@ -245,7 +253,9 @@ class Document(
         return await redis_client.exists(redis_key) > 0
 
     @wrap_with_actions(EventTypes.INSERT)
-    async def insert(self: DocType, ttl: Optional[int] = None, skip_actions=None) -> DocType:
+    async def insert(
+        self: DocType, ttl: Optional[int] = None, skip_actions=None
+    ) -> DocType:
         """
         Insert the document (self) to Redis
         :param ttl: Optional[int] - TTL in seconds
@@ -298,10 +308,12 @@ class Document(
             if isinstance(value, dict):
                 # Store nested objects as JSON strings
                 import json
+
                 flattened[key] = json.dumps(value)
             elif isinstance(value, (list, tuple)):
                 # Store lists as JSON strings
                 import json
+
                 flattened[key] = json.dumps(value)
             else:
                 flattened[key] = str(value) if value is not None else ""
@@ -315,7 +327,9 @@ class Document(
             if ttl:
                 await pipe.expire(redis_key, ttl)
             elif document.get_settings().default_ttl:
-                await pipe.expire(redis_key, document.get_settings().default_ttl)
+                await pipe.expire(
+                    redis_key, document.get_settings().default_ttl
+                )
 
             # Add to tracking Sorted Set (score = timestamp)
             tracking_key = document._get_tracking_key()
@@ -330,7 +344,7 @@ class Document(
             document.__class__,
             document.id,
             None,  # No old values for insert
-            to_save_dict
+            to_save_dict,
         )
 
         return document
@@ -383,9 +397,12 @@ class Document(
                 for key, value in to_save_dict.items():
                     if isinstance(value, (dict, list, tuple)):
                         import json
+
                         flattened[key] = json.dumps(value)
                     else:
-                        flattened[key] = str(value) if value is not None else ""
+                        flattened[key] = (
+                            str(value) if value is not None else ""
+                        )
 
                 # Add operations to pipeline
                 await pipe.hset(redis_key, mapping=flattened)
@@ -393,7 +410,9 @@ class Document(
                 if ttl:
                     await pipe.expire(redis_key, ttl)
                 elif document.get_settings().default_ttl:
-                    await pipe.expire(redis_key, document.get_settings().default_ttl)
+                    await pipe.expire(
+                        redis_key, document.get_settings().default_ttl
+                    )
 
                 # Add to tracking set
                 tracking_key = document._get_tracking_key()
@@ -410,7 +429,7 @@ class Document(
         Get cached set of field names that need JSON parsing (complex types)
         Cached at class level for performance
         """
-        if not hasattr(cls, '_complex_fields_cache'):
+        if not hasattr(cls, "_complex_fields_cache"):
             model_fields = get_model_fields(cls)
             complex_fields = set()
 
@@ -423,20 +442,24 @@ class Document(
 
                 # Check if it's a complex type (dict, list, BaseModel)
                 from typing import Union, get_args, get_origin
+
                 origin = get_origin(field_type)
 
                 # Unwrap Optional (which is Union[X, None])
                 if origin is Union:
                     args = get_args(field_type)
                     # Get the non-None type from Optional
-                    non_none_types = [arg for arg in args if arg is not type(None)]
+                    non_none_types = [
+                        arg for arg in args if arg is not type(None)
+                    ]
                     if non_none_types:
                         field_type = non_none_types[0]
                         origin = get_origin(field_type)
 
                 # Complex types that need JSON parsing
                 if origin in (dict, list, tuple, set, frozenset) or (
-                    isinstance(field_type, type) and issubclass(field_type, BaseModel)
+                    isinstance(field_type, type)
+                    and issubclass(field_type, BaseModel)
                 ):
                     complex_fields.add(field_name)
 
@@ -450,7 +473,7 @@ class Document(
         Get cached dict of field_name -> (field_type, is_optional) for fast type conversion
         Used when skip validation is enabled to manually convert types
         """
-        if not hasattr(cls, '_field_types_cache'):
+        if not hasattr(cls, "_field_types_cache"):
             model_fields = get_model_fields(cls)
             field_types = {}
 
@@ -462,13 +485,16 @@ class Document(
                     field_type = field_info.outer_type_
 
                 from typing import Union, get_args, get_origin
+
                 origin = get_origin(field_type)
                 is_optional = False
 
                 # Unwrap Optional (Union[X, None])
                 if origin is Union:
                     args = get_args(field_type)
-                    non_none_types = [arg for arg in args if arg is not type(None)]
+                    non_none_types = [
+                        arg for arg in args if arg is not type(None)
+                    ]
                     if non_none_types:
                         field_type = non_none_types[0]
                         is_optional = len(args) > len(non_none_types)
@@ -514,10 +540,14 @@ class Document(
 
         # Check if validation should be skipped (default: False for max performance)
         # Use getattr with default to handle models using ItemSettings instead of DocumentSettings
-        use_validation = getattr(cls.get_settings(), 'use_validation_on_fetch', False)
+        use_validation = getattr(
+            cls.get_settings(), "use_validation_on_fetch", False
+        )
 
         # Cache field types outside loop for performance (only needed if not validating)
-        field_types_cache = None if use_validation else cls._get_field_types_cache()
+        field_types_cache = (
+            None if use_validation else cls._get_field_types_cache()
+        )
 
         for doc_id, db_data in zip(document_ids, results):
             if not db_data:
@@ -527,7 +557,9 @@ class Document(
             # Convert bytes to strings if needed (should be rare with decode_responses=True)
             if db_data and isinstance(next(iter(db_data.keys())), bytes):
                 db_data = {
-                    k.decode() if isinstance(k, bytes) else k: v.decode() if isinstance(v, bytes) else v
+                    k.decode() if isinstance(k, bytes) else k: (
+                        v.decode() if isinstance(v, bytes) else v
+                    )
                     for k, v in db_data.items()
                 }
 
@@ -561,16 +593,23 @@ class Document(
 
                 # Check if we stored type metadata with the value
                 # Format: "__type__:actual_type_name:encoded_value"
-                if isinstance(field_value, str) and field_value.startswith("__type__:"):
+                if isinstance(field_value, str) and field_value.startswith(
+                    "__type__:"
+                ):
                     parts = field_value.split(":", 2)
                     if len(parts) == 3:
                         type_name = parts[1]
                         encoded_value = parts[2]
                         # Find decoder by type name
                         found_decoder = False
-                        for reg_type, decoder_func in CustomEncoderRegistry._decoders.items():
+                        for (
+                            reg_type,
+                            decoder_func,
+                        ) in CustomEncoderRegistry._decoders.items():
                             if reg_type.__name__ == type_name:
-                                db_data[field_name] = decoder_func(encoded_value)
+                                db_data[field_name] = decoder_func(
+                                    encoded_value
+                                )
                                 decoder_used = True
                                 found_decoder = True
                                 break
@@ -583,14 +622,25 @@ class Document(
                 if not decoder_used and field_name in complex_fields:
                     try:
                         # Use msgspec for ultra-fast JSON parsing (2x faster than orjson)
-                        parsed = msgspec.json.decode(field_value.encode() if isinstance(field_value, str) else field_value)
+                        parsed = msgspec.json.decode(
+                            field_value.encode()
+                            if isinstance(field_value, str)
+                            else field_value
+                        )
                         db_data[field_name] = parsed
 
                         # When using model_construct(), convert collections to correct types
                         # (model_construct doesn't do this conversion, but model_validate does)
-                        if not use_validation and field_types_cache and field_name in field_types_cache:
+                        if (
+                            not use_validation
+                            and field_types_cache
+                            and field_name in field_types_cache
+                        ):
                             from typing import get_origin
-                            field_type, is_optional = field_types_cache[field_name]
+
+                            field_type, is_optional = field_types_cache[
+                                field_name
+                            ]
                             origin = get_origin(field_type)
                             # Convert list→set or list→tuple if needed
                             if origin is set and isinstance(parsed, list):
@@ -600,7 +650,13 @@ class Document(
                     except (msgspec.DecodeError, TypeError, ValueError):
                         pass  # Not JSON, keep as is
                 # Type conversion for simple types (int, float, bool) when skipping validation
-                elif not decoder_used and not use_validation and field_types_cache and field_name in field_types_cache and isinstance(field_value, str):
+                elif (
+                    not decoder_used
+                    and not use_validation
+                    and field_types_cache
+                    and field_name in field_types_cache
+                    and isinstance(field_value, str)
+                ):
                     field_type, is_optional = field_types_cache[field_name]
                     try:
                         if field_type is int:
@@ -608,7 +664,11 @@ class Document(
                         elif field_type is float:
                             db_data[field_name] = float(field_value)
                         elif field_type is bool:
-                            db_data[field_name] = field_value.lower() in ('true', '1', 'yes')
+                            db_data[field_name] = field_value.lower() in (
+                                "true",
+                                "1",
+                                "yes",
+                            )
                     except (ValueError, AttributeError):
                         pass  # Keep original value if conversion fails
 
@@ -617,15 +677,29 @@ class Document(
             if not use_validation:
                 # Fast path: Skip validation entirely
                 if IS_PYDANTIC_V2:
-                    documents.append(cast(type(cls_loaded), cls_loaded.model_construct(**db_data)))
+                    documents.append(
+                        cast(
+                            type(cls_loaded),
+                            cls_loaded.model_construct(**db_data),
+                        )
+                    )
                 else:
-                    documents.append(cast(type(cls_loaded), cls_loaded.construct(**db_data)))
+                    documents.append(
+                        cast(type(cls_loaded), cls_loaded.construct(**db_data))
+                    )
             else:
                 # Safe path: Full validation (slower but safer)
                 if IS_PYDANTIC_V2:
-                    documents.append(cast(type(cls_loaded), cls_loaded.model_validate(db_data)))
+                    documents.append(
+                        cast(
+                            type(cls_loaded),
+                            cls_loaded.model_validate(db_data),
+                        )
+                    )
                 else:
-                    documents.append(cast(type(cls_loaded), parse_obj(cls_loaded, db_data)))
+                    documents.append(
+                        cast(type(cls_loaded), parse_obj(cls_loaded, db_data))
+                    )
 
         return documents
 
@@ -660,6 +734,7 @@ class Document(
         for key, value in fields.items():
             if isinstance(value, (dict, list, tuple)):
                 import json
+
                 flattened[key] = json.dumps(value)
             else:
                 flattened[key] = str(value) if value is not None else ""
@@ -693,6 +768,7 @@ class Document(
         # Try to parse JSON for complex types
         try:
             import json
+
             return json.loads(value)
         except (json.JSONDecodeError, TypeError):
             return value
@@ -713,6 +789,7 @@ class Document(
         # Convert value to string for Hash storage
         if isinstance(value, (dict, list, tuple)):
             import json
+
             str_value = json.dumps(value)
         else:
             str_value = str(value) if value is not None else ""
@@ -722,7 +799,9 @@ class Document(
         # Update local instance
         setattr(self, field_name, value)
 
-    async def increment_field(self, field_name: str, amount: Union[int, float] = 1) -> Union[int, float]:
+    async def increment_field(
+        self, field_name: str, amount: Union[int, float] = 1
+    ) -> Union[int, float]:
         """
         Increment a numeric field atomically
 
@@ -731,15 +810,21 @@ class Document(
         :return: New value
         """
         if not self.id:
-            raise ValueError("Cannot increment field on document without an ID")
+            raise ValueError(
+                "Cannot increment field on document without an ID"
+            )
 
         redis_client = self.get_settings().redis_client
         redis_key = self._get_redis_key()
 
         if isinstance(amount, float):
-            new_value = await redis_client.hincrbyfloat(redis_key, field_name, amount)
+            new_value = await redis_client.hincrbyfloat(
+                redis_key, field_name, amount
+            )
         else:
-            new_value = await redis_client.hincrby(redis_key, field_name, amount)
+            new_value = await redis_client.hincrby(
+                redis_key, field_name, amount
+            )
 
         # Update local instance
         setattr(self, field_name, new_value)
@@ -817,7 +902,9 @@ class Document(
             # Convert bytes to strings
             if db_data and isinstance(next(iter(db_data.keys())), bytes):
                 db_data = {
-                    k.decode() if isinstance(k, bytes) else k: v.decode() if isinstance(v, bytes) else v
+                    k.decode() if isinstance(k, bytes) else k: (
+                        v.decode() if isinstance(v, bytes) else v
+                    )
                     for k, v in db_data.items()
                 }
 
@@ -857,7 +944,9 @@ class Document(
 
         # Count how many keys were actually deleted
         # Results alternate between DEL (count) and ZREM (count)
-        deleted_count = sum(1 for i, r in enumerate(results) if i % 2 == 0 and r > 0)
+        deleted_count = sum(
+            1 for i, r in enumerate(results) if i % 2 == 0 and r > 0
+        )
         return deleted_count
 
     @classmethod
@@ -902,10 +991,7 @@ class Document(
         return await redis_client.zcard(tracking_key)
 
     @classmethod
-    async def find(
-        cls: Type[DocType],
-        **filters
-    ) -> List[DocType]:
+    async def find(cls: Type[DocType], **filters) -> List[DocType]:
         """
         Find documents by indexed fields
 
@@ -945,14 +1031,18 @@ class Document(
                 elif operator == "gt":
                     # Greater than (exclusive)
                     ids = await IndexManager.find_by_index(
-                        redis_client, cls, field_name,
-                        min_value=f"({value}"  # Exclusive in Redis
+                        redis_client,
+                        cls,
+                        field_name,
+                        min_value=f"({value}",  # Exclusive in Redis
                     )
                 elif operator == "lt":
                     # Less than (exclusive)
                     ids = await IndexManager.find_by_index(
-                        redis_client, cls, field_name,
-                        max_value=f"({value}"  # Exclusive in Redis
+                        redis_client,
+                        cls,
+                        field_name,
+                        max_value=f"({value}",  # Exclusive in Redis
                     )
                 else:
                     raise ValueError(f"Unsupported operator: {operator}")
@@ -1184,6 +1274,7 @@ class Document(
         if not hidden_fields:
             return
         import warnings
+
         warnings.warn(
             f"{cls.__name__}: 'hidden=True' is deprecated, please use 'exclude=True'",
             DeprecationWarning,

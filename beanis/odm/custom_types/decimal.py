@@ -7,6 +7,10 @@ from typing_extensions import Annotated
 DecimalAnnotation = Annotated[
     decimal.Decimal,
     pydantic.BeforeValidator(
-        lambda v: decimal.Decimal(str(v)) if not isinstance(v, decimal.Decimal) else v
+        lambda v: (
+            decimal.Decimal(str(v))
+            if not isinstance(v, decimal.Decimal)
+            else v
+        )
     ),
 ]

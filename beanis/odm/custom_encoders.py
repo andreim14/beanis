@@ -3,6 +3,7 @@ Custom encoder/decoder registration system for Beanis
 
 Allows users to register custom serialization logic for any Python type.
 """
+
 import importlib.util
 from typing import Any, Callable, Dict, Optional, Tuple, Type
 
@@ -57,7 +58,9 @@ class CustomEncoderRegistry:
         cls._decoders[type_] = decoder
 
     @classmethod
-    def register_pair(cls, type_: Type, encoder: EncoderFunc, decoder: DecoderFunc) -> None:
+    def register_pair(
+        cls, type_: Type, encoder: EncoderFunc, decoder: DecoderFunc
+    ) -> None:
         """
         Register both encoder and decoder for a type
 
@@ -96,9 +99,11 @@ def register_encoder(type_: Type) -> Callable[[EncoderFunc], EncoderFunc]:
         def encode_numpy(arr: np.ndarray) -> str:
             return base64.b64encode(pickle.dumps(arr)).decode('utf-8')
     """
+
     def decorator(func: EncoderFunc) -> EncoderFunc:
         CustomEncoderRegistry.register_encoder(type_, func)
         return func
+
     return decorator
 
 
@@ -111,13 +116,17 @@ def register_decoder(type_: Type) -> Callable[[DecoderFunc], DecoderFunc]:
         def decode_numpy(data: str) -> np.ndarray:
             return pickle.loads(base64.b64decode(data))
     """
+
     def decorator(func: DecoderFunc) -> DecoderFunc:
         CustomEncoderRegistry.register_decoder(type_, func)
         return func
+
     return decorator
 
 
-def register_type(type_: Type, encoder: EncoderFunc, decoder: DecoderFunc) -> None:
+def register_type(
+    type_: Type, encoder: EncoderFunc, decoder: DecoderFunc
+) -> None:
     """
     Register both encoder and decoder for a type (non-decorator version)
 
@@ -147,8 +156,12 @@ def _auto_register_common_types() -> None:
 
             register_type(
                 np.ndarray,
-                encoder=lambda arr: base64.b64encode(pickle.dumps(arr)).decode('utf-8'),
-                decoder=lambda s: pickle.loads(base64.b64decode(s.encode('utf-8')))
+                encoder=lambda arr: base64.b64encode(pickle.dumps(arr)).decode(
+                    "utf-8"
+                ),
+                decoder=lambda s: pickle.loads(
+                    base64.b64decode(s.encode("utf-8"))
+                ),
             )
         except Exception:
             pass  # Fail silently if numpy is broken
@@ -163,8 +176,12 @@ def _auto_register_common_types() -> None:
 
             register_type(
                 torch.Tensor,
-                encoder=lambda tensor: base64.b64encode(pickle.dumps(tensor)).decode('utf-8'),
-                decoder=lambda s: pickle.loads(base64.b64decode(s.encode('utf-8')))
+                encoder=lambda tensor: base64.b64encode(
+                    pickle.dumps(tensor)
+                ).decode("utf-8"),
+                decoder=lambda s: pickle.loads(
+                    base64.b64decode(s.encode("utf-8"))
+                ),
             )
         except Exception:
             pass  # Fail silently if torch is broken

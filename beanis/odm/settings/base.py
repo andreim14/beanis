@@ -7,6 +7,7 @@ class ItemSettings(BaseModel):
     """
     Settings for Redis Document storage
     """
+
     name: Optional[str] = None
     class_id: str = "_class_id"
     is_root: bool = False

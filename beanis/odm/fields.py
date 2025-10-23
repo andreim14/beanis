@@ -12,10 +12,11 @@ class ExpressionField(str):
     Simple field expression for Redis ODM
     Removed query operator support (use indexing instead)
     """
+
     def __getitem__(self, item):
         """
         Get sub field
-        
+
         :param item: name of the subfield
         :return: ExpressionField
         """
@@ -24,7 +25,7 @@ class ExpressionField(str):
     def __getattr__(self, item):
         """
         Get sub field
-        
+
         :param item: name of the subfield
         :return: ExpressionField
         """
