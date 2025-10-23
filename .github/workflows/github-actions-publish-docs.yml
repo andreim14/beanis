@@ -1,17 +1,32 @@
 name: Publish docs
+
 on:
   push:
     branches:
       - main
+
+permissions:
+  contents: write
+
 jobs:
   publish_docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v4
         with:
-          python-version: 3.10.9
-      - name: install dependencies
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
         run: pip3 install .[doc]
-      - name: publish docs
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Publish docs
         run: bash scripts/publish_docs.sh
