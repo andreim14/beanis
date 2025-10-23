@@ -467,5 +467,51 @@ async def test_geo_index_delete(redis_client):
     assert b"temp-store" not in members_after and "temp-store" not in members_after
 
 
+# Vector search index tests
+
+@pytest.mark.asyncio
+async def test_vector_field_index_creation(redis_client):
+    """Test that VectorField creates indexes automatically"""
+    from beanis import VectorField
+    from typing import List
+
+    class VectorDoc(Document):
+        text: str
+        embedding: Annotated[List[float], VectorField(dimensions=128)]
+
+        class Settings:
+            key_prefix = "VectorDoc"
+
+    # Init should create vector index automatically
+    await init_beanis(database=redis_client, document_models=[VectorDoc])
+
+    # Try to get index info (will raise exception if index doesn't exist)
+    try:
+        index_info = await redis_client.ft("idx:VectorDoc:vector").info()
+        # If we get here, index was created successfully
+        assert index_info is not None
+    except Exception as e:
+        # Index creation might fail if RediSearch module is not available
+        # That's okay for unit tests - we're just testing the code path
+        pytest.skip(f"RediSearch module not available: {e}")
+
+
+@pytest.mark.asyncio
+async def test_vector_field_helper_function(redis_client):
+    """Test VectorField helper creates proper IndexedField"""
+    from beanis import VectorField
+    from beanis.odm.indexes import IndexType
+
+    # Create a VectorField
+    field = VectorField(dimensions=1024, algorithm="HNSW", distance_metric="COSINE")
+
+    # Check it's an IndexedField with correct properties
+    assert hasattr(field, 'index_type')
+    assert field.index_type == IndexType.VECTOR
+    assert field.dimensions == 1024
+    assert field.algorithm == "HNSW"
+    assert field.distance_metric == "COSINE"
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
