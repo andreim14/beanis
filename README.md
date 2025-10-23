@@ -3,7 +3,19 @@
 [![Beanis](https://raw.githubusercontent.com/andreim14/beanis/main/assets/logo/logo-no-background.svg)](https://github.com/andreim14/beanis)
 
 <div align="center">
-  <a href="https://pypi.python.org/pypi/beanis"><img src="https://img.shields.io/pypi/v/beanis" alt="PyPI version"></a>
+  <a href="https://pypi.python.org/pypi/beanis"><img src="https://img.shields.io/pypi/v/beanis?color=blue" alt="PyPI version"></a>
+  <a href="https://pypi.python.org/pypi/beanis"><img src="https://img.shields.io/pypi/dm/beanis?color=blue" alt="Downloads"></a>
+  <a href="https://pypi.python.org/pypi/beanis"><img src="https://img.shields.io/pypi/pyversions/beanis?color=blue" alt="Python versions"></a>
+  <a href="https://github.com/andreim14/beanis/blob/main/LICENSE"><img src="https://img.shields.io/github/license/andreim14/beanis?color=blue" alt="License"></a>
+  <a href="https://github.com/andreim14/beanis"><img src="https://img.shields.io/github/stars/andreim14/beanis?style=social" alt="GitHub stars"></a>
+</div>
+
+<div align="center">
+  <a href="https://github.com/andreim14/beanis/actions"><img src="https://img.shields.io/github/actions/workflow/status/andreim14/beanis/test.yml?branch=main&label=tests" alt="Tests"></a>
+  <a href="https://codecov.io/gh/andreim14/beanis"><img src="https://img.shields.io/badge/coverage-56%25-yellow" alt="Coverage"></a>
+  <a href="https://github.com/andreim14/beanis"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black"></a>
+  <a href="https://pydantic.dev"><img src="https://img.shields.io/badge/Pydantic-2.x-E92063?logo=pydantic" alt="Pydantic"></a>
+  <a href="https://redis.io"><img src="https://img.shields.io/badge/Redis-7.x-DC382D?logo=redis&logoColor=white" alt="Redis"></a>
 </div>
 
 **Stop writing boilerplate Redis code. Focus on your application logic.**
