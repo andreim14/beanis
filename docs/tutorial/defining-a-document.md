@@ -10,7 +10,7 @@ from typing import Optional
 import pymongo
 from pydantic import BaseModel
 
-from beanie import Document, Indexed
+from beanis import Document, Indexed
 
 
 class Category(BaseModel):
@@ -80,7 +80,7 @@ class Sample(Document):
 To set up an index over a single field, the `Indexed` function can be used to wrap the type:
 
 ```python
-from beanie import Indexed
+from beanis import Indexed
 
 
 class Sample(Document):

@@ -18,10 +18,6 @@ class CollectionWasNotInitialized(Exception):
     pass
 
 
-class MigrationException(Exception):
-    pass
-
-
 class ReplaceError(Exception):
     pass
 
@@ -42,18 +38,15 @@ class NotSupported(Exception):
     pass
 
 
-class MongoDBVersionError(Exception):
+class Deprecation(Exception):
     pass
 
 
-class ViewWasNotInitialized(Exception):
+class ApplyChangesException(Exception):
     pass
 
 
-class ViewHasNoSettings(Exception):
-    pass
-
-
+# Legacy exceptions kept for compatibility (not used in Redis ODM)
 class UnionHasNoRegisteredDocs(Exception):
     pass
 
@@ -63,12 +56,4 @@ class UnionDocNotInited(Exception):
 
 
 class DocWasNotRegisteredInUnionClass(Exception):
-    pass
-
-
-class Deprecation(Exception):
-    pass
-
-
-class ApplyChangesException(Exception):
     pass

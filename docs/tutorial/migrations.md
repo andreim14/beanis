@@ -6,7 +6,7 @@
 To create a new migration, run:
 
 ```shell
-beanie new-migration -n migration_name -p relative/path/to/migrations/directory/
+beanis new-migration -n migration_name -p relative/path/to/migrations/directory/
 ```
 
 It will create a file named `*_migration_name.py` in the directory `relative/path/to/migrations/directory/`
@@ -21,31 +21,31 @@ Each one contains instructions to roll migration respectively forward and backwa
 To roll one forward migration, run:
 
 ```shell
-beanie migrate -uri 'mongodb+srv://user:pass@host/db' -p relative/path/to/migrations/directory/ --distance 1
+beanis migrate -uri 'mongodb+srv://user:pass@host/db' -p relative/path/to/migrations/directory/ --distance 1
 ```
 
 To roll all forward migrations, run:
 
 ```shell
-beanie migrate -uri 'mongodb://user:pass@host' -db db -p relative/path/to/migrations/directory/
+beanis migrate -uri 'mongodb://user:pass@host' -db db -p relative/path/to/migrations/directory/
 ```
 
 To roll one backward migration, run:
 
 ```shell
-beanie migrate -uri 'mongodb+srv://user:pass@host/db' -p relative/path/to/migrations/directory/ --distance 1 --backward
+beanis migrate -uri 'mongodb+srv://user:pass@host/db' -p relative/path/to/migrations/directory/ --distance 1 --backward
 ```
 
 To roll all backward migrations, run:
 
 ```shell
-beanie migrate -uri 'mongodb+srv://user:pass@host/db' -p relative/path/to/migrations/directory/ --backward
+beanis migrate -uri 'mongodb+srv://user:pass@host/db' -p relative/path/to/migrations/directory/ --backward
 ```
 
 To show the help message with all the parameters and descriptions, run:
 
 ```shell
-beanie migrate --help
+beanis migrate --help
 ```
 
 ## Migration types
@@ -126,7 +126,7 @@ And a little more complex example:
 ```python
 from pydantic.main import BaseModel
 
-from beanie import Document, iterative_migration
+from beanis import Document, iterative_migration
 
 
 class OldTag(BaseModel):
@@ -198,7 +198,7 @@ async def name_to_title(self, session):
 ```python
 from pydantic.main import BaseModel
 
-from beanie import Document, free_fall_migration
+from beanis import Document, free_fall_migration
 
 
 class Tag(BaseModel):

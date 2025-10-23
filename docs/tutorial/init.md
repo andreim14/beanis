@@ -3,11 +3,13 @@ To initialize previously created documents, you should provide a Motor database 
 and a list of your document models to the `init_beanie(...)` function, as it is shown in the example:
 
 ```python
-from beanie import init_beanie, Document
+from beanis import init_beanie, Document
 from motor.motor_asyncio import AsyncIOMotorClient
+
 
 class Sample(Document):
     name: str
+
 
 async def init():
     # Create Motor client
@@ -15,7 +17,7 @@ async def init():
         "mongodb://user:pass@host:27017"
     )
 
-    # Initialize beanie with the Sample document class and a database
+    # Initialize beanis with the Sample document class and a database
     await init_beanie(database=client.db_name, document_models=[Sample])
 ```
 

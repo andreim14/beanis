@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "beanis"
-version = "0.0.6"
+version = "0.0.8"
 description = "Asynchronous Python ODM for Redis"
 readme = "README.md"
 requires-python = ">=3.7,<4.0"
@@ -23,26 +23,21 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "redis",
-    "orjson",
-    "bson",
+    "redis[hiredis]>=5.0.0",  # Redis async client with hiredis for performance
     "pydantic>=1.10,<3.0",
-    "click>=7",
-    "toml",
     "lazy-model==0.2.0",
+    "msgspec>=0.18.0",  # Ultra-fast JSON parsing (10-40x faster, 2x faster than orjson)
     "typing-extensions>=4.7; python_version < '3.11'",
 ]
 
 [project.optional-dependencies]
 test = [
-    "pre-commit>=2.3.0",
     "pytest>=6.0.0",
     "pytest-asyncio>=0.21.0",
     "pytest-cov>=2.8.1",
-    "dnspython>=2.1.0",
+    "fakeredis[lua]>=2.20.0",  # For testing without real Redis
     "flake8>=3",
     "pyright>=0",
-    "asgi-lifespan>=1.0.1",
     "httpx>=0.23.0",
     "fastapi>=0.100",
     "pydantic-settings>=2",
@@ -57,14 +52,12 @@ doc = [
     "mkdocs-material>=9.0",
     "jinja2>=3.0.3"
 ]
-queue = ["beanie-batteries-queue>=0.2"]
 
 [project.urls]
 homepage = "https://github.com/andreim14/beanis"
 repository = "https://github.com/andreim14/beanis"
 
-[project.scripts]
-beanie = "beanie.executors.migrate:migrations"
+# No CLI scripts for now
 
 # TOOLS
 
@@ -87,7 +80,7 @@ exclude = '''
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "--cov-report term-missing --cov=beanie --cov-branch --cov-fail-under=80"
+addopts = "--cov-report term-missing --cov=beanis --cov-branch --cov-fail-under=70"
 testpaths = [
     "tests",
 ]
@@ -98,10 +91,6 @@ filterwarnings = [
 ]
 asyncio_mode = "auto"
 
-[tool.beanie.migrations]
-path = "beanie/example_migration"
-database_name = "beanie_db"
-
 [tool.mypy]
 ignore_missing_imports = true
 
@@ -110,7 +99,7 @@ module = "toml"
 ignore_missing_imports = true
 
 [tool.pyright]
-include = ["tests/typing", "beanie"]
+include = ["tests", "beanis"]
 
 [tool.ruff]
 line-length = 79

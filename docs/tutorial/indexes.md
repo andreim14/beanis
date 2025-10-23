@@ -8,7 +8,7 @@ To set up an index over a single field, the `Indexed` function can be used to wr
 and does not require a `Settings` class:
 
 ```python
-from beanie import Document, Indexed
+from beanis import Document, Indexed
 
 
 class Sample(Document):
@@ -21,7 +21,7 @@ The `Indexed` function takes an optional `index_type` argument, which may be set
 ```python
 import pymongo
 
-from beanie import Document, Indexed
+from beanis import Document, Indexed
 
 
 class Sample(Document):
@@ -33,7 +33,7 @@ The `Indexed` function also supports PyMongo's `IndexModel` kwargs arguments (se
 For example, to create a `unique` index:
 
 ```python
-from beanie import Document, Indexed
+from beanis import Document, Indexed
 
 
 class Sample(Document):
@@ -43,7 +43,7 @@ class Sample(Document):
 The `Indexed` function can also be used directly in the type annotation, by giving it the wrapped type as the first argument. Note that this might not work with some Pydantic V2 types, such as `UUID4` or `EmailStr`.
 
 ```python
-from beanie import Document, Indexed
+from beanis import Document, Indexed
 
 
 class Sample(Document):
@@ -65,7 +65,7 @@ It is a list where items can be:
 import pymongo
 from pymongo import IndexModel
 
-from beanie import Document
+from beanis import Document
 
 
 class Sample(Document):

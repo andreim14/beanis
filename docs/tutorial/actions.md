@@ -29,7 +29,7 @@ Current operations creating events:
 To register an action, you can use `@before_event` and `@after_event` decorators respectively:
 
 ```python
-from beanie import Insert, Replace
+from beanis import Insert, Replace
 
 
 class Sample(Document):
@@ -48,7 +48,7 @@ class Sample(Document):
 It is possible to register action for several events:
 
 ```python
-from beanie import Insert, Replace
+from beanis import Insert, Replace
 
 
 class Sample(Document):
@@ -65,7 +65,7 @@ This will capitalize the `name` field value before each document's Insert and Re
 And sync and async methods could work as actions.
 
 ```python
-from beanie import Insert, Replace
+from beanis import Insert, Replace
 
 
 class Sample(Document):
@@ -81,7 +81,7 @@ Actions can be selectively skipped by passing the `skip_actions` argument when c
 the operations that trigger events. `skip_actions` accepts a list of directions and action names.
 
 ```python
-from beanie import After, Before, Insert, Replace
+from beanis import After, Before, Insert, Replace
 
 
 class Sample(Document):

@@ -10,7 +10,7 @@ Create a view:
 ```python
 from pydantic import Field
 
-from beanie import Document, View
+from beanis import Document, View
 
 
 class Bike(Document):
@@ -43,16 +43,16 @@ Initialize Beanie:
 ```python
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from beanie import init_beanie
+from beanis import init_beanie
 
 
 async def main():
-    uri = "mongodb://beanie:beanie@localhost:27017"
+    uri = "mongodb://beanis:beanis@localhost:27017"
     client = AsyncIOMotorClient(uri)
     db = client.bikes
 
     await init_beanie(
-        database=db, 
+        database=db,
         document_models=[Bike, Metrics],
         recreate_views=True,
     )
