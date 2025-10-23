@@ -189,6 +189,71 @@ class Initializer:
                         funct=f,
                     )
 
+    async def init_vector_indexes(self, cls):
+        """
+        Create vector indexes for fields with VectorField
+        :param cls:
+        :return:
+        """
+        from beanis.odm.indexes import IndexManager, IndexType
+
+        # Get all indexed fields
+        indexed_fields = IndexManager.get_indexed_fields(cls)
+
+        # Find vector fields
+        for field_name, indexed_field in indexed_fields.items():
+            index_type = IndexManager.determine_index_type(cls, field_name, indexed_field)
+
+            if index_type == IndexType.VECTOR:
+                # Create vector index if it doesn't exist
+                class_name = cls.__name__
+                index_name = f"idx:{class_name}:vector"
+
+                try:
+                    # Check if index exists
+                    await self.database.ft(index_name).info()
+                except Exception:
+                    # Index doesn't exist, create it
+                    try:
+                        dimensions = getattr(indexed_field, 'dimensions', 1024)
+                        algorithm = getattr(indexed_field, 'algorithm', 'HNSW')
+                        distance_metric = getattr(indexed_field, 'distance_metric', 'COSINE')
+                        m = getattr(indexed_field, 'm', 16)
+                        ef_construction = getattr(indexed_field, 'ef_construction', 200)
+
+                        # Build index schema
+                        from redis.commands.search.field import VectorField as RedisVectorField
+                        from redis.commands.search.index_definition import IndexDefinition, IndexType as RedisIndexType
+
+                        schema = (
+                            RedisVectorField(
+                                field_name,
+                                algorithm,
+                                {
+                                    "TYPE": "FLOAT32",
+                                    "DIM": dimensions,
+                                    "DISTANCE_METRIC": distance_metric,
+                                    "M": m,
+                                    "EF_CONSTRUCTION": ef_construction
+                                }
+                            ),
+                        )
+
+                        definition = IndexDefinition(
+                            prefix=[f"{class_name}:"],
+                            index_type=RedisIndexType.HASH
+                        )
+
+                        await self.database.ft(index_name).create_index(
+                            schema,
+                            definition=definition
+                        )
+
+                        print(f"✓ Created vector index: {index_name}")
+
+                    except Exception as e:
+                        print(f"⚠ Warning: Could not create vector index {index_name}: {e}")
+
     def init_document_collection(self, cls):
         """
         Init Redis client for the Document-based class
@@ -245,6 +310,9 @@ class Initializer:
             self.init_document_collection(cls)
             self.init_document_fields(cls)
             self.init_actions(cls)
+
+            # Create vector indexes automatically
+            await self.init_vector_indexes(cls)
 
             self.inited_classes.append(cls)
 
