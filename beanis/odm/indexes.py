@@ -103,7 +103,7 @@ def VectorField(
     algorithm: str = "HNSW",
     distance_metric: str = "COSINE",
     m: int = 16,
-    ef_construction: int = 200
+    ef_construction: int = 200,
 ) -> IndexedField:
     """
     Helper to create a vector field for similarity search
@@ -646,7 +646,7 @@ class IndexManager:
         field_name: str,
         query_vector: List[float],
         k: int = 10,
-        ef_runtime: Optional[int] = None
+        ef_runtime: Optional[int] = None,
     ) -> List[Tuple[str, float]]:
         """
         Find document IDs by vector similarity (KNN search)
@@ -691,18 +691,20 @@ class IndexManager:
 
         # Convert vector to bytes for Redis
         import struct
+
         vector_bytes = struct.pack(f"{len(query_vector)}f", *query_vector)
 
         # Build FT.SEARCH query
         # Format: *=>[KNN $K @field_name $BLOB AS score]
-        query_params = {
-            "K": k,
-            "BLOB": vector_bytes
-        }
+        query_params = {"K": k, "BLOB": vector_bytes}
 
         # Add ef_runtime if specified (HNSW tuning)
         ef_param = ""
-        if ef_runtime and hasattr(indexed_field, 'algorithm') and indexed_field.algorithm == "HNSW":
+        if (
+            ef_runtime
+            and hasattr(indexed_field, "algorithm")
+            and indexed_field.algorithm == "HNSW"
+        ):
             ef_param = f" EF_RUNTIME {ef_runtime}"
 
         query = f"*=>[KNN $K @{field_name} $BLOB AS score{ef_param}]"
@@ -710,15 +712,14 @@ class IndexManager:
         try:
             # Execute search
             results = await redis_client.ft(index_name).search(
-                query,
-                query_params
+                query, query_params
             )
 
             # Parse results
             doc_scores = []
             for doc in results.docs:
                 doc_id = doc.id
-                score = float(doc.score) if hasattr(doc, 'score') else 0.0
+                score = float(doc.score) if hasattr(doc, "score") else 0.0
                 doc_scores.append((doc_id, score))
 
             return doc_scores
@@ -727,6 +728,7 @@ class IndexManager:
             # If index doesn't exist, return empty results
             # This allows graceful handling during development
             import logging
+
             logging.warning(f"Vector search failed: {e}")
             return []
 
