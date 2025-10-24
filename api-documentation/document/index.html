@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Document - My Project</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">My Project</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../getting-started/" class="nav-link">Getting started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../tutorial/tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/defining-a-document/" class="dropdown-item">Defining a document</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/initialization/" class="dropdown-item">Initialization</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/inserting-into-the-database/" class="dropdown-item">Inserting into the database</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/finding-documents/" class="dropdown-item">Finding documents</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/updating-documents/" class="dropdown-item">Updating documents</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/deleting-documents/" class="dropdown-item">Deleting documents</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/event-based-actions/" class="dropdown-item">Event-based actions</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/custom-encoders/" class="dropdown-item">Custom encoders</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Document</a>
+</li>
+                                    
+<li>
+    <a href="../interfaces/" class="dropdown-item">Interfaces</a>
+</li>
+                                    
+<li>
+    <a href="../indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../actions/" class="dropdown-item">Actions</a>
+</li>
+                                    
+<li>
+    <a href="../fields/" class="dropdown-item">Fields</a>
+</li>
+                                    
+<li>
+    <a href="../custom-encoders/" class="dropdown-item">Custom Encoders</a>
+</li>
+                                    
+<li>
+    <a href="../custom-types/" class="dropdown-item">Custom Types</a>
+</li>
+                                    
+<li>
+    <a href="../utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../development/" class="nav-link">Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../code-of-conduct/" class="nav-link">Code of conduct</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../changelog/" class="nav-link">Changelog</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../../tutorial/geo-spatial-indexing/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../interfaces/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#beanisodmdocuments" class="nav-link">beanis.odm.documents</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><a id="beanis.odm.documents"></a></p>
+<h2 id="beanisodmdocuments">beanis.odm.documents</h2>
+<p><a id="beanis.odm.documents.Document"></a></p>
+<h3 id="document">Document</h3>
+<pre><code class="language-python">class Document(LazyModel, SettersInterface, InheritanceInterface,
+               OtherGettersInterface)
+</code></pre>
+<blockquote>
+<p>Document Mapping class for Redis.</p>
+<p>Uses Redis Hashes for storage by default, with support for
+secondary indexes, TTL, and batch operations.</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.get"></a></p>
+<h4 id="documentget">Document.get</h4>
+<pre><code class="language-python">@classmethod
+async def get(cls: Type[&quot;DocType&quot;], document_id: Any) -&gt; Optional[&quot;DocType&quot;]
+</code></pre>
+<blockquote>
+<p>Get document by id, returns None if document does not exist</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>document_id</code>: str - document id</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>Union["Document", None]</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.exists"></a></p>
+<h4 id="documentexists">Document.exists</h4>
+<pre><code class="language-python">@classmethod
+async def exists(cls: Type[&quot;DocType&quot;], document_id: Any) -&gt; bool
+</code></pre>
+<blockquote>
+<p>Check if a document exists by ID</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>document_id</code>: str - document id</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>bool</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.insert"></a></p>
+<h4 id="documentinsert">Document.insert</h4>
+<pre><code class="language-python">@wrap_with_actions(EventTypes.INSERT)
+async def insert(ttl: Optional[int] = None, skip_actions=None) -&gt; DocType
+</code></pre>
+<blockquote>
+<p>Insert the document (self) to Redis</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>ttl</code>: Optional[int] - TTL in seconds</li>
+<li><code>skip_actions</code>: Optional[List] - actions to skip</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>Document</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.insert_one"></a></p>
+<h4 id="documentinsert_one">Document.insert_one</h4>
+<pre><code class="language-python">@classmethod
+async def insert_one(cls: Type[DocType],
+                     document: DocType,
+                     ttl: Optional[int] = None) -&gt; Optional[DocType]
+</code></pre>
+<blockquote>
+<p>Insert one document to Redis</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>document</code>: Document - document to insert</li>
+<li><code>ttl</code>: Optional[int] - TTL in seconds</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>DocType</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.insert_many"></a></p>
+<h4 id="documentinsert_many">Document.insert_many</h4>
+<pre><code class="language-python">@classmethod
+async def insert_many(cls: Type[DocType],
+                      documents: Iterable[DocType],
+                      ttl: Optional[int] = None) -&gt; List[DocType]
+</code></pre>
+<blockquote>
+<p>Insert many documents to Redis using pipeline</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>documents</code>: List["Document"] - documents to insert</li>
+<li><code>ttl</code>: Optional[int] - TTL in seconds for all documents</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>List[DocType]</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.get_many"></a></p>
+<h4 id="documentget_many">Document.get_many</h4>
+<pre><code class="language-python">@classmethod
+async def get_many(cls: Type[DocType],
+                   document_ids: List[Any]) -&gt; List[Optional[DocType]]
+</code></pre>
+<blockquote>
+<p>Get many documents by IDs using pipeline</p>
+<p>Optimized with msgspec (2x faster than orjson) and model_construct() (skip validation)</p>
+<p>Performance: 3-4x faster than orjson + model_validate approach</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>document_ids</code>: List[str] - list of document IDs</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>List[Optional[DocType]]</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.save"></a></p>
+<h4 id="documentsave">Document.save</h4>
+<pre><code class="language-python">def save() -&gt; DocType
+</code></pre>
+<blockquote>
+<p>Update an existing model in Redis or insert it if it does not yet exist.</p>
+<p><strong>Returns</strong>:</p>
+<p>Document</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.update"></a></p>
+<h4 id="documentupdate">Document.update</h4>
+<pre><code class="language-python">@wrap_with_actions(EventTypes.UPDATE)
+async def update(skip_actions=None, **fields) -&gt; DocType
+</code></pre>
+<blockquote>
+<p>Update specific fields of the document</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>skip_actions</code>: Optional[List] - actions to skip</li>
+<li><code>fields</code>: Field names and values to update</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>Document</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.get_field"></a></p>
+<h4 id="documentget_field">Document.get_field</h4>
+<pre><code class="language-python">async def get_field(field_name: str) -&gt; Any
+</code></pre>
+<blockquote>
+<p>Get a specific field value from Redis without loading the entire document</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>field_name</code>: Name of the field</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>Field value</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.set_field"></a></p>
+<h4 id="documentset_field">Document.set_field</h4>
+<pre><code class="language-python">async def set_field(field_name: str, value: Any) -&gt; None
+</code></pre>
+<blockquote>
+<p>Set a specific field value in Redis</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>field_name</code>: Name of the field</li>
+<li><code>value</code>: Value to set</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.increment_field"></a></p>
+<h4 id="documentincrement_field">Document.increment_field</h4>
+<pre><code class="language-python">async def increment_field(field_name: str,
+                          amount: Union[int, float] = 1) -&gt; Union[int, float]
+</code></pre>
+<blockquote>
+<p>Increment a numeric field atomically</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>field_name</code>: Name of the field</li>
+<li><code>amount</code>: Amount to increment by</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>New value</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.set_ttl"></a></p>
+<h4 id="documentset_ttl">Document.set_ttl</h4>
+<pre><code class="language-python">async def set_ttl(seconds: int) -&gt; bool
+</code></pre>
+<blockquote>
+<p>Set TTL (time to live) for this document</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>seconds</code>: TTL in seconds</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>bool - True if TTL was set</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.get_ttl"></a></p>
+<h4 id="documentget_ttl">Document.get_ttl</h4>
+<pre><code class="language-python">async def get_ttl() -&gt; Optional[int]
+</code></pre>
+<blockquote>
+<p>Get the remaining TTL for this document</p>
+<p><strong>Returns</strong>:</p>
+<p>Optional[int] - TTL in seconds, -1 if no TTL, -2 if key doesn't exist</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.persist"></a></p>
+<h4 id="documentpersist">Document.persist</h4>
+<pre><code class="language-python">async def persist() -&gt; bool
+</code></pre>
+<blockquote>
+<p>Remove TTL from this document (make it persistent)</p>
+<p><strong>Returns</strong>:</p>
+<p>bool - True if TTL was removed</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.delete_self"></a></p>
+<h4 id="documentdelete_self">Document.delete_self</h4>
+<pre><code class="language-python">@wrap_with_actions(EventTypes.DELETE)
+async def delete_self(skip_actions=None)
+</code></pre>
+<blockquote>
+<p>Delete the document</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.delete"></a></p>
+<h4 id="documentdelete">Document.delete</h4>
+<pre><code class="language-python">@classmethod
+async def delete(cls, document_id)
+</code></pre>
+<blockquote>
+<p>Delete a document by ID</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>document_id</code>: str - document id</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.delete_many"></a></p>
+<h4 id="documentdelete_many">Document.delete_many</h4>
+<pre><code class="language-python">@classmethod
+async def delete_many(cls, document_ids: List[Any]) -&gt; int
+</code></pre>
+<blockquote>
+<p>Delete many documents by IDs</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>document_ids</code>: List[str] - list of document IDs</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>int - number of documents deleted</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.delete_all"></a></p>
+<h4 id="documentdelete_all">Document.delete_all</h4>
+<pre><code class="language-python">@classmethod
+async def delete_all(cls) -&gt; int
+</code></pre>
+<blockquote>
+<p>Delete all documents of this class</p>
+<p><strong>Returns</strong>:</p>
+<p>int - number of documents deleted</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.count"></a></p>
+<h4 id="documentcount">Document.count</h4>
+<pre><code class="language-python">@classmethod
+async def count(cls) -&gt; int
+</code></pre>
+<blockquote>
+<p>Count all documents of this class</p>
+<p><strong>Returns</strong>:</p>
+<p>int - number of documents</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.find"></a></p>
+<h4 id="documentfind">Document.find</h4>
+<pre><code class="language-python">@classmethod
+async def find(cls: Type[DocType], **filters) -&gt; List[DocType]
+</code></pre>
+<blockquote>
+<p>Find documents by indexed fields</p>
+<p>Examples:
+    # Exact match on indexed field
+    products = await Product.find(category="electronics")</p>
+<pre><code># Range query on numeric indexed field
+products = await Product.find(price__gte=10, price__lte=100)
+</code></pre>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>filters</code>: Field filters (supports __gte, __lte for numeric fields)</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>List[DocType]</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.all"></a></p>
+<h4 id="documentall">Document.all</h4>
+<pre><code class="language-python">@classmethod
+async def all(cls: Type[DocType],
+              skip: int = 0,
+              limit: Optional[int] = None,
+              sort_desc: bool = False) -&gt; List[DocType]
+</code></pre>
+<blockquote>
+<p>Get all documents of this class</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>skip</code>: Number of documents to skip</li>
+<li><code>limit</code>: Maximum number of documents to return</li>
+<li><code>sort_desc</code>: Sort by insertion time descending</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>List[DocType]</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.use_state_management"></a></p>
+<h4 id="documentuse_state_management">Document.use_state_management</h4>
+<pre><code class="language-python">@classmethod
+def use_state_management(cls) -&gt; bool
+</code></pre>
+<blockquote>
+<p>Is state management turned on</p>
+<p><strong>Returns</strong>:</p>
+<p>bool</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.state_management_save_previous"></a></p>
+<h4 id="documentstate_management_save_previous">Document.state_management_save_previous</h4>
+<pre><code class="language-python">@classmethod
+def state_management_save_previous(cls) -&gt; bool
+</code></pre>
+<blockquote>
+<p>Should we save the previous state after a commit to database</p>
+<p><strong>Returns</strong>:</p>
+<p>bool</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.state_management_replace_objects"></a></p>
+<h4 id="documentstate_management_replace_objects">Document.state_management_replace_objects</h4>
+<pre><code class="language-python">@classmethod
+def state_management_replace_objects(cls) -&gt; bool
+</code></pre>
+<blockquote>
+<p>Should objects be replaced when using state management</p>
+<p><strong>Returns</strong>:</p>
+<p>bool</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.get_saved_state"></a></p>
+<h4 id="documentget_saved_state">Document.get_saved_state</h4>
+<pre><code class="language-python">def get_saved_state() -&gt; Optional[Dict[str, Any]]
+</code></pre>
+<blockquote>
+<p>Saved state getter. It is protected property.</p>
+<p><strong>Returns</strong>:</p>
+<p>Optional[Dict[str, Any]] - saved state</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.get_previous_saved_state"></a></p>
+<h4 id="documentget_previous_saved_state">Document.get_previous_saved_state</h4>
+<pre><code class="language-python">def get_previous_saved_state() -&gt; Optional[Dict[str, Any]]
+</code></pre>
+<blockquote>
+<p>Previous state getter. It is a protected property.</p>
+<p><strong>Returns</strong>:</p>
+<p>Optional[Dict[str, Any]] - previous state</p>
+</blockquote>
+<p><a id="beanis.odm.documents.Document.get_settings"></a></p>
+<h4 id="documentget_settings">Document.get_settings</h4>
+<pre><code class="language-python">@classmethod
+def get_settings(cls) -&gt; ItemSettings
+</code></pre>
+<blockquote>
+<p>Get document settings, which was created on</p>
+<p>the initialization step</p>
+<p><strong>Returns</strong>:</p>
+<p>ItemSettings class</p>
+</blockquote></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Inserting into the database - My Project</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">My Project</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../getting-started/" class="nav-link">Getting started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../defining-a-document/" class="dropdown-item">Defining a document</a>
+</li>
+                                    
+<li>
+    <a href="../initialization/" class="dropdown-item">Initialization</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Inserting into the database</a>
+</li>
+                                    
+<li>
+    <a href="../finding-documents/" class="dropdown-item">Finding documents</a>
+</li>
+                                    
+<li>
+    <a href="../updating-documents/" class="dropdown-item">Updating documents</a>
+</li>
+                                    
+<li>
+    <a href="../deleting-documents/" class="dropdown-item">Deleting documents</a>
+</li>
+                                    
+<li>
+    <a href="../indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../event-based-actions/" class="dropdown-item">Event-based actions</a>
+</li>
+                                    
+<li>
+    <a href="../custom-encoders/" class="dropdown-item">Custom encoders</a>
+</li>
+                                    
+<li>
+    <a href="../geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../api-documentation/document/" class="dropdown-item">Document</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/interfaces/" class="dropdown-item">Interfaces</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/actions/" class="dropdown-item">Actions</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/fields/" class="dropdown-item">Fields</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/custom-encoders/" class="dropdown-item">Custom Encoders</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/custom-types/" class="dropdown-item">Custom Types</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../development/" class="nav-link">Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../code-of-conduct/" class="nav-link">Code of conduct</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../changelog/" class="nav-link">Changelog</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../initialization/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../finding-documents/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#insert-documents" class="nav-link">Insert Documents</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#insert-one" class="nav-link">Insert One</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#insert-many" class="nav-link">Insert Many</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#response" class="nav-link">Response</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#replace-on-insert" class="nav-link">Replace on Insert</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#event-hooks" class="nav-link">Event Hooks</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#examples" class="nav-link">Examples</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#performance-tips" class="nav-link">Performance Tips</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#next-steps" class="nav-link">Next Steps</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="insert-documents">Insert Documents</h1>
+<p>Beanis documents behave just like Pydantic models (because they subclass <code>pydantic.BaseModel</code>). Hence, a document can be created in a similar fashion to Pydantic:</p>
+<pre><code class="language-python">from typing import Optional
+from pydantic import BaseModel
+from beanis import Document
+
+
+class Category(BaseModel):
+    name: str
+    description: str
+
+
+class Product(Document):
+    name: str
+    description: Optional[str] = None
+    price: float
+    category: Category
+
+    class Settings:
+        name = &quot;products&quot;
+
+
+# Create a product
+chocolate = Category(
+    name=&quot;Chocolate&quot;,
+    description=&quot;A preparation of roasted and ground cacao seeds.&quot;
+)
+
+product = Product(
+    name=&quot;Tony's Chocolonely&quot;,
+    description=&quot;Awesome chocolate bar&quot;,
+    price=5.95,
+    category=chocolate
+)
+</code></pre>
+<h2 id="insert-one">Insert One</h2>
+<p>To insert the document into Redis, use the <code>insert()</code> method:</p>
+<pre><code class="language-python">await product.insert()
+print(product.id)  # Auto-generated UUID
+</code></pre>
+<p>The document is now stored in Redis as a Hash at key <code>Product:{id}</code>.</p>
+<h3 id="insert-with-custom-id">Insert with Custom ID</h3>
+<p>You can specify a custom ID:</p>
+<pre><code class="language-python">product = Product(
+    id=&quot;prod_001&quot;,
+    name=&quot;Tony's Chocolonely&quot;,
+    price=5.95,
+    category=chocolate
+)
+await product.insert()
+</code></pre>
+<h3 id="insert-with-ttl">Insert with TTL</h3>
+<p>Documents can expire automatically using TTL (time-to-live):</p>
+<pre><code class="language-python"># Expire after 1 hour
+await product.insert(ttl=3600)
+</code></pre>
+<h2 id="insert-many">Insert Many</h2>
+<p>For bulk inserts, use <code>insert_many()</code> for better performance:</p>
+<pre><code class="language-python">products = [
+    Product(name=f&quot;Product {i}&quot;, price=float(i * 10), category=chocolate)
+    for i in range(100)
+]
+
+await Product.insert_many(products)
+</code></pre>
+<p>This uses Redis pipelines for efficient batch operations.</p>
+<h2 id="response">Response</h2>
+<p>The <code>insert()</code> method returns the document with the populated <code>id</code> field:</p>
+<pre><code class="language-python">product = Product(name=&quot;New Product&quot;, price=9.99, category=chocolate)
+result = await product.insert()
+
+print(result.id)  # UUID automatically generated
+print(product.id)  # Same as result.id
+</code></pre>
+<h2 id="replace-on-insert">Replace on Insert</h2>
+<p>By default, if a document with the same ID already exists, <code>insert()</code> will overwrite it. This is different from MongoDB's behavior.</p>
+<pre><code class="language-python"># First insert
+product = Product(id=&quot;prod_001&quot;, name=&quot;Original&quot;, price=10.0, category=chocolate)
+await product.insert()
+
+# Second insert with same ID - replaces the first
+product = Product(id=&quot;prod_001&quot;, name=&quot;Updated&quot;, price=15.0, category=chocolate)
+await product.insert()  # Replaces the original
+</code></pre>
+<p>To check if a document exists first:</p>
+<pre><code class="language-python">if not await Product.exists(&quot;prod_001&quot;):
+    await product.insert()
+</code></pre>
+<h2 id="event-hooks">Event Hooks</h2>
+<p>You can use event hooks to run code before/after inserts:</p>
+<pre><code class="language-python">from beanis import Document, before_event, after_event, Insert
+
+
+class Product(Document):
+    name: str
+    price: float
+
+    @before_event(Insert)
+    async def validate_price(self):
+        if self.price &lt; 0:
+            raise ValueError(&quot;Price cannot be negative&quot;)
+
+    @after_event(Insert)
+    async def log_creation(self):
+        print(f&quot;Created product: {self.name}&quot;)
+
+
+product = Product(name=&quot;Test&quot;, price=9.99)
+await product.insert()  # Runs validate_price, then insert, then log_creation
+</code></pre>
+<h2 id="examples">Examples</h2>
+<h3 id="insert-with-validation">Insert with Validation</h3>
+<pre><code class="language-python">from pydantic import field_validator
+
+
+class Product(Document):
+    name: str
+    price: float
+    stock: int
+
+    @field_validator('price')
+    @classmethod
+    def price_must_be_positive(cls, v):
+        if v &lt; 0:
+            raise ValueError('Price must be positive')
+        return v
+
+
+product = Product(name=&quot;Test&quot;, price=-10, stock=100)
+await product.insert()  # Raises ValidationError
+</code></pre>
+<h3 id="insert-with-complex-types">Insert with Complex Types</h3>
+<pre><code class="language-python">from typing import List
+from datetime import datetime
+
+
+class Product(Document):
+    name: str
+    price: float
+    tags: List[str]
+    created_at: datetime
+
+    class Settings:
+        name = &quot;products&quot;
+
+
+product = Product(
+    name=&quot;Laptop&quot;,
+    price=999.99,
+    tags=[&quot;electronics&quot;, &quot;computers&quot;],
+    created_at=datetime.now()
+)
+await product.insert()
+</code></pre>
+<h3 id="bulk-insert-with-error-handling">Bulk Insert with Error Handling</h3>
+<pre><code class="language-python">products = [Product(name=f&quot;Product {i}&quot;, price=float(i)) for i in range(100)]
+
+try:
+    await Product.insert_many(products)
+    print(f&quot;Inserted {len(products)} products&quot;)
+except Exception as e:
+    print(f&quot;Error inserting products: {e}&quot;)
+</code></pre>
+<h2 id="performance-tips">Performance Tips</h2>
+<ol>
+<li><strong>Use <code>insert_many()</code> for bulk operations</strong> - Much faster than individual inserts</li>
+<li><strong>Set appropriate TTL</strong> - Automatically clean up old data</li>
+<li><strong>Use pipelines</strong> - <code>insert_many()</code> already does this</li>
+<li><strong>Avoid validation on insert if data is trusted</strong> - Pydantic validation can be expensive</li>
+</ol>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li><a href="find.md">Find Operations</a> - Query documents</li>
+<li><a href="update.md">Update Operations</a> - Modify documents</li>
+<li><a href="delete.md">Delete Operations</a> - Remove documents</li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

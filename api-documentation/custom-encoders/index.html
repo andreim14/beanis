@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Custom Encoders - My Project</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">My Project</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../getting-started/" class="nav-link">Getting started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../tutorial/tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/defining-a-document/" class="dropdown-item">Defining a document</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/initialization/" class="dropdown-item">Initialization</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/inserting-into-the-database/" class="dropdown-item">Inserting into the database</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/finding-documents/" class="dropdown-item">Finding documents</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/updating-documents/" class="dropdown-item">Updating documents</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/deleting-documents/" class="dropdown-item">Deleting documents</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/event-based-actions/" class="dropdown-item">Event-based actions</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/custom-encoders/" class="dropdown-item">Custom encoders</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../document/" class="dropdown-item">Document</a>
+</li>
+                                    
+<li>
+    <a href="../interfaces/" class="dropdown-item">Interfaces</a>
+</li>
+                                    
+<li>
+    <a href="../indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../actions/" class="dropdown-item">Actions</a>
+</li>
+                                    
+<li>
+    <a href="../fields/" class="dropdown-item">Fields</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Custom Encoders</a>
+</li>
+                                    
+<li>
+    <a href="../custom-types/" class="dropdown-item">Custom Types</a>
+</li>
+                                    
+<li>
+    <a href="../utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../development/" class="nav-link">Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../code-of-conduct/" class="nav-link">Code of conduct</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../changelog/" class="nav-link">Changelog</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../fields/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../custom-types/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#beanisodmcustom_encoders" class="nav-link">beanis.odm.custom_encoders</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><a id="beanis.odm.custom_encoders"></a></p>
+<h2 id="beanisodmcustom_encoders">beanis.odm.custom_encoders</h2>
+<blockquote>
+<p>Custom encoder/decoder registration system for Beanis</p>
+<p>Allows users to register custom serialization logic for any Python type.</p>
+</blockquote>
+<p><a id="beanis.odm.custom_encoders.EncoderFunc"></a></p>
+<h4 id="beanisodmcustom_encodersencoderfunc">beanis.odm.custom_encoders.EncoderFunc</h4>
+<blockquote>
+<p>Converts object to string for Redis</p>
+</blockquote>
+<p><a id="beanis.odm.custom_encoders.DecoderFunc"></a></p>
+<h4 id="beanisodmcustom_encodersdecoderfunc">beanis.odm.custom_encoders.DecoderFunc</h4>
+<blockquote>
+<p>Converts string from Redis to object</p>
+</blockquote>
+<p><a id="beanis.odm.custom_encoders.CustomEncoderRegistry"></a></p>
+<h3 id="customencoderregistry">CustomEncoderRegistry</h3>
+<pre><code class="language-python">class CustomEncoderRegistry()
+</code></pre>
+<blockquote>
+<p>Global registry for custom type encoders/decoders</p>
+<p>Example usage:
+    from beanis import register_encoder
+    import numpy as np
+    import base64
+    import pickle</p>
+<pre><code>@register_encoder(np.ndarray)
+def encode_numpy(arr: np.ndarray) -&gt; str:
+    return base64.b64encode(pickle.dumps(arr)).decode('utf-8')
+
+@register_decoder(np.ndarray)
+def decode_numpy(data: str) -&gt; np.ndarray:
+    return pickle.loads(base64.b64decode(data))
+</code></pre>
+</blockquote>
+<p><a id="beanis.odm.custom_encoders.CustomEncoderRegistry.register_encoder"></a></p>
+<h4 id="customencoderregistryregister_encoder">CustomEncoderRegistry.register_encoder</h4>
+<pre><code class="language-python">@classmethod
+def register_encoder(cls, type_: Type, encoder: EncoderFunc) -&gt; None
+</code></pre>
+<blockquote>
+<p>Register an encoder for a specific type</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>type_</code> - The Python type to encode</li>
+<li><code>encoder</code> - Function that converts the type to a string</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.custom_encoders.CustomEncoderRegistry.register_decoder"></a></p>
+<h4 id="customencoderregistryregister_decoder">CustomEncoderRegistry.register_decoder</h4>
+<pre><code class="language-python">@classmethod
+def register_decoder(cls, type_: Type, decoder: DecoderFunc) -&gt; None
+</code></pre>
+<blockquote>
+<p>Register a decoder for a specific type</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>type_</code> - The Python type to decode</li>
+<li><code>decoder</code> - Function that converts a string to the type</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.custom_encoders.CustomEncoderRegistry.register_pair"></a></p>
+<h4 id="customencoderregistryregister_pair">CustomEncoderRegistry.register_pair</h4>
+<pre><code class="language-python">@classmethod
+def register_pair(cls, type_: Type, encoder: EncoderFunc,
+                  decoder: DecoderFunc) -&gt; None
+</code></pre>
+<blockquote>
+<p>Register both encoder and decoder for a type</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>type_</code> - The Python type</li>
+<li><code>encoder</code> - Function that converts the type to a string</li>
+<li><code>decoder</code> - Function that converts a string to the type</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.custom_encoders.CustomEncoderRegistry.get_encoder"></a></p>
+<h4 id="customencoderregistryget_encoder">CustomEncoderRegistry.get_encoder</h4>
+<pre><code class="language-python">@classmethod
+def get_encoder(cls, type_: Type) -&gt; Optional[EncoderFunc]
+</code></pre>
+<blockquote>
+<p>Get encoder for a type, or None if not registered</p>
+</blockquote>
+<p><a id="beanis.odm.custom_encoders.CustomEncoderRegistry.get_decoder"></a></p>
+<h4 id="customencoderregistryget_decoder">CustomEncoderRegistry.get_decoder</h4>
+<pre><code class="language-python">@classmethod
+def get_decoder(cls, type_: Type) -&gt; Optional[DecoderFunc]
+</code></pre>
+<blockquote>
+<p>Get decoder for a type, or None if not registered</p>
+</blockquote>
+<p><a id="beanis.odm.custom_encoders.CustomEncoderRegistry.clear"></a></p>
+<h4 id="customencoderregistryclear">CustomEncoderRegistry.clear</h4>
+<pre><code class="language-python">@classmethod
+def clear(cls) -&gt; None
+</code></pre>
+<blockquote>
+<p>Clear all registered encoders/decoders (mainly for testing)</p>
+</blockquote>
+<p><a id="beanis.odm.custom_encoders.register_encoder"></a></p>
+<h4 id="register_encoder">register_encoder</h4>
+<pre><code class="language-python">def register_encoder(type_: Type) -&gt; Callable[[EncoderFunc], EncoderFunc]
+</code></pre>
+<blockquote>
+<p>Decorator to register a custom encoder for a type</p>
+<p><strong>Example</strong>:</p>
+<p>@register_encoder(np.ndarray)
+  def encode_numpy(arr: np.ndarray) -&gt; str:
+  return base64.b64encode(pickle.dumps(arr)).decode('utf-8')</p>
+</blockquote>
+<p><a id="beanis.odm.custom_encoders.register_decoder"></a></p>
+<h4 id="register_decoder">register_decoder</h4>
+<pre><code class="language-python">def register_decoder(type_: Type) -&gt; Callable[[DecoderFunc], DecoderFunc]
+</code></pre>
+<blockquote>
+<p>Decorator to register a custom decoder for a type</p>
+<p><strong>Example</strong>:</p>
+<p>@register_decoder(np.ndarray)
+  def decode_numpy(data: str) -&gt; np.ndarray:
+  return pickle.loads(base64.b64decode(data))</p>
+</blockquote>
+<p><a id="beanis.odm.custom_encoders.register_type"></a></p>
+<h4 id="register_type">register_type</h4>
+<pre><code class="language-python">def register_type(type_: Type, encoder: EncoderFunc,
+                  decoder: DecoderFunc) -&gt; None
+</code></pre>
+<blockquote>
+<p>Register both encoder and decoder for a type (non-decorator version)</p>
+<p><strong>Example</strong>:</p>
+<p>register_type(
+  np.ndarray,
+  encoder=lambda arr: base64.b64encode(pickle.dumps(arr)).decode(),
+  decoder=lambda s: pickle.loads(base64.b64decode(s))
+  )</p>
+</blockquote></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

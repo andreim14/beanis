@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Updating documents - My Project</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">My Project</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../getting-started/" class="nav-link">Getting started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../defining-a-document/" class="dropdown-item">Defining a document</a>
+</li>
+                                    
+<li>
+    <a href="../initialization/" class="dropdown-item">Initialization</a>
+</li>
+                                    
+<li>
+    <a href="../inserting-into-the-database/" class="dropdown-item">Inserting into the database</a>
+</li>
+                                    
+<li>
+    <a href="../finding-documents/" class="dropdown-item">Finding documents</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Updating documents</a>
+</li>
+                                    
+<li>
+    <a href="../deleting-documents/" class="dropdown-item">Deleting documents</a>
+</li>
+                                    
+<li>
+    <a href="../indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../event-based-actions/" class="dropdown-item">Event-based actions</a>
+</li>
+                                    
+<li>
+    <a href="../custom-encoders/" class="dropdown-item">Custom encoders</a>
+</li>
+                                    
+<li>
+    <a href="../geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../api-documentation/document/" class="dropdown-item">Document</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/interfaces/" class="dropdown-item">Interfaces</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/actions/" class="dropdown-item">Actions</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/fields/" class="dropdown-item">Fields</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/custom-encoders/" class="dropdown-item">Custom Encoders</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/custom-types/" class="dropdown-item">Custom Types</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../development/" class="nav-link">Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../code-of-conduct/" class="nav-link">Code of conduct</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../changelog/" class="nav-link">Changelog</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../finding-documents/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../deleting-documents/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#update-documents" class="nav-link">Update Documents</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#update-specific-fields" class="nav-link">Update Specific Fields</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#save-method" class="nav-link">Save Method</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#update-fields-directly" class="nav-link">Update Fields Directly</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#atomic-field-operations" class="nav-link">Atomic Field Operations</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#update-multiple-documents" class="nav-link">Update Multiple Documents</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#update-with-validation" class="nav-link">Update with Validation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#update-with-event-hooks" class="nav-link">Update with Event Hooks</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#update-with-ttl" class="nav-link">Update with TTL</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#update-nested-objects" class="nav-link">Update Nested Objects</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#important-notes" class="nav-link">Important Notes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#performance-tips" class="nav-link">Performance Tips</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#examples" class="nav-link">Examples</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#next-steps" class="nav-link">Next Steps</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="update-documents">Update Documents</h1>
+<p>Beanis provides several ways to update documents in Redis.</p>
+<h2 id="update-specific-fields">Update Specific Fields</h2>
+<p>Use the <code>update()</code> method to modify specific fields:</p>
+<pre><code class="language-python">from beanis import Document, Indexed
+
+class Product(Document):
+    name: str
+    price: Indexed(float)
+    stock: int
+
+    class Settings:
+        name = &quot;products&quot;
+
+# Get a product
+product = await Product.get(&quot;product_id_123&quot;)
+
+# Update specific fields
+await product.update(
+    price=7.99,
+    stock=50
+)
+
+# Other fields remain unchanged
+print(product.name)  # Original value preserved
+</code></pre>
+<h2 id="save-method">Save Method</h2>
+<p>The <code>save()</code> method inserts new documents or updates existing ones:</p>
+<pre><code class="language-python"># Create new document
+product = Product(name=&quot;New Product&quot;, price=9.99, stock=10)
+await product.save()  # Inserts
+
+# Modify and save again
+product.price = 12.99
+await product.save()  # Updates
+</code></pre>
+<p>The <code>save()</code> method replaces the entire document in Redis.</p>
+<h2 id="update-fields-directly">Update Fields Directly</h2>
+<p>Modify model attributes and call <code>update()</code>:</p>
+<pre><code class="language-python">product = await Product.get(&quot;product_id_123&quot;)
+
+# Modify attributes
+product.price = 15.99
+product.stock = 100
+
+# Save changes
+await product.update(price=product.price, stock=product.stock)
+</code></pre>
+<h2 id="atomic-field-operations">Atomic Field Operations</h2>
+<h3 id="incrementdecrement-numeric-fields">Increment/Decrement Numeric Fields</h3>
+<p>Use <code>increment_field()</code> for atomic numeric updates:</p>
+<pre><code class="language-python"># Decrement stock atomically (thread-safe)
+new_stock = await product.increment_field(&quot;stock&quot;, -1)
+print(f&quot;Stock after sale: {new_stock}&quot;)
+
+# Increment by positive value
+new_stock = await product.increment_field(&quot;stock&quot;, 10)
+print(f&quot;Stock after restock: {new_stock}&quot;)
+</code></pre>
+<p>This uses Redis <code>HINCRBY</code> for atomic operations - perfect for inventory management, counters, etc.</p>
+<h3 id="set-single-field">Set Single Field</h3>
+<p>Update a single field without loading the entire document:</p>
+<pre><code class="language-python"># Update just the price field
+await product.set_field(&quot;price&quot;, 8.99)
+
+# Get just the price field
+price = await product.get_field(&quot;price&quot;)
+print(f&quot;Current price: {price}&quot;)
+</code></pre>
+<p>This is efficient when you only need to modify one field.</p>
+<h2 id="update-multiple-documents">Update Multiple Documents</h2>
+<p>Update several documents by ID:</p>
+<pre><code class="language-python"># Update product prices
+products = await Product.get_many([&quot;id1&quot;, &quot;id2&quot;, &quot;id3&quot;])
+
+for product in products:
+    if product:
+        await product.update(price=product.price * 1.1)  # 10% increase
+</code></pre>
+<p>For better performance with many updates, use Redis pipelines:</p>
+<pre><code class="language-python"># More efficient for bulk updates
+products = await Product.get_many(product_ids)
+
+# Prepare updates
+updates = []
+for product in products:
+    if product:
+        product.price = product.price * 1.1
+        updates.append(product)
+
+# Execute in batch (uses pipeline internally)
+for product in updates:
+    await product.update(price=product.price)
+</code></pre>
+<h2 id="update-with-validation">Update with Validation</h2>
+<p>Updates trigger Pydantic validation:</p>
+<pre><code class="language-python">from pydantic import field_validator
+
+class Product(Document):
+    name: str
+    price: float
+    stock: int
+
+    @field_validator('price')
+    @classmethod
+    def price_must_be_positive(cls, v):
+        if v &lt; 0:
+            raise ValueError('Price must be positive')
+        return v
+
+product = await Product.get(&quot;product_id_123&quot;)
+
+# This will raise ValidationError
+await product.update(price=-5.0)  # ❌ ValidationError!
+</code></pre>
+<h2 id="update-with-event-hooks">Update with Event Hooks</h2>
+<p>Run custom logic before/after updates:</p>
+<pre><code class="language-python">from beanis import before_event, after_event, Update
+
+class Product(Document):
+    name: str
+    price: float
+    old_price: float = 0.0
+
+    @before_event(Update)
+    async def store_old_price(self):
+        # Get current price before update
+        existing = await Product.get(self.id)
+        if existing:
+            self.old_price = existing.price
+
+    @after_event(Update)
+    async def log_price_change(self):
+        if self.old_price != self.price:
+            print(f&quot;Price changed: ${self.old_price} -&gt; ${self.price}&quot;)
+
+product = await Product.get(&quot;product_id_123&quot;)
+await product.update(price=7.99)
+# Output: Price changed: $5.99 -&gt; $7.99
+</code></pre>
+<h2 id="update-with-ttl">Update with TTL</h2>
+<p>Update and set/modify expiration:</p>
+<pre><code class="language-python"># Update with new TTL
+await product.update(price=9.99)
+await product.set_ttl(3600)  # Expire in 1 hour
+
+# Check TTL
+ttl = await product.get_ttl()
+print(f&quot;Expires in {ttl} seconds&quot;)
+
+# Remove TTL (make permanent)
+await product.persist()
+</code></pre>
+<h2 id="update-nested-objects">Update Nested Objects</h2>
+<p>Beanis stores nested Pydantic models as JSON strings in Redis:</p>
+<pre><code class="language-python">from pydantic import BaseModel
+
+class Category(BaseModel):
+    name: str
+    description: str
+
+class Product(Document):
+    name: str
+    price: float
+    category: Category
+
+    class Settings:
+        name = &quot;products&quot;
+
+product = await Product.get(&quot;product_id_123&quot;)
+
+# Update nested object (replaces entire category)
+await product.update(
+    category=Category(name=&quot;Electronics&quot;, description=&quot;Electronic devices&quot;)
+)
+
+# To modify nested field, recreate the object
+new_category = product.category
+new_category.description = &quot;Updated description&quot;
+await product.update(category=new_category)
+</code></pre>
+<h2 id="important-notes">Important Notes</h2>
+<ol>
+<li><strong>update() replaces fields</strong> - Only specified fields are updated, others remain unchanged</li>
+<li><strong>save() replaces entire document</strong> - All fields are overwritten</li>
+<li><strong>Atomic operations</strong> - Use <code>increment_field()</code> for thread-safe numeric updates</li>
+<li><strong>Validation always runs</strong> - Updates trigger Pydantic validation</li>
+<li><strong>TTL is preserved</strong> - Unless explicitly changed, document TTL remains unchanged</li>
+</ol>
+<h2 id="performance-tips">Performance Tips</h2>
+<ol>
+<li><strong>Use increment_field() for counters</strong> - Atomic and efficient</li>
+<li><strong>Batch updates when possible</strong> - Reduces Redis round trips</li>
+<li><strong>Update only changed fields</strong> - Don't call update() with all fields</li>
+<li><strong>Use set_field() for single fields</strong> - More efficient than loading entire document</li>
+</ol>
+<h2 id="examples">Examples</h2>
+<h3 id="inventory-management">Inventory Management</h3>
+<pre><code class="language-python">async def process_sale(product_id: str, quantity: int):
+    &quot;&quot;&quot;Atomic stock update for sale&quot;&quot;&quot;
+    product = await Product.get(product_id)
+
+    # Check stock
+    if product.stock &lt; quantity:
+        raise ValueError(&quot;Insufficient stock&quot;)
+
+    # Atomic decrement
+    new_stock = await product.increment_field(&quot;stock&quot;, -quantity)
+
+    return new_stock
+
+# Process a sale
+remaining = await process_sale(&quot;prod_123&quot;, quantity=5)
+print(f&quot;Stock remaining: {remaining}&quot;)
+</code></pre>
+<h3 id="price-updates-with-history">Price Updates with History</h3>
+<pre><code class="language-python">from datetime import datetime
+from typing import List
+
+class PriceHistory(BaseModel):
+    price: float
+    timestamp: datetime
+
+class Product(Document):
+    name: str
+    price: float
+    price_history: List[PriceHistory] = []
+
+    async def update_price(self, new_price: float):
+        &quot;&quot;&quot;Update price and maintain history&quot;&quot;&quot;
+        # Add current price to history
+        self.price_history.append(
+            PriceHistory(price=self.price, timestamp=datetime.now())
+        )
+
+        # Update to new price
+        await self.update(
+            price=new_price,
+            price_history=self.price_history
+        )
+
+product = await Product.get(&quot;prod_123&quot;)
+await product.update_price(7.99)
+</code></pre>
+<h3 id="conditional-updates">Conditional Updates</h3>
+<pre><code class="language-python">async def apply_discount(product_id: str, discount_pct: float):
+    &quot;&quot;&quot;Apply discount only if price is above threshold&quot;&quot;&quot;
+    product = await Product.get(product_id)
+
+    if product.price &gt;= 10.0:
+        new_price = product.price * (1 - discount_pct / 100)
+        await product.update(price=round(new_price, 2))
+        return True
+
+    return False
+
+# Apply 20% discount to expensive items
+discounted = await apply_discount(&quot;prod_123&quot;, 20.0)
+</code></pre>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li><a href="delete.md">Delete Operations</a> - Remove documents</li>
+<li><a href="../indexes/">Indexes</a> - Query optimization</li>
+<li><a href="actions.md">Event Hooks</a> - Document lifecycle events</li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

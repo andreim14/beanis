@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Getting started - My Project</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">My Project</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./" class="nav-link active" aria-current="page">Getting started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../tutorial/tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/defining-a-document/" class="dropdown-item">Defining a document</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/initialization/" class="dropdown-item">Initialization</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/inserting-into-the-database/" class="dropdown-item">Inserting into the database</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/finding-documents/" class="dropdown-item">Finding documents</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/updating-documents/" class="dropdown-item">Updating documents</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/deleting-documents/" class="dropdown-item">Deleting documents</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/event-based-actions/" class="dropdown-item">Event-based actions</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/custom-encoders/" class="dropdown-item">Custom encoders</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../api-documentation/document/" class="dropdown-item">Document</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/interfaces/" class="dropdown-item">Interfaces</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/actions/" class="dropdown-item">Actions</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/fields/" class="dropdown-item">Fields</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/custom-encoders/" class="dropdown-item">Custom Encoders</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/custom-types/" class="dropdown-item">Custom Types</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../development/" class="nav-link">Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../code-of-conduct/" class="nav-link">Code of conduct</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../changelog/" class="nav-link">Changelog</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../tutorial/tutorial-overview/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#getting-started" class="nav-link">Getting Started</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#installing-beanis" class="nav-link">Installing Beanis</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#initialization" class="nav-link">Initialization</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#whats-next" class="nav-link">What's Next?</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#key-differences-from-beanie-mongodb" class="nav-link">Key Differences from Beanie (MongoDB)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#common-patterns" class="nav-link">Common Patterns</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#troubleshooting" class="nav-link">Troubleshooting</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#next-steps" class="nav-link">Next Steps</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="getting-started">Getting Started</h1>
+<h2 id="installing-beanis">Installing Beanis</h2>
+<p>You can simply install Beanis from <a href="https://pypi.org/project/beanis/">PyPI</a>:</p>
+<h3 id="pip">PIP</h3>
+<pre><code class="language-shell">pip install beanis
+</code></pre>
+<h3 id="poetry">Poetry</h3>
+<pre><code class="language-shell">poetry add beanis
+</code></pre>
+<h2 id="initialization">Initialization</h2>
+<p>Getting Beanis setup in your code is really easy:</p>
+<ol>
+<li>Write your database model as a Pydantic class but use <code>beanis.Document</code> instead of <code>pydantic.BaseModel</code></li>
+<li>Initialize Redis async client</li>
+<li>Call <code>beanis.init_beanis</code> with the Redis client and list of Beanis models</li>
+</ol>
+<p>The code below should get you started and shows some of the field types that you can use with Beanis.</p>
+<pre><code class="language-python">import asyncio
+from typing import Optional
+from redis.asyncio import Redis
+from pydantic import BaseModel
+from beanis import Document, Indexed, init_beanis
+
+
+class Category(BaseModel):
+    name: str
+    description: str
+
+
+# This is the model that will be saved to Redis
+class Product(Document):
+    name: str  # You can use normal types just like in pydantic
+    description: Optional[str] = None
+    price: Indexed(float)  # Indexed for range queries
+    category: Category  # You can include pydantic models as well
+    stock: int = 0
+
+    class Settings:
+        name = &quot;products&quot;  # Redis key prefix
+
+
+async def main():
+    # Initialize Redis client
+    # IMPORTANT: decode_responses=True is required!
+    client = Redis(
+        host=&quot;localhost&quot;,
+        port=6379,
+        db=0,
+        decode_responses=True
+    )
+
+    # Initialize Beanis with the Product document
+    await init_beanis(database=client, document_models=[Product])
+
+    # Now you can use your models!
+    chocolate = Category(
+        name=&quot;Chocolate&quot;,
+        description=&quot;A preparation of roasted and ground cacao seeds.&quot;
+    )
+
+    product = Product(
+        name=&quot;Tony's Chocolonely&quot;,
+        price=5.95,
+        category=chocolate,
+        stock=100
+    )
+
+    # Insert the document
+    await product.insert()
+    print(f&quot;Inserted product with ID: {product.id}&quot;)
+
+    # Retrieve by ID
+    found = await Product.get(product.id)
+    print(f&quot;Found: {found.name} - ${found.price}&quot;)
+
+    # Query by price
+    affordable = await Product.find(Product.price &lt; 10.0).to_list()
+    print(f&quot;Affordable products: {len(affordable)}&quot;)
+
+    # Update
+    await product.update(price=6.95, stock=150)
+    print(f&quot;Updated price to ${product.price}&quot;)
+
+    # Get all products
+    all_products = await Product.all()
+    print(f&quot;Total products: {len(all_products)}&quot;)
+
+    # Delete
+    await product.delete_self()
+    print(&quot;Product deleted&quot;)
+
+    # Clean up
+    await client.close()
+
+
+if __name__ == &quot;__main__&quot;:
+    asyncio.run(main())
+</code></pre>
+<h2 id="whats-next">What's Next?</h2>
+<p>Now that you have Beanis set up, you can explore:</p>
+<ul>
+<li><a href="../tutorial/defining-a-document/">Defining Documents</a> - Learn about document models</li>
+<li><a href="tutorial/insert.md">Insert Operations</a> - How to create documents</li>
+<li><a href="tutorial/find.md">Find Operations</a> - How to query documents</li>
+<li><a href="tutorial/update.md">Update Operations</a> - How to modify documents</li>
+<li><a href="../CUSTOM_ENCODERS.md">Custom Encoders</a> - Store NumPy arrays, custom types</li>
+</ul>
+<h2 id="key-differences-from-beanie-mongodb">Key Differences from Beanie (MongoDB)</h2>
+<p>If you're coming from Beanie, here are the key differences:</p>
+<ol>
+<li><strong>Redis client instead of Motor</strong>: Use <code>redis.asyncio.Redis</code> instead of <code>motor.AsyncIOMotorClient</code></li>
+<li><strong>decode_responses=True required</strong>: Redis needs this to return strings instead of bytes</li>
+<li><strong>Hash storage</strong>: Documents are stored as Redis Hashes, not MongoDB documents</li>
+<li><strong>Indexed fields</strong>: Uses Redis Sorted Sets/Sets for indexes, not MongoDB indexes</li>
+<li><strong>No aggregation pipelines</strong>: Use Redis native operations or query methods</li>
+<li><strong>Custom encoders</strong>: Built-in system for storing complex types like NumPy arrays</li>
+</ol>
+<h2 id="common-patterns">Common Patterns</h2>
+<h3 id="insert-with-ttl">Insert with TTL</h3>
+<pre><code class="language-python"># Document expires after 1 hour
+await product.insert(ttl=3600)
+</code></pre>
+<h3 id="batch-operations">Batch Operations</h3>
+<pre><code class="language-python"># Insert many documents efficiently
+products = [
+    Product(name=f&quot;Product {i}&quot;, price=float(i * 10))
+    for i in range(100)
+]
+await Product.insert_many(products)
+
+# Get many documents
+ids = [p.id for p in products]
+found = await Product.get_many(ids)
+</code></pre>
+<h3 id="event-hooks">Event Hooks</h3>
+<pre><code class="language-python">from beanis import before_event, after_event, Insert, Update
+
+class Product(Document):
+    name: str
+    price: float
+
+    @before_event(Insert)
+    async def validate_price(self):
+        if self.price &lt; 0:
+            raise ValueError(&quot;Price cannot be negative&quot;)
+
+    @after_event(Insert)
+    async def log_creation(self):
+        print(f&quot;Created product: {self.name}&quot;)
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="all-keys-must-be-strings-error">"All keys must be strings" error</h3>
+<p>Make sure you set <code>decode_responses=True</code> when creating the Redis client:</p>
+<pre><code class="language-python">client = Redis(decode_responses=True)  # ✅ Correct
+client = Redis()  # ❌ Will cause errors
+</code></pre>
+<h3 id="type-validation-errors">Type validation errors</h3>
+<p>Beanis validates data using Pydantic. If you get validation errors, check that your data matches the model:</p>
+<pre><code class="language-python"># ❌ This will fail - price must be float
+product = Product(name=&quot;Test&quot;, price=&quot;not a number&quot;)
+
+# ✅ This works
+product = Product(name=&quot;Test&quot;, price=9.99)
+</code></pre>
+<h3 id="performance-tips">Performance tips</h3>
+<ol>
+<li>Use batch operations (<code>insert_many</code>, <code>get_many</code>) for multiple documents</li>
+<li>Skip validation on reads for better performance (default behavior)</li>
+<li>Use TTL to automatically expire old data</li>
+<li>Use indexed fields for range queries</li>
+</ol>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li>Explore the <a href="../tutorial/defining-a-document/">tutorial</a> for in-depth guides</li>
+<li>Check out <a href="../CUSTOM_ENCODERS.md">custom encoders</a> for storing complex types</li>
+<li>Read the <a href="../README.md">README</a> for feature comparisons</li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

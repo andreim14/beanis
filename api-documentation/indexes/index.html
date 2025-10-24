@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Indexes - My Project</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">My Project</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../getting-started/" class="nav-link">Getting started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../tutorial/tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/defining-a-document/" class="dropdown-item">Defining a document</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/initialization/" class="dropdown-item">Initialization</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/inserting-into-the-database/" class="dropdown-item">Inserting into the database</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/finding-documents/" class="dropdown-item">Finding documents</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/updating-documents/" class="dropdown-item">Updating documents</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/deleting-documents/" class="dropdown-item">Deleting documents</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/event-based-actions/" class="dropdown-item">Event-based actions</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/custom-encoders/" class="dropdown-item">Custom encoders</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../document/" class="dropdown-item">Document</a>
+</li>
+                                    
+<li>
+    <a href="../interfaces/" class="dropdown-item">Interfaces</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../actions/" class="dropdown-item">Actions</a>
+</li>
+                                    
+<li>
+    <a href="../fields/" class="dropdown-item">Fields</a>
+</li>
+                                    
+<li>
+    <a href="../custom-encoders/" class="dropdown-item">Custom Encoders</a>
+</li>
+                                    
+<li>
+    <a href="../custom-types/" class="dropdown-item">Custom Types</a>
+</li>
+                                    
+<li>
+    <a href="../utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../development/" class="nav-link">Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../code-of-conduct/" class="nav-link">Code of conduct</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../changelog/" class="nav-link">Changelog</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../interfaces/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../actions/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#beanisodmindexes" class="nav-link">beanis.odm.indexes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><a id="beanis.odm.indexes"></a></p>
+<h2 id="beanisodmindexes">beanis.odm.indexes</h2>
+<blockquote>
+<p>Redis-based indexing system using Sets and Sorted Sets</p>
+<p>This module provides secondary indexing capabilities for Beanis documents
+using native Redis data structures:
+- Sets for categorical/string fields (exact match lookups)
+- Sorted Sets for numeric fields (range queries)</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.GeoPoint"></a></p>
+<h3 id="geopoint">GeoPoint</h3>
+<pre><code class="language-python">class GeoPoint(BaseModel)
+</code></pre>
+<blockquote>
+<p>Represents a geographic point with longitude and latitude</p>
+<p>Usage:
+    class Store(Document):
+        name: str
+        location: Indexed[GeoPoint]  # Geo index</p>
+<pre><code>store = Store(name="HQ", location=GeoPoint(longitude=-122.4, latitude=37.8))
+</code></pre>
+</blockquote>
+<p><a id="beanis.odm.indexes.GeoPoint.as_tuple"></a></p>
+<h4 id="geopointas_tuple">GeoPoint.as_tuple</h4>
+<pre><code class="language-python">def as_tuple() -&gt; Tuple[float, float]
+</code></pre>
+<blockquote>
+<p>Return (longitude, latitude) tuple for Redis GEOADD</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexType"></a></p>
+<h3 id="indextype">IndexType</h3>
+<pre><code class="language-python">class IndexType()
+</code></pre>
+<blockquote>
+<p>Types of indexes supported</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexType.SET"></a></p>
+<h4 id="indextypeset">IndexType.SET</h4>
+<blockquote>
+<p>For categorical/string fields (exact match)</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexType.SORTED_SET"></a></p>
+<h4 id="indextypesorted_set">IndexType.SORTED_SET</h4>
+<blockquote>
+<p>For numeric fields (range queries)</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexType.GEO"></a></p>
+<h4 id="indextypegeo">IndexType.GEO</h4>
+<blockquote>
+<p>For geo-spatial fields (location-based queries)</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexType.VECTOR"></a></p>
+<h4 id="indextypevector">IndexType.VECTOR</h4>
+<blockquote>
+<p>For vector similarity search (embeddings)</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexedField"></a></p>
+<h3 id="indexedfield">IndexedField</h3>
+<pre><code class="language-python">class IndexedField()
+</code></pre>
+<blockquote>
+<p>Marks a field as indexed for secondary index support</p>
+<p>Usage:
+    class Product(Document):
+        category: Annotated[str, IndexedField()]  # Set index
+        price: Annotated[float, IndexedField()]   # Sorted Set index
+        location: Annotated[GeoPoint, IndexedField()]  # Geo index</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexedField.__init__"></a></p>
+<h4 id="indexedfield__init__">IndexedField.__init__</h4>
+<pre><code class="language-python">def __init__(index_type: Optional[str] = None)
+</code></pre>
+<blockquote>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>index_type</code>: Type of index ("set", "zset", or "geo").
+If None, auto-detect based on field type</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.indexes.VectorField"></a></p>
+<h4 id="vectorfield">VectorField</h4>
+<pre><code class="language-python">def VectorField(dimensions: int,
+                algorithm: str = &quot;HNSW&quot;,
+                distance_metric: str = &quot;COSINE&quot;,
+                m: int = 16,
+                ef_construction: int = 200) -&gt; IndexedField
+</code></pre>
+<blockquote>
+<p>Helper to create a vector field for similarity search</p>
+<p>Usage:
+class Document(Document):
+embedding: Annotated[List[float], VectorField(dimensions=1024)]</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>dimensions</code> - Vector dimensionality (e.g., 1024 for Jina v4)</li>
+<li><code>algorithm</code> - "HNSW" (default) or "FLAT"</li>
+<li><code>distance_metric</code> - "COSINE" (default), "L2", or "IP" (inner product)</li>
+<li><code>m</code> - HNSW M parameter (connections per node)</li>
+<li><code>ef_construction</code> - HNSW ef_construction parameter</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexManager"></a></p>
+<h3 id="indexmanager">IndexManager</h3>
+<pre><code class="language-python">class IndexManager()
+</code></pre>
+<blockquote>
+<p>Manages secondary indexes for documents using Redis Sets and Sorted Sets</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexManager.get_index_key"></a></p>
+<h4 id="indexmanagerget_index_key">IndexManager.get_index_key</h4>
+<pre><code class="language-python">@staticmethod
+def get_index_key(document_class: Type,
+                  field_name: str,
+                  value: Any = None) -&gt; str
+</code></pre>
+<blockquote>
+<p>Generate Redis key for an index</p>
+<p>For Set indexes: idx:Product:category:electronics
+For Sorted Set indexes: idx:Product:price</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexManager.get_indexed_fields"></a></p>
+<h4 id="indexmanagerget_indexed_fields">IndexManager.get_indexed_fields</h4>
+<pre><code class="language-python">@staticmethod
+def get_indexed_fields(document_class: Type) -&gt; Dict[str, IndexedField]
+</code></pre>
+<blockquote>
+<p>Extract all indexed fields from a document class</p>
+<p>Returns dict: {field_name: IndexedField}</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexManager.determine_index_type"></a></p>
+<h4 id="indexmanagerdetermine_index_type">IndexManager.determine_index_type</h4>
+<pre><code class="language-python">@staticmethod
+def determine_index_type(document_class: Type, field_name: str,
+                         indexed_field: IndexedField) -&gt; str
+</code></pre>
+<blockquote>
+<p>Determine the index type based on field type</p>
+<ul>
+<li>Numeric types (int, float) -&gt; Sorted Set (zset)</li>
+<li>GeoPoint types -&gt; Geo index</li>
+<li>String/categorical types -&gt; Set</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexManager.add_to_index"></a></p>
+<h4 id="indexmanageradd_to_index">IndexManager.add_to_index</h4>
+<pre><code class="language-python">@staticmethod
+async def add_to_index(redis_client, document_class: Type, document_id: str,
+                       field_name: str, value: Any, index_type: str)
+</code></pre>
+<blockquote>
+<p>Add document ID to the appropriate index</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexManager.remove_from_index"></a></p>
+<h4 id="indexmanagerremove_from_index">IndexManager.remove_from_index</h4>
+<pre><code class="language-python">@staticmethod
+async def remove_from_index(redis_client, document_class: Type,
+                            document_id: str, field_name: str, value: Any,
+                            index_type: str)
+</code></pre>
+<blockquote>
+<p>Remove document ID from the appropriate index</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexManager.update_indexes"></a></p>
+<h4 id="indexmanagerupdate_indexes">IndexManager.update_indexes</h4>
+<pre><code class="language-python">@staticmethod
+async def update_indexes(redis_client, document_class: Type, document_id: str,
+                         old_values: Optional[Dict[str, Any]],
+                         new_values: Dict[str, Any])
+</code></pre>
+<blockquote>
+<p>Update all indexes when a document changes</p>
+<p>Uses Redis pipeline for batch operations (performance optimization)</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>old_values</code>: Previous field values (for removal from old indexes)</li>
+<li><code>new_values</code>: New field values (for adding to new indexes)</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexManager.remove_all_indexes"></a></p>
+<h4 id="indexmanagerremove_all_indexes">IndexManager.remove_all_indexes</h4>
+<pre><code class="language-python">@staticmethod
+async def remove_all_indexes(redis_client, document_class: Type,
+                             document_id: str, values: Dict[str, Any])
+</code></pre>
+<blockquote>
+<p>Remove document from all indexes (for deletion)
+Uses Redis pipeline for batch operations (performance optimization)</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexManager.find_by_index"></a></p>
+<h4 id="indexmanagerfind_by_index">IndexManager.find_by_index</h4>
+<pre><code class="language-python">@staticmethod
+async def find_by_index(redis_client,
+                        document_class: Type,
+                        field_name: str,
+                        value: Any = None,
+                        min_value: Any = None,
+                        max_value: Any = None) -&gt; List[str]
+</code></pre>
+<blockquote>
+<p>Find document IDs using an index</p>
+<p>For Set indexes (categorical):
+    find_by_index(redis, Product, "category", value="electronics")</p>
+<p>For Sorted Set indexes (numeric range):
+    find_by_index(redis, Product, "price", min_value=10, max_value=100)</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexManager.find_by_geo_radius"></a></p>
+<h4 id="indexmanagerfind_by_geo_radius">IndexManager.find_by_geo_radius</h4>
+<pre><code class="language-python">@staticmethod
+async def find_by_geo_radius(redis_client,
+                             document_class: Type,
+                             field_name: str,
+                             longitude: float,
+                             latitude: float,
+                             radius: float,
+                             unit: str = &quot;km&quot;) -&gt; List[str]
+</code></pre>
+<blockquote>
+<p>Find document IDs within a radius of a geo location</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>field_name</code>: Name of the geo-indexed field</li>
+<li><code>longitude</code>: Center point longitude</li>
+<li><code>latitude</code>: Center point latitude</li>
+<li><code>radius</code>: Search radius</li>
+<li><code>unit</code>: Distance unit - 'm', 'km', 'mi', 'ft' (default: 'km')
+Usage:
+    nearby = await IndexManager.find_by_geo_radius(
+        redis_client, Store, "location",
+        longitude=-122.4, latitude=37.8,
+        radius=10, unit="km"
+    )</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexManager.find_by_geo_radius_with_distance"></a></p>
+<h4 id="indexmanagerfind_by_geo_radius_with_distance">IndexManager.find_by_geo_radius_with_distance</h4>
+<pre><code class="language-python">@staticmethod
+async def find_by_geo_radius_with_distance(
+        redis_client,
+        document_class: Type,
+        field_name: str,
+        longitude: float,
+        latitude: float,
+        radius: float,
+        unit: str = &quot;km&quot;) -&gt; List[Tuple[str, float]]
+</code></pre>
+<blockquote>
+<p>Find document IDs within a radius with their distances</p>
+<p>Returns list of (document_id, distance) tuples</p>
+<p>Usage:
+    nearby = await IndexManager.find_by_geo_radius_with_distance(
+        redis_client, Store, "location",
+        longitude=-122.4, latitude=37.8,
+        radius=10, unit="km"
+    )
+    for doc_id, distance in nearby:
+        print(f"{doc_id}: {distance} km away")</p>
+</blockquote>
+<p><a id="beanis.odm.indexes.IndexManager.find_by_vector_similarity"></a></p>
+<h4 id="indexmanagerfind_by_vector_similarity">IndexManager.find_by_vector_similarity</h4>
+<pre><code class="language-python">@staticmethod
+async def find_by_vector_similarity(
+        redis_client,
+        document_class: Type,
+        field_name: str,
+        query_vector: List[float],
+        k: int = 10,
+        ef_runtime: Optional[int] = None) -&gt; List[Tuple[str, float]]
+</code></pre>
+<blockquote>
+<p>Find document IDs by vector similarity (KNN search)</p>
+<p>Returns list of (document_id, similarity_score) tuples sorted by similarity</p>
+<p>Usage:
+query_embedding = model.encode(["search text"])[0].tolist()
+results = await IndexManager.find_by_vector_similarity(
+redis_client, Document, "embedding",
+query_vector=query_embedding,
+k=5
+)
+for doc_id, score in results:
+doc = await Document.get(doc_id)
+print(f"{doc.text}: {score}")</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>redis_client</code> - Redis client instance</li>
+<li><code>document_class</code> - Document class to search</li>
+<li><code>field_name</code> - Name of the vector field</li>
+<li><code>query_vector</code> - Query vector as list of floats</li>
+<li><code>k</code> - Number of results to return</li>
+<li><code>ef_runtime</code> - HNSW ef_runtime parameter (optional, for tuning)</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.indexes.Indexed"></a></p>
+<h4 id="indexed">Indexed</h4>
+<pre><code class="language-python">def Indexed(field_type: Type, **kwargs) -&gt; Type
+</code></pre>
+<blockquote>
+<p>Helper function to create an indexed field</p>
+<p>Usage:
+    class Product(Document):
+        category: Indexed[str]  # Set index
+        price: Indexed[float]   # Sorted Set index</p>
+</blockquote></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

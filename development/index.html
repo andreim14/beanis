@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Development - My Project</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">My Project</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../getting-started/" class="nav-link">Getting started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../tutorial/tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/defining-a-document/" class="dropdown-item">Defining a document</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/initialization/" class="dropdown-item">Initialization</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/inserting-into-the-database/" class="dropdown-item">Inserting into the database</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/finding-documents/" class="dropdown-item">Finding documents</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/updating-documents/" class="dropdown-item">Updating documents</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/deleting-documents/" class="dropdown-item">Deleting documents</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/event-based-actions/" class="dropdown-item">Event-based actions</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/custom-encoders/" class="dropdown-item">Custom encoders</a>
+</li>
+                                    
+<li>
+    <a href="../tutorial/geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../api-documentation/document/" class="dropdown-item">Document</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/interfaces/" class="dropdown-item">Interfaces</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/actions/" class="dropdown-item">Actions</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/fields/" class="dropdown-item">Fields</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/custom-encoders/" class="dropdown-item">Custom Encoders</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/custom-types/" class="dropdown-item">Custom Types</a>
+</li>
+                                    
+<li>
+    <a href="../api-documentation/utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./" class="nav-link active" aria-current="page">Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../code-of-conduct/" class="nav-link">Code of conduct</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../changelog/" class="nav-link">Changelog</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../api-documentation/utils/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../code-of-conduct/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#development" class="nav-link">Development</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#setting-up-the-development-environment" class="nav-link">Setting up the development environment</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#testing" class="nav-link">Testing</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#submitting-new-code" class="nav-link">Submitting new code</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#working-on-the-documentation" class="nav-link">Working on the documentation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#project-structure" class="nav-link">Project structure</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#contributing-guidelines" class="nav-link">Contributing guidelines</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#performance-considerations" class="nav-link">Performance considerations</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#questions" class="nav-link">Questions?</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="development">Development</h1>
+<p>Hopefully, you have landed here because you would like to help out with the development of Beanis. Whether through adding new features, fixing bugs, or extending documentation, your help is really appreciated! Please read this page carefully. If you have any questions, open an issue on <a href="https://github.com/andreim14/beanis/issues">GitHub</a>.</p>
+<p>Also, please read the <a href="../code-of-conduct/">Code of Conduct</a>.</p>
+<h2 id="setting-up-the-development-environment">Setting up the development environment</h2>
+<p>We assume you are familiar with the general forking and pull request workflow for submitting to open-source projects. If not, don't worry, there are plenty of good guides available. Maybe check out <a href="https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow">this one</a>.</p>
+<p>All the dependencies and build configs are set in the <code>pyproject.toml</code> file. There are two main dependency sections there:</p>
+<ul>
+<li>dependencies: for the dependencies required to run Beanis</li>
+<li>test: for the dependencies required to run tests</li>
+</ul>
+<p>To install all required dependencies, including test dependencies, in a virtual environment, run the following command in the root directory of the Beanis project:</p>
+<pre><code class="language-shell">pip install -e .[test]
+</code></pre>
+<h3 id="redis-connection">Redis connection</h3>
+<p>To run tests and use Beanis in general, you will need an accessible Redis database. All tests assume that the database is hosted locally on port <code>6379</code> and do not require authentication.</p>
+<p>You can run Redis locally using Docker:</p>
+<pre><code class="language-shell">docker run -d -p 6379:6379 redis:latest
+</code></pre>
+<p>Or install Redis natively:
+- <strong>macOS</strong>: <code>brew install redis &amp;&amp; brew services start redis</code>
+- <strong>Linux</strong>: <code>sudo apt-get install redis-server &amp;&amp; sudo service redis-server start</code>
+- <strong>Windows</strong>: Use <a href="https://redis.io/docs/getting-started/installation/install-redis-on-windows/">Redis on Windows</a></p>
+<h2 id="testing">Testing</h2>
+<p>Beanis uses <a href="https://docs.pytest.org">pytest</a> for unit testing. To ensure the stability of Beanis, each added feature must be tested in a separate unit test, even if it looks like other tests are covering it now. This strategy guarantees that:</p>
+<ul>
+<li>All the features will be covered and stay covered.</li>
+<li>There is independence from other features and test cases.</li>
+</ul>
+<p>To run the test suite, make sure that you have Redis running and run <code>pytest</code>:</p>
+<pre><code class="language-shell">pytest
+</code></pre>
+<p>To run tests with coverage:</p>
+<pre><code class="language-shell">pytest --cov=beanis --cov-report=html
+</code></pre>
+<h2 id="submitting-new-code">Submitting new code</h2>
+<p>You can submit your changes through a pull request on GitHub. Please take into account the following sections.</p>
+<h3 id="use-pre-commit">Use pre-commit</h3>
+<p>To ensure code consistency, Beanis uses Black and Ruff through pre-commit. To set it up, run:</p>
+<pre><code class="language-shell">pre-commit install
+</code></pre>
+<p>This will add the pre-commit command to your git's pre-commit hooks and make sure you never forget to run these.</p>
+<h3 id="single-commit">Single commit</h3>
+<p>To make the pull request reviewing easier and keep the version tree clean, your pull request should consist of a single commit. It is natural that your branch might contain multiple commits, so you will need to squash these into a single commit. Instructions can be found <a href="https://www.internalpointers.com/post/squash-commits-into-one-git">here</a> or <a href="https://medium.com/@slamflipstrom/a-beginners-guide-to-squashing-commits-with-git-rebase-8185cf6e62ec">here</a>.</p>
+<h3 id="add-documentation">Add documentation</h3>
+<p>Please write clear documentation for any new functionality you add. Docstrings will be converted to the API documentation, but more human-friendly documentation might also be needed! See the section below.</p>
+<h3 id="add-tests">Add tests</h3>
+<p>All new features and bug fixes must include tests. Tests should:
+- Be isolated and independent
+- Cover both success and failure cases
+- Use descriptive names
+- Clean up after themselves (delete test data)</p>
+<h2 id="working-on-the-documentation">Working on the documentation</h2>
+<p>The documentation is located in the <code>docs/</code> folder and written in Markdown.</p>
+<h3 id="documentation-structure">Documentation structure</h3>
+<ul>
+<li><code>docs/index.md</code> - Main documentation landing page</li>
+<li><code>docs/getting-started.md</code> - Getting started guide</li>
+<li><code>docs/tutorial/</code> - Step-by-step tutorials</li>
+<li><code>docs/api/</code> - API reference (auto-generated)</li>
+</ul>
+<h3 id="regenerating-api-documentation">Regenerating API documentation</h3>
+<p>The API documentation in <code>docs/api/</code> is auto-generated from docstrings in the source code using <a href="https://niklasrosenstein.github.io/pydoc-markdown/">pydoc-markdown</a>.</p>
+<p>To regenerate the API documentation after updating docstrings:</p>
+<pre><code class="language-shell">pydoc-markdown
+</code></pre>
+<p>This will:
+1. Extract docstrings from the <code>beanis</code> package
+2. Generate markdown files in <code>docs/build/content/api-documentation/</code>
+3. Copy the files to <code>docs/api/</code></p>
+<p>The configuration is in <code>pydoc-markdown.yml</code>. If you add new modules, update this file accordingly.</p>
+<h3 id="preview-documentation-locally">Preview documentation locally</h3>
+<p>You can preview documentation changes by serving the <code>docs/</code> folder with any static file server:</p>
+<pre><code class="language-shell"># Using Python's built-in server
+cd docs &amp;&amp; python -m http.server 8000
+</code></pre>
+<p>Then visit <code>http://localhost:8000</code> in your browser.</p>
+<h2 id="project-structure">Project structure</h2>
+<pre><code>beanis/
+├── beanis/               # Main package
+│   ├── odm/              # ODM core
+│   │   ├── documents.py  # Document base class
+│   │   ├── fields.py     # Field types
+│   │   ├── operators/    # Query operators
+│   │   ├── queries/      # Query builders
+│   │   └── utils/        # Utilities (encoder, decoder)
+│   └── executors/        # Background executors
+├── tests/                # Test suite
+│   ├── odm/              # ODM tests
+│   ├── migrations/       # Migration tests (legacy)
+│   └── fastapi/          # FastAPI integration tests
+├── docs/                 # Documentation
+└── benchmarks/           # Performance benchmarks
+</code></pre>
+<h2 id="contributing-guidelines">Contributing guidelines</h2>
+<h3 id="code-style">Code style</h3>
+<ul>
+<li>Follow PEP 8</li>
+<li>Use type hints for all functions</li>
+<li>Write docstrings for public APIs</li>
+<li>Keep functions small and focused</li>
+</ul>
+<h3 id="git-commit-messages">Git commit messages</h3>
+<ul>
+<li>Use present tense ("Add feature" not "Added feature")</li>
+<li>Use imperative mood ("Move cursor to..." not "Moves cursor to...")</li>
+<li>First line should be 50 characters or less</li>
+<li>Reference issues and pull requests liberally</li>
+</ul>
+<p>Example:</p>
+<pre><code>Add custom encoder support for NumPy arrays
+
+- Register encoders/decoders for custom types
+- Store type metadata with encoded values
+- Auto-register NumPy and PyTorch types
+
+Fixes #123
+</code></pre>
+<h3 id="pull-request-process">Pull request process</h3>
+<ol>
+<li>Fork the repository</li>
+<li>Create a feature branch (<code>git checkout -b feature/amazing-feature</code>)</li>
+<li>Make your changes</li>
+<li>Add tests for your changes</li>
+<li>Run tests (<code>pytest</code>)</li>
+<li>Run pre-commit checks (<code>pre-commit run --all-files</code>)</li>
+<li>Commit your changes</li>
+<li>Push to your fork (<code>git push origin feature/amazing-feature</code>)</li>
+<li>Open a pull request</li>
+</ol>
+<h2 id="performance-considerations">Performance considerations</h2>
+<p>When contributing, keep these performance tips in mind:</p>
+<ol>
+<li><strong>Use Redis pipelines</strong> - Batch operations when possible</li>
+<li><strong>Minimize Redis round trips</strong> - Fetch data in bulk</li>
+<li><strong>Profile changes</strong> - Run benchmarks for performance-critical code</li>
+<li><strong>Avoid unnecessary validation</strong> - Skip validation on reads when safe</li>
+<li><strong>Use msgspec</strong> - It's 2x faster than orjson for serialization</li>
+</ol>
+<p>Run benchmarks:</p>
+<pre><code class="language-shell">python benchmarks/benchmark_vs_plain_redis.py
+</code></pre>
+<h2 id="questions">Questions?</h2>
+<p>If you have questions about contributing, please:</p>
+<ol>
+<li>Check existing <a href="https://github.com/andreim14/beanis/issues">GitHub issues</a></li>
+<li>Open a new issue with the <code>question</code> label</li>
+<li>Provide context and examples</li>
+</ol>
+<p>Thank you for contributing to Beanis! 🎉</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

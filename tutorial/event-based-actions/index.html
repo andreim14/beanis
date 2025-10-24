@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Event-based actions - My Project</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">My Project</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../getting-started/" class="nav-link">Getting started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../defining-a-document/" class="dropdown-item">Defining a document</a>
+</li>
+                                    
+<li>
+    <a href="../initialization/" class="dropdown-item">Initialization</a>
+</li>
+                                    
+<li>
+    <a href="../inserting-into-the-database/" class="dropdown-item">Inserting into the database</a>
+</li>
+                                    
+<li>
+    <a href="../finding-documents/" class="dropdown-item">Finding documents</a>
+</li>
+                                    
+<li>
+    <a href="../updating-documents/" class="dropdown-item">Updating documents</a>
+</li>
+                                    
+<li>
+    <a href="../deleting-documents/" class="dropdown-item">Deleting documents</a>
+</li>
+                                    
+<li>
+    <a href="../indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Event-based actions</a>
+</li>
+                                    
+<li>
+    <a href="../custom-encoders/" class="dropdown-item">Custom encoders</a>
+</li>
+                                    
+<li>
+    <a href="../geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../api-documentation/document/" class="dropdown-item">Document</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/interfaces/" class="dropdown-item">Interfaces</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/actions/" class="dropdown-item">Actions</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/fields/" class="dropdown-item">Fields</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/custom-encoders/" class="dropdown-item">Custom Encoders</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/custom-types/" class="dropdown-item">Custom Types</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../development/" class="nav-link">Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../code-of-conduct/" class="nav-link">Code of conduct</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../changelog/" class="nav-link">Changelog</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../indexes/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../custom-encoders/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#event-hooks-actions" class="nav-link">Event Hooks (Actions)</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#overview" class="nav-link">Overview</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#available-events" class="nav-link">Available Events</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#basic-usage" class="nav-link">Basic Usage</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#multiple-hooks" class="nav-link">Multiple Hooks</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#hook-types" class="nav-link">Hook Types</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#common-use-cases" class="nav-link">Common Use Cases</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#hook-execution-order" class="nav-link">Hook Execution Order</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#error-handling" class="nav-link">Error Handling</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#performance-considerations" class="nav-link">Performance Considerations</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#best-practices" class="nav-link">Best Practices</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#next-steps" class="nav-link">Next Steps</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="event-hooks-actions">Event Hooks (Actions)</h1>
+<p>Beanis provides event hooks that allow you to run custom logic before and after document operations.</p>
+<h2 id="overview">Overview</h2>
+<p>Event hooks enable you to:
+- Validate data before saving
+- Transform data before insertion
+- Log operations
+- Trigger side effects
+- Maintain custom indexes
+- Send notifications</p>
+<h2 id="available-events">Available Events</h2>
+<p>Beanis supports hooks for these operations:</p>
+<ul>
+<li><code>Insert</code> - When inserting new documents</li>
+<li><code>Update</code> - When updating existing documents</li>
+<li><code>Delete</code> - When deleting documents</li>
+<li><code>Save</code> - When saving (insert or update)</li>
+</ul>
+<h2 id="basic-usage">Basic Usage</h2>
+<h3 id="before-event-hooks">Before Event Hooks</h3>
+<p>Run logic <strong>before</strong> an operation:</p>
+<pre><code class="language-python">from beanis import Document, before_event, Insert
+
+class Product(Document):
+    name: str
+    price: float
+
+    @before_event(Insert)
+    async def validate_price(self):
+        &quot;&quot;&quot;Validate price before inserting&quot;&quot;&quot;
+        if self.price &lt; 0:
+            raise ValueError(&quot;Price cannot be negative&quot;)
+        if self.price &gt; 10000:
+            raise ValueError(&quot;Price too high&quot;)
+
+# This will raise ValueError
+product = Product(name=&quot;Test&quot;, price=-5.0)
+await product.insert()  # ❌ ValueError: Price cannot be negative
+</code></pre>
+<h3 id="after-event-hooks">After Event Hooks</h3>
+<p>Run logic <strong>after</strong> an operation:</p>
+<pre><code class="language-python">from beanis import Document, after_event, Insert
+from datetime import datetime
+
+class Product(Document):
+    name: str
+    price: float
+
+    @after_event(Insert)
+    async def log_creation(self):
+        &quot;&quot;&quot;Log after successful insert&quot;&quot;&quot;
+        print(f&quot;Created product '{self.name}' at {datetime.now()}&quot;)
+
+product = Product(name=&quot;Laptop&quot;, price=999.99)
+await product.insert()
+# Output: Created product 'Laptop' at 2025-01-15 10:30:00
+</code></pre>
+<h2 id="multiple-hooks">Multiple Hooks</h2>
+<p>You can attach multiple hooks to the same event:</p>
+<pre><code class="language-python">from beanis import Document, before_event, after_event, Insert
+
+class Product(Document):
+    name: str
+    price: float
+    created_at: datetime = None
+
+    @before_event(Insert)
+    async def set_timestamp(self):
+        &quot;&quot;&quot;Set creation timestamp&quot;&quot;&quot;
+        self.created_at = datetime.now()
+
+    @before_event(Insert)
+    async def validate_price(self):
+        &quot;&quot;&quot;Validate price&quot;&quot;&quot;
+        if self.price &lt; 0:
+            raise ValueError(&quot;Price must be positive&quot;)
+
+    @after_event(Insert)
+    async def log_creation(self):
+        &quot;&quot;&quot;Log after insert&quot;&quot;&quot;
+        print(f&quot;Created: {self.name}&quot;)
+
+    @after_event(Insert)
+    async def send_notification(self):
+        &quot;&quot;&quot;Send notification&quot;&quot;&quot;
+        # Send to analytics, message queue, etc.
+        pass
+
+# All hooks run in order
+await product.insert()
+</code></pre>
+<p><strong>Execution order</strong>: Hooks run in the order they're defined in the class.</p>
+<h2 id="hook-types">Hook Types</h2>
+<h3 id="insert-hooks">Insert Hooks</h3>
+<p>Triggered when inserting new documents:</p>
+<pre><code class="language-python">from beanis import before_event, after_event, Insert
+
+class Product(Document):
+    name: str
+    slug: str = &quot;&quot;
+
+    @before_event(Insert)
+    async def generate_slug(self):
+        &quot;&quot;&quot;Auto-generate slug from name&quot;&quot;&quot;
+        self.slug = self.name.lower().replace(&quot; &quot;, &quot;-&quot;)
+
+    @after_event(Insert)
+    async def index_for_search(self):
+        &quot;&quot;&quot;Add to external search index&quot;&quot;&quot;
+        # Add to Elasticsearch, Algolia, etc.
+        pass
+
+product = Product(name=&quot;Tony's Chocolonely&quot;, price=5.95)
+await product.insert()
+print(product.slug)  # &quot;tony's-chocolonely&quot;
+</code></pre>
+<h3 id="update-hooks">Update Hooks</h3>
+<p>Triggered when updating existing documents:</p>
+<pre><code class="language-python">from beanis import before_event, after_event, Update
+
+class Product(Document):
+    name: str
+    price: float
+    updated_at: datetime = None
+
+    @before_event(Update)
+    async def set_updated_timestamp(self):
+        &quot;&quot;&quot;Update timestamp on every update&quot;&quot;&quot;
+        self.updated_at = datetime.now()
+
+    @after_event(Update)
+    async def invalidate_cache(self):
+        &quot;&quot;&quot;Clear cache after update&quot;&quot;&quot;
+        # Clear Redis cache, CDN, etc.
+        pass
+
+product = await Product.get(&quot;prod_123&quot;)
+await product.update(price=7.99)
+print(product.updated_at)  # 2025-01-15 10:35:00
+</code></pre>
+<h3 id="save-hooks">Save Hooks</h3>
+<p>Triggered by <code>save()</code> method (insert OR update):</p>
+<pre><code class="language-python">from beanis import before_event, after_event, Save
+
+class Product(Document):
+    name: str
+    price: float
+
+    @before_event(Save)
+    async def validate_data(self):
+        &quot;&quot;&quot;Runs on both insert and update&quot;&quot;&quot;
+        if self.price &lt; 0:
+            raise ValueError(&quot;Invalid price&quot;)
+
+    @after_event(Save)
+    async def log_save(self):
+        &quot;&quot;&quot;Log all saves&quot;&quot;&quot;
+        print(f&quot;Saved product {self.id}&quot;)
+
+# Works for both
+product = Product(name=&quot;New&quot;, price=9.99)
+await product.save()  # Insert - hooks run
+
+product.price = 12.99
+await product.save()  # Update - hooks run again
+</code></pre>
+<h3 id="delete-hooks">Delete Hooks</h3>
+<p>Triggered when deleting documents:</p>
+<pre><code class="language-python">from beanis import before_event, after_event, Delete
+
+class Product(Document):
+    name: str
+
+    @before_event(Delete)
+    async def backup_before_delete(self):
+        &quot;&quot;&quot;Backup before deletion&quot;&quot;&quot;
+        # Save to backup storage
+        print(f&quot;Backing up product: {self.name}&quot;)
+
+    @after_event(Delete)
+    async def cleanup_resources(self):
+        &quot;&quot;&quot;Clean up related resources&quot;&quot;&quot;
+        # Delete images, clear cache, etc.
+        print(f&quot;Cleaned up resources for {self.id}&quot;)
+
+product = await Product.get(&quot;prod_123&quot;)
+await product.delete_self()
+# Output: Backing up product: Laptop
+#         Cleaned up resources for prod_123
+</code></pre>
+<h2 id="common-use-cases">Common Use Cases</h2>
+<h3 id="auto-timestamps">Auto-Timestamps</h3>
+<pre><code class="language-python">from datetime import datetime
+from beanis import Document, before_event, Insert, Update
+
+class Product(Document):
+    name: str
+    created_at: datetime = None
+    updated_at: datetime = None
+
+    @before_event(Insert)
+    async def set_created_at(self):
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+
+    @before_event(Update)
+    async def set_updated_at(self):
+        self.updated_at = datetime.now()
+
+product = Product(name=&quot;Test&quot;, price=9.99)
+await product.insert()
+print(product.created_at)  # 2025-01-15 10:00:00
+
+await asyncio.sleep(2)
+await product.update(price=12.99)
+print(product.updated_at)  # 2025-01-15 10:00:02
+</code></pre>
+<h3 id="slug-generation">Slug Generation</h3>
+<pre><code class="language-python">import re
+from beanis import Document, before_event, Insert, Update
+
+class Product(Document):
+    name: str
+    slug: str = &quot;&quot;
+
+    @before_event(Insert, Update)
+    async def generate_slug(self):
+        &quot;&quot;&quot;Auto-generate URL-safe slug&quot;&quot;&quot;
+        slug = self.name.lower()
+        slug = re.sub(r'[^a-z0-9]+', '-', slug)
+        slug = slug.strip('-')
+        self.slug = slug
+
+product = Product(name=&quot;Tony's Chocolonely!&quot;, price=5.95)
+await product.insert()
+print(product.slug)  # &quot;tony-s-chocolonely&quot;
+</code></pre>
+<h3 id="data-validation">Data Validation</h3>
+<pre><code class="language-python">from beanis import Document, before_event, Insert, Update
+
+class Product(Document):
+    name: str
+    price: float
+    stock: int
+
+    @before_event(Insert, Update)
+    async def validate_business_rules(self):
+        &quot;&quot;&quot;Complex validation logic&quot;&quot;&quot;
+        if self.price &lt; 0:
+            raise ValueError(&quot;Price must be positive&quot;)
+
+        if self.stock &lt; 0:
+            raise ValueError(&quot;Stock cannot be negative&quot;)
+
+        if self.price &gt; 10000 and self.stock &gt; 1000:
+            raise ValueError(&quot;High-value + high-stock needs approval&quot;)
+
+        # Normalize name
+        self.name = self.name.strip().title()
+
+product = Product(name=&quot;  laptop  &quot;, price=999, stock=50)
+await product.insert()
+print(product.name)  # &quot;Laptop&quot;
+</code></pre>
+<h3 id="audit-trail">Audit Trail</h3>
+<pre><code class="language-python">from datetime import datetime
+from typing import Optional
+
+class AuditLog(Document):
+    entity_type: str
+    entity_id: str
+    action: str
+    timestamp: datetime
+    data: dict
+
+    class Settings:
+        name = &quot;audit_logs&quot;
+
+class Product(Document):
+    name: str
+    price: float
+
+    @after_event(Insert)
+    async def log_insert(self):
+        await AuditLog(
+            entity_type=&quot;Product&quot;,
+            entity_id=self.id,
+            action=&quot;INSERT&quot;,
+            timestamp=datetime.now(),
+            data={&quot;name&quot;: self.name, &quot;price&quot;: self.price}
+        ).insert()
+
+    @after_event(Update)
+    async def log_update(self):
+        await AuditLog(
+            entity_type=&quot;Product&quot;,
+            entity_id=self.id,
+            action=&quot;UPDATE&quot;,
+            timestamp=datetime.now(),
+            data={&quot;name&quot;: self.name, &quot;price&quot;: self.price}
+        ).insert()
+
+    @after_event(Delete)
+    async def log_delete(self):
+        await AuditLog(
+            entity_type=&quot;Product&quot;,
+            entity_id=self.id,
+            action=&quot;DELETE&quot;,
+            timestamp=datetime.now(),
+            data={}
+        ).insert()
+
+# All operations are logged
+product = Product(name=&quot;Test&quot;, price=9.99)
+await product.insert()  # Creates audit log
+
+await product.update(price=12.99)  # Creates audit log
+
+await product.delete_self()  # Creates audit log
+</code></pre>
+<h3 id="custom-secondary-indexes">Custom Secondary Indexes</h3>
+<pre><code class="language-python">from beanis import Document, after_event, Insert, Update, Delete
+
+class Product(Document):
+    name: str
+    tags: list[str]
+
+    @after_event(Insert, Update)
+    async def index_tags(self):
+        &quot;&quot;&quot;Maintain custom tag indexes&quot;&quot;&quot;
+        # Add to Redis sets for each tag
+        for tag in self.tags:
+            await self._database.sadd(f&quot;tag_index:{tag}&quot;, self.id)
+
+    @after_event(Delete)
+    async def cleanup_tag_indexes(self):
+        &quot;&quot;&quot;Remove from tag indexes&quot;&quot;&quot;
+        for tag in self.tags:
+            await self._database.srem(f&quot;tag_index:{tag}&quot;, self.id)
+
+# Tags are automatically indexed
+product = Product(name=&quot;Laptop&quot;, tags=[&quot;electronics&quot;, &quot;computers&quot;])
+await product.insert()
+
+# Find products by tag (using custom index)
+laptop_ids = await Product._database.smembers(&quot;tag_index:electronics&quot;)
+laptops = await Product.get_many(list(laptop_ids))
+</code></pre>
+<h3 id="notification-system">Notification System</h3>
+<pre><code class="language-python">from beanis import Document, after_event, Insert, Update
+
+class Product(Document):
+    name: str
+    price: float
+    stock: int
+
+    @after_event(Update)
+    async def check_low_stock(self):
+        &quot;&quot;&quot;Send alert if stock is low&quot;&quot;&quot;
+        if self.stock &lt; 10:
+            await self.send_alert(
+                f&quot;Low stock alert: {self.name} has {self.stock} units&quot;
+            )
+
+    @after_event(Update)
+    async def check_price_drop(self):
+        &quot;&quot;&quot;Notify customers of price drop&quot;&quot;&quot;
+        # Get old price from Redis
+        old_data = await self._database.hgetall(f&quot;Product:{self.id}&quot;)
+        old_price = float(old_data.get(&quot;price&quot;, self.price))
+
+        if self.price &lt; old_price * 0.9:  # 10% drop
+            await self.send_alert(
+                f&quot;Price drop: {self.name} now ${self.price}&quot;
+            )
+
+    async def send_alert(self, message: str):
+        &quot;&quot;&quot;Send alert via your notification system&quot;&quot;&quot;
+        print(f&quot;ALERT: {message}&quot;)
+        # Send to email, SMS, push notification, etc.
+
+product = await Product.get(&quot;prod_123&quot;)
+await product.update(stock=5)
+# Output: ALERT: Low stock alert: Laptop has 5 units
+
+await product.update(price=499.99)  # Down from $999
+# Output: ALERT: Price drop: Laptop now $499.99
+</code></pre>
+<h2 id="hook-execution-order">Hook Execution Order</h2>
+<p>When multiple hooks are present:</p>
+<ol>
+<li><strong>Before hooks</strong> run first (in definition order)</li>
+<li><strong>Operation executes</strong> (insert/update/delete)</li>
+<li><strong>After hooks</strong> run last (in definition order)</li>
+</ol>
+<pre><code class="language-python">class Product(Document):
+    name: str
+
+    @before_event(Insert)
+    async def hook1(self):
+        print(&quot;1. Before Insert - First&quot;)
+
+    @before_event(Insert)
+    async def hook2(self):
+        print(&quot;2. Before Insert - Second&quot;)
+
+    @after_event(Insert)
+    async def hook3(self):
+        print(&quot;4. After Insert - First&quot;)
+
+    @after_event(Insert)
+    async def hook4(self):
+        print(&quot;5. After Insert - Second&quot;)
+
+await product.insert()
+# Output:
+# 1. Before Insert - First
+# 2. Before Insert - Second
+# 3. [INSERT OPERATION]
+# 4. After Insert - First
+# 5. After Insert - Second
+</code></pre>
+<h2 id="error-handling">Error Handling</h2>
+<p>If a <strong>before hook</strong> raises an exception, the operation is <strong>aborted</strong>:</p>
+<pre><code class="language-python">class Product(Document):
+    price: float
+
+    @before_event(Insert)
+    async def validate_price(self):
+        if self.price &lt; 0:
+            raise ValueError(&quot;Invalid price&quot;)
+
+try:
+    product = Product(price=-5.0)
+    await product.insert()
+except ValueError as e:
+    print(f&quot;Insert failed: {e}&quot;)
+    # Document was NOT inserted
+</code></pre>
+<p>If an <strong>after hook</strong> raises an exception, the operation <strong>already completed</strong>:</p>
+<pre><code class="language-python">class Product(Document):
+    name: str
+
+    @after_event(Insert)
+    async def send_notification(self):
+        raise Exception(&quot;Notification failed&quot;)
+
+try:
+    product = Product(name=&quot;Test&quot;)
+    await product.insert()
+except Exception as e:
+    print(f&quot;After hook failed: {e}&quot;)
+    # But document WAS inserted successfully
+</code></pre>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<ol>
+<li><strong>Keep hooks fast</strong> - They run synchronously with operations</li>
+<li><strong>Use after hooks for slow tasks</strong> - Don't block the operation</li>
+<li><strong>Consider background tasks</strong> - For heavy processing</li>
+<li><strong>Avoid circular dependencies</strong> - Hook calling save() on same document</li>
+</ol>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Use before hooks for validation</strong> - Prevent bad data from reaching Redis</li>
+<li><strong>Use after hooks for side effects</strong> - Notifications, logging, etc.</li>
+<li><strong>Keep hooks simple</strong> - One clear responsibility per hook</li>
+<li><strong>Handle errors gracefully</strong> - Especially in after hooks</li>
+<li><strong>Document hook behavior</strong> - Make it clear what hooks do</li>
+<li><strong>Test hooks separately</strong> - Unit test hook logic</li>
+</ol>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li><a href="insert.md">Insert Operations</a> - Using hooks with inserts</li>
+<li><a href="update.md">Update Operations</a> - Using hooks with updates</li>
+<li><a href="delete.md">Delete Operations</a> - Using hooks with deletes</li>
+<li><a href="../CUSTOM_ENCODERS.md">Custom Encoders</a> - Transform data in hooks</li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

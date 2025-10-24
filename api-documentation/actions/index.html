@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Actions - My Project</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">My Project</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../getting-started/" class="nav-link">Getting started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../tutorial/tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/defining-a-document/" class="dropdown-item">Defining a document</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/initialization/" class="dropdown-item">Initialization</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/inserting-into-the-database/" class="dropdown-item">Inserting into the database</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/finding-documents/" class="dropdown-item">Finding documents</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/updating-documents/" class="dropdown-item">Updating documents</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/deleting-documents/" class="dropdown-item">Deleting documents</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/event-based-actions/" class="dropdown-item">Event-based actions</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/custom-encoders/" class="dropdown-item">Custom encoders</a>
+</li>
+                                    
+<li>
+    <a href="../../tutorial/geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../document/" class="dropdown-item">Document</a>
+</li>
+                                    
+<li>
+    <a href="../interfaces/" class="dropdown-item">Interfaces</a>
+</li>
+                                    
+<li>
+    <a href="../indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Actions</a>
+</li>
+                                    
+<li>
+    <a href="../fields/" class="dropdown-item">Fields</a>
+</li>
+                                    
+<li>
+    <a href="../custom-encoders/" class="dropdown-item">Custom Encoders</a>
+</li>
+                                    
+<li>
+    <a href="../custom-types/" class="dropdown-item">Custom Types</a>
+</li>
+                                    
+<li>
+    <a href="../utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../development/" class="nav-link">Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../code-of-conduct/" class="nav-link">Code of conduct</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../changelog/" class="nav-link">Changelog</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../indexes/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../fields/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#beanisodmactions" class="nav-link">beanis.odm.actions</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><a id="beanis.odm.actions"></a></p>
+<h2 id="beanisodmactions">beanis.odm.actions</h2>
+<p><a id="beanis.odm.actions.ActionRegistry"></a></p>
+<h3 id="actionregistry">ActionRegistry</h3>
+<pre><code class="language-python">class ActionRegistry()
+</code></pre>
+<p><a id="beanis.odm.actions.ActionRegistry.add_action"></a></p>
+<h4 id="actionregistryadd_action">ActionRegistry.add_action</h4>
+<pre><code class="language-python">@classmethod
+def add_action(cls, document_class: Type[&quot;Document&quot;],
+               event_types: List[EventTypes],
+               action_direction: ActionDirections, funct: Callable)
+</code></pre>
+<blockquote>
+<p>Add action to the action registry</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>document_class</code>: document class</li>
+<li><code>event_types</code>: List[EventTypes]</li>
+<li><code>action_direction</code>: ActionDirections - before or after</li>
+<li><code>funct</code>: Callable - function</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.actions.ActionRegistry.get_action_list"></a></p>
+<h4 id="actionregistryget_action_list">ActionRegistry.get_action_list</h4>
+<pre><code class="language-python">@classmethod
+def get_action_list(cls, document_class: Type[&quot;Document&quot;],
+                    event_type: EventTypes,
+                    action_direction: ActionDirections) -&gt; List[Callable]
+</code></pre>
+<blockquote>
+<p>Get stored action list</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>document_class</code>: Type - document class</li>
+<li><code>event_type</code>: EventTypes - type of needed event</li>
+<li><code>action_direction</code>: ActionDirections - before or after</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>List[Callable] - list of stored methods</p>
+</blockquote>
+<p><a id="beanis.odm.actions.ActionRegistry.run_actions"></a></p>
+<h4 id="actionregistryrun_actions">ActionRegistry.run_actions</h4>
+<pre><code class="language-python">@classmethod
+async def run_actions(cls, instance: &quot;Document&quot;, event_type: EventTypes,
+                      action_direction: ActionDirections,
+                      exclude: List[Union[ActionDirections, str]])
+</code></pre>
+<blockquote>
+<p>Run actions</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>instance</code>: Document - object of the Document subclass</li>
+<li><code>event_type</code>: EventTypes - event types</li>
+<li><code>action_direction</code>: ActionDirections - before or after</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.actions.register_action"></a></p>
+<h4 id="register_action">register_action</h4>
+<pre><code class="language-python">def register_action(event_types: Tuple[Union[List[EventTypes], EventTypes],
+                                       ...],
+                    action_direction: ActionDirections) -&gt; Callable[[F], F]
+</code></pre>
+<blockquote>
+<p>Decorator. Base registration method.</p>
+<p>Used inside <code>before_event</code> and <code>after_event</code></p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>event_types</code>: Union[List[EventTypes], EventTypes] - event types</li>
+<li><code>action_direction</code>: ActionDirections - before or after</li>
+</ul>
+</blockquote>
+<p><a id="beanis.odm.actions.before_event"></a></p>
+<h4 id="before_event">before_event</h4>
+<pre><code class="language-python">def before_event(
+        *args: Union[List[EventTypes], EventTypes]) -&gt; Callable[[F], F]
+</code></pre>
+<blockquote>
+<p>Decorator. It adds action, which should run before mentioned one</p>
+<p>or many events happen</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>args</code>: Union[List[EventTypes], EventTypes] - event types</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>None</p>
+</blockquote>
+<p><a id="beanis.odm.actions.after_event"></a></p>
+<h4 id="after_event">after_event</h4>
+<pre><code class="language-python">def after_event(
+        *args: Union[List[EventTypes], EventTypes]) -&gt; Callable[[F], F]
+</code></pre>
+<blockquote>
+<p>Decorator. It adds action, which should run after mentioned one</p>
+<p>or many events happen</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>args</code>: Union[List[EventTypes], EventTypes] - event types</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>None</p>
+</blockquote>
+<p><a id="beanis.odm.actions.wrap_with_actions"></a></p>
+<h4 id="wrap_with_actions">wrap_with_actions</h4>
+<pre><code class="language-python">def wrap_with_actions(
+    event_type: EventTypes
+) -&gt; Callable[[&quot;AsyncDocMethod[DocType, P, R]&quot;],
+              &quot;AsyncDocMethod[DocType, P, R]&quot;]
+</code></pre>
+<blockquote>
+<p>Helper function to wrap Document methods with</p>
+<p>before and after event listeners</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>event_type</code>: EventTypes - event types</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p>None</p>
+</blockquote></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

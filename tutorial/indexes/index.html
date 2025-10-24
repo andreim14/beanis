@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Indexes - My Project</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">My Project</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../getting-started/" class="nav-link">Getting started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../defining-a-document/" class="dropdown-item">Defining a document</a>
+</li>
+                                    
+<li>
+    <a href="../initialization/" class="dropdown-item">Initialization</a>
+</li>
+                                    
+<li>
+    <a href="../inserting-into-the-database/" class="dropdown-item">Inserting into the database</a>
+</li>
+                                    
+<li>
+    <a href="../finding-documents/" class="dropdown-item">Finding documents</a>
+</li>
+                                    
+<li>
+    <a href="../updating-documents/" class="dropdown-item">Updating documents</a>
+</li>
+                                    
+<li>
+    <a href="../deleting-documents/" class="dropdown-item">Deleting documents</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../event-based-actions/" class="dropdown-item">Event-based actions</a>
+</li>
+                                    
+<li>
+    <a href="../custom-encoders/" class="dropdown-item">Custom encoders</a>
+</li>
+                                    
+<li>
+    <a href="../geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../api-documentation/document/" class="dropdown-item">Document</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/interfaces/" class="dropdown-item">Interfaces</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/actions/" class="dropdown-item">Actions</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/fields/" class="dropdown-item">Fields</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/custom-encoders/" class="dropdown-item">Custom Encoders</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/custom-types/" class="dropdown-item">Custom Types</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../development/" class="nav-link">Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../code-of-conduct/" class="nav-link">Code of conduct</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../changelog/" class="nav-link">Changelog</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../deleting-documents/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../event-based-actions/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#indexes" class="nav-link">Indexes</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#overview" class="nav-link">Overview</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#defining-indexes" class="nav-link">Defining Indexes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#numeric-indexes-sorted-sets" class="nav-link">Numeric Indexes (Sorted Sets)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#categorical-indexes-sets" class="nav-link">Categorical Indexes (Sets)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#index-creation" class="nav-link">Index Creation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#index-updates" class="nav-link">Index Updates</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#multiple-indexes" class="nav-link">Multiple Indexes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#query-performance" class="nav-link">Query Performance</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#index-storage-cost" class="nav-link">Index Storage Cost</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#compound-queries" class="nav-link">Compound Queries</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#index-limitations" class="nav-link">Index Limitations</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#index-maintenance" class="nav-link">Index Maintenance</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#advanced-patterns" class="nav-link">Advanced Patterns</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#best-practices" class="nav-link">Best Practices</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#comparison-with-mongodb" class="nav-link">Comparison with MongoDB</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#next-steps" class="nav-link">Next Steps</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="indexes">Indexes</h1>
+<p>Beanis uses Redis data structures (Sorted Sets and Sets) to enable fast queries on your documents.</p>
+<h2 id="overview">Overview</h2>
+<p>Unlike MongoDB which has a flexible indexing system, Redis indexing in Beanis is simpler but powerful:</p>
+<ul>
+<li><strong>Sorted Sets</strong> - For numeric fields (support range queries)</li>
+<li><strong>Sets</strong> - For string/categorical fields (exact match only)</li>
+<li><strong>Geo Indexes</strong> - For geo-spatial fields (proximity queries)</li>
+<li><strong>Hash</strong> - Document storage (no indexing)</li>
+</ul>
+<h2 id="defining-indexes">Defining Indexes</h2>
+<p>Use the <code>Indexed()</code> type annotation to mark fields for indexing:</p>
+<pre><code class="language-python">from beanis import Document, Indexed, GeoPoint
+
+class Product(Document):
+    name: str                    # Not indexed - no queries
+    price: Indexed[float]        # Indexed - range queries
+    category: Indexed[str]       # Indexed - exact match
+    stock: int                   # Not indexed - no queries
+    location: Indexed[GeoPoint]  # Indexed - geo queries
+
+    class Settings:
+        name = &quot;products&quot;
+</code></pre>
+<h2 id="numeric-indexes-sorted-sets">Numeric Indexes (Sorted Sets)</h2>
+<p>Numeric fields (<code>int</code>, <code>float</code>) are stored in Redis Sorted Sets:</p>
+<pre><code class="language-python">class Product(Document):
+    name: str
+    price: Indexed(float)  # Stored in sorted set
+    stock: Indexed(int)    # Stored in sorted set
+
+# Enables range queries
+expensive = await Product.find(Product.price &gt; 100).to_list()
+affordable = await Product.find(
+    Product.price &gt;= 10,
+    Product.price &lt;= 50
+).to_list()
+
+# Stock queries
+low_stock = await Product.find(Product.stock &lt; 10).to_list()
+</code></pre>
+<p><strong>Redis Structure</strong>:</p>
+<pre><code>Key: idx:Product:price
+Type: Sorted Set
+Content: {document_id: price_value, ...}
+
+Example:
+idx:Product:price -&gt; {
+    &quot;prod_1&quot;: 9.99,
+    &quot;prod_2&quot;: 15.50,
+    &quot;prod_3&quot;: 25.00
+}
+</code></pre>
+<p><strong>Supported Operations</strong>:
+- <code>==</code> - Exact match
+- <code>&gt;</code>, <code>&gt;=</code> - Greater than
+- <code>&lt;</code>, <code>&lt;=</code> - Less than
+- Range combinations</p>
+<h2 id="categorical-indexes-sets">Categorical Indexes (Sets)</h2>
+<p>String fields are stored in Redis Sets (one set per unique value):</p>
+<pre><code class="language-python">class Product(Document):
+    name: str
+    category: Indexed(str)  # Stored in sets
+    brand: Indexed(str)     # Stored in sets
+
+# Enables exact match queries
+books = await Product.find(Product.category == &quot;books&quot;).to_list()
+nike = await Product.find(Product.brand == &quot;Nike&quot;).to_list()
+</code></pre>
+<p><strong>Redis Structure</strong>:</p>
+<pre><code>Key: idx:Product:category:books
+Type: Set
+Content: {document_id, document_id, ...}
+
+Example:
+idx:Product:category:books -&gt; {&quot;prod_1&quot;, &quot;prod_2&quot;, &quot;prod_5&quot;}
+idx:Product:category:electronics -&gt; {&quot;prod_3&quot;, &quot;prod_4&quot;}
+</code></pre>
+<p><strong>Supported Operations</strong>:
+- <code>==</code> - Exact match only</p>
+<p><strong>Not Supported</strong>:
+- Partial matches (use full-text search module)
+- Case-insensitive search
+- Wildcards</p>
+<h2 id="index-creation">Index Creation</h2>
+<p>Indexes are created automatically when you insert documents:</p>
+<pre><code class="language-python"># Define indexed fields
+class Product(Document):
+    price: Indexed(float)
+    category: Indexed(str)
+
+# Initialize
+await init_beanis(database=redis_client, document_models=[Product])
+
+# Insert - indexes created automatically
+product = Product(
+    name=&quot;Laptop&quot;,
+    price=999.99,
+    category=&quot;electronics&quot;
+)
+await product.insert()
+
+# This creates:
+# 1. Hash: Product:{id}
+# 2. Sorted Set entry: idx:Product:price
+# 3. Set entry: idx:Product:category:electronics
+</code></pre>
+<h2 id="index-updates">Index Updates</h2>
+<p>Indexes are automatically updated when documents change:</p>
+<pre><code class="language-python">product = await Product.get(&quot;product_id_123&quot;)
+
+# Update price - sorted set automatically updated
+await product.update(price=799.99)
+
+# Update category - sets automatically updated
+await product.update(category=&quot;computers&quot;)
+# Old set entry removed, new set entry added
+</code></pre>
+<h2 id="multiple-indexes">Multiple Indexes</h2>
+<p>You can index multiple fields on the same document:</p>
+<pre><code class="language-python">class Product(Document):
+    name: str
+    price: Indexed(float)
+    stock: Indexed(int)
+    category: Indexed(str)
+    brand: Indexed(str)
+
+# Each indexed field has its own Redis structure
+# - idx:Product:price (sorted set)
+# - idx:Product:stock (sorted set)
+# - idx:Product:category:{value} (sets)
+# - idx:Product:brand:{value} (sets)
+</code></pre>
+<h2 id="query-performance">Query Performance</h2>
+<h3 id="indexed-queries-fast">Indexed Queries (Fast)</h3>
+<pre><code class="language-python"># These queries use indexes - O(log N) or O(1)
+products = await Product.find(Product.price &lt; 100).to_list()
+books = await Product.find(Product.category == &quot;books&quot;).to_list()
+</code></pre>
+<h3 id="non-indexed-queries-slow">Non-Indexed Queries (Slow)</h3>
+<pre><code class="language-python"># This field is NOT indexed - requires full scan
+class Product(Document):
+    name: str  # Not indexed!
+    price: Indexed(float)
+
+# This will NOT work (name not indexed):
+# products = await Product.find(Product.name == &quot;Laptop&quot;).to_list()
+
+# You must use get_all() and filter manually:
+all_products = await Product.all()
+laptops = [p for p in all_products if p.name == &quot;Laptop&quot;]
+</code></pre>
+<p><strong>Rule</strong>: Only <code>Indexed()</code> fields support <code>.find()</code> queries!</p>
+<h2 id="index-storage-cost">Index Storage Cost</h2>
+<p>Each index uses Redis memory:</p>
+<pre><code class="language-python">class Product(Document):
+    price: Indexed(float)     # ~50 bytes per document
+    category: Indexed(str)    # ~40 bytes per document per unique value
+
+# For 10,000 products with 5 categories:
+# - price index: ~500 KB
+# - category index: ~200 KB (5 sets)
+# - documents: ~5-10 MB (depends on size)
+</code></pre>
+<p><strong>Best Practice</strong>: Only index fields you'll query frequently.</p>
+<h2 id="compound-queries">Compound Queries</h2>
+<p>Beanis supports querying multiple indexed fields:</p>
+<pre><code class="language-python"># Both fields must be indexed
+products = await Product.find(
+    Product.price &gt;= 10,
+    Product.price &lt;= 50,
+    Product.category == &quot;electronics&quot;
+).to_list()
+</code></pre>
+<p><strong>How it works</strong>:
+1. Query price index (sorted set range)
+2. Query category index (set members)
+3. Intersect results (in Python)</p>
+<h2 id="index-limitations">Index Limitations</h2>
+<h3 id="no-full-text-search">No Full-Text Search</h3>
+<pre><code class="language-python"># Not supported - no partial matching
+# products = await Product.find(Product.name.contains(&quot;Lap&quot;)).to_list()
+
+# Use Redis RediSearch module for full-text search
+# Or filter in memory:
+all_products = await Product.all()
+matches = [p for p in all_products if &quot;Lap&quot; in p.name]
+</code></pre>
+<h3 id="no-case-insensitive-search">No Case-Insensitive Search</h3>
+<pre><code class="language-python"># Case-sensitive only
+books = await Product.find(Product.category == &quot;Books&quot;).to_list()  # Won't find &quot;books&quot;
+
+# Workaround: Store lowercase
+class Product(Document):
+    category_lower: Indexed(str)
+
+    @before_event(Insert, Update)
+    async def normalize_category(self):
+        self.category_lower = self.category.lower()
+
+# Query lowercase
+books = await Product.find(Product.category_lower == &quot;books&quot;).to_list()
+</code></pre>
+<h3 id="no-date-range-queries">No Date Range Queries</h3>
+<pre><code class="language-python">from datetime import datetime
+
+class Product(Document):
+    created_at: datetime  # Can't index datetime directly
+
+# Workaround: Store as timestamp (numeric)
+class Product(Document):
+    created_at: datetime
+    created_timestamp: Indexed(float)
+
+    @before_event(Insert)
+    async def set_timestamp(self):
+        self.created_timestamp = self.created_at.timestamp()
+
+# Query by timestamp
+recent = await Product.find(
+    Product.created_timestamp &gt; datetime(2024, 1, 1).timestamp()
+).to_list()
+</code></pre>
+<h2 id="index-maintenance">Index Maintenance</h2>
+<h3 id="automatic-cleanup">Automatic Cleanup</h3>
+<p>Indexes are cleaned up automatically on:
+- Document deletion
+- Field updates
+- Document updates</p>
+<pre><code class="language-python"># Delete - removes from all indexes
+await product.delete_self()
+
+# Update category - removes from old set, adds to new set
+await product.update(category=&quot;new_category&quot;)
+</code></pre>
+<h3 id="manual-index-check">Manual Index Check</h3>
+<p>Check what's in an index:</p>
+<pre><code class="language-python"># Direct Redis access (for debugging)
+redis_client = Product._database
+
+# Check sorted set index
+price_index = await redis_client.zrange(&quot;idx:Product:price&quot;, 0, -1, withscores=True)
+print(price_index)  # [(doc_id, score), ...]
+
+# Check set index
+books_set = await redis_client.smembers(&quot;idx:Product:category:books&quot;)
+print(books_set)  # {doc_id, doc_id, ...}
+</code></pre>
+<h2 id="advanced-patterns">Advanced Patterns</h2>
+<h3 id="geo-spatial-indexing">Geo-Spatial Indexing</h3>
+<p>Redis supports geo-spatial queries, and Beanis provides built-in support through the GeoPoint type.</p>
+<pre><code class="language-python">from beanis import Document, Indexed, GeoPoint
+from beanis.odm.indexes import IndexManager
+
+class Store(Document):
+    name: str
+    location: Indexed[GeoPoint]  # Geo index
+
+    class Settings:
+        name = &quot;stores&quot;
+
+# Create a store
+store = Store(
+    name=&quot;Downtown Store&quot;,
+    location=GeoPoint(longitude=-122.4, latitude=37.8)
+)
+await store.insert()
+
+# Find nearby stores (within 10km)
+from beanis.odm.indexes import IndexManager
+
+nearby_ids = await IndexManager.find_by_geo_radius(
+    redis_client=Store._database,
+    document_class=Store,
+    field_name=&quot;location&quot;,
+    longitude=-122.4,
+    latitude=37.8,
+    radius=10,
+    unit=&quot;km&quot;
+)
+
+# Get the actual documents
+nearby_stores = await Store.get_many(nearby_ids)
+
+# Find nearby stores with distances
+nearby_with_dist = await IndexManager.find_by_geo_radius_with_distance(
+    redis_client=Store._database,
+    document_class=Store,
+    field_name=&quot;location&quot;,
+    longitude=-122.4,
+    latitude=37.8,
+    radius=10,
+    unit=&quot;km&quot;
+)
+
+for store_id, distance in nearby_with_dist:
+    print(f&quot;Store {store_id} is {distance} km away&quot;)
+</code></pre>
+<p><strong>Supported units</strong>: <code>m</code> (meters), <code>km</code> (kilometers), <code>mi</code> (miles), <code>ft</code> (feet)</p>
+<p><strong>How it works</strong>:
+- Uses Redis GEOADD command to store locations
+- Uses Redis GEORADIUS for proximity queries
+- Automatically maintains geo index on insert/update/delete</p>
+<h3 id="multi-value-indexing">Multi-Value Indexing</h3>
+<p>For list fields, consider storing as separate documents or using a workaround:</p>
+<pre><code class="language-python"># Not directly supported
+class Product(Document):
+    tags: List[str]  # Can't index list
+
+# Workaround 1: Store each tag as indexed field (if few tags)
+class Product(Document):
+    tag1: Indexed(str) = &quot;&quot;
+    tag2: Indexed(str) = &quot;&quot;
+    tag3: Indexed(str) = &quot;&quot;
+
+# Workaround 2: Manual secondary index
+class Product(Document):
+    tags: List[str]
+
+    async def index_tags(self):
+        &quot;&quot;&quot;Manually add to tag sets&quot;&quot;&quot;
+        for tag in self.tags:
+            await self._database.sadd(f&quot;tags:{tag}&quot;, self.id)
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Index selectively</strong> - Only fields you'll query frequently</li>
+<li><strong>Use correct types</strong> - Numeric for ranges, strings for exact match</li>
+<li><strong>Monitor memory</strong> - Indexes consume Redis memory</li>
+<li><strong>Lowercase strings</strong> - For case-insensitive queries</li>
+<li><strong>Timestamps for dates</strong> - Convert datetime to float for range queries</li>
+<li><strong>Test performance</strong> - Profile with realistic data volumes</li>
+</ol>
+<h2 id="comparison-with-mongodb">Comparison with MongoDB</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>MongoDB</th>
+<th>Beanis (Redis)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Numeric range</td>
+<td>✅ Compound indexes</td>
+<td>✅ Sorted sets</td>
+</tr>
+<tr>
+<td>Exact match</td>
+<td>✅ Single field</td>
+<td>✅ Sets</td>
+</tr>
+<tr>
+<td>Full-text search</td>
+<td>✅ Text indexes</td>
+<td>❌ Need RediSearch</td>
+</tr>
+<tr>
+<td>Compound indexes</td>
+<td>✅ Multi-field</td>
+<td>⚠️ Manual intersection</td>
+</tr>
+<tr>
+<td>Geo-spatial</td>
+<td>✅ 2dsphere</td>
+<td>✅ Built-in (GEORADIUS)</td>
+</tr>
+<tr>
+<td>Index creation</td>
+<td>Manual</td>
+<td>✅ Automatic</td>
+</tr>
+<tr>
+<td>Array indexing</td>
+<td>✅ Multikey</td>
+<td>❌ Not supported</td>
+</tr>
+</tbody>
+</table>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li><a href="find.md">Find Operations</a> - Query using indexes</li>
+<li><a href="actions.md">Event Hooks</a> - Maintain custom indexes</li>
+<li><a href="../CUSTOM_ENCODERS.md">Custom Encoders</a> - Store complex types</li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

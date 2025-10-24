@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Deleting documents - My Project</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">My Project</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../getting-started/" class="nav-link">Getting started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../defining-a-document/" class="dropdown-item">Defining a document</a>
+</li>
+                                    
+<li>
+    <a href="../initialization/" class="dropdown-item">Initialization</a>
+</li>
+                                    
+<li>
+    <a href="../inserting-into-the-database/" class="dropdown-item">Inserting into the database</a>
+</li>
+                                    
+<li>
+    <a href="../finding-documents/" class="dropdown-item">Finding documents</a>
+</li>
+                                    
+<li>
+    <a href="../updating-documents/" class="dropdown-item">Updating documents</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Deleting documents</a>
+</li>
+                                    
+<li>
+    <a href="../indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../event-based-actions/" class="dropdown-item">Event-based actions</a>
+</li>
+                                    
+<li>
+    <a href="../custom-encoders/" class="dropdown-item">Custom encoders</a>
+</li>
+                                    
+<li>
+    <a href="../geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../api-documentation/document/" class="dropdown-item">Document</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/interfaces/" class="dropdown-item">Interfaces</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/actions/" class="dropdown-item">Actions</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/fields/" class="dropdown-item">Fields</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/custom-encoders/" class="dropdown-item">Custom Encoders</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/custom-types/" class="dropdown-item">Custom Types</a>
+</li>
+                                    
+<li>
+    <a href="../../api-documentation/utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../development/" class="nav-link">Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../code-of-conduct/" class="nav-link">Code of conduct</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../changelog/" class="nav-link">Changelog</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../updating-documents/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../indexes/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#delete-documents" class="nav-link">Delete Documents</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#delete-single-document" class="nav-link">Delete Single Document</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#delete-multiple-documents" class="nav-link">Delete Multiple Documents</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#delete-all-documents" class="nav-link">Delete All Documents</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#check-before-delete" class="nav-link">Check Before Delete</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#delete-with-event-hooks" class="nav-link">Delete with Event Hooks</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#what-gets-deleted" class="nav-link">What Gets Deleted</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#bulk-delete-pattern" class="nav-link">Bulk Delete Pattern</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#delete-with-ttl-alternative" class="nav-link">Delete with TTL Alternative</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#delete-vs-expire" class="nav-link">Delete vs Expire</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#transaction-safe-deletion" class="nav-link">Transaction-Safe Deletion</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#cascade-deletion-pattern" class="nav-link">Cascade Deletion Pattern</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#delete-performance" class="nav-link">Delete Performance</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#important-notes" class="nav-link">Important Notes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#examples" class="nav-link">Examples</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#next-steps" class="nav-link">Next Steps</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="delete-documents">Delete Documents</h1>
+<p>Beanis provides several methods for deleting documents from Redis.</p>
+<h2 id="delete-single-document">Delete Single Document</h2>
+<h3 id="delete-by-instance">Delete by Instance</h3>
+<p>Use <code>delete_self()</code> to delete a document instance:</p>
+<pre><code class="language-python">from beanis import Document
+
+class Product(Document):
+    name: str
+    price: float
+
+    class Settings:
+        name = &quot;products&quot;
+
+# Get and delete
+product = await Product.get(&quot;product_id_123&quot;)
+await product.delete_self()
+
+# Verify deletion
+exists = await Product.exists(&quot;product_id_123&quot;)
+print(exists)  # False
+</code></pre>
+<h3 id="delete-by-id">Delete by ID</h3>
+<p>Use the class method <code>delete()</code> to delete by ID without fetching:</p>
+<pre><code class="language-python"># Delete without fetching
+await Product.delete(&quot;product_id_123&quot;)
+
+# More efficient than:
+# product = await Product.get(&quot;product_id_123&quot;)
+# await product.delete_self()
+</code></pre>
+<h2 id="delete-multiple-documents">Delete Multiple Documents</h2>
+<p>Use <code>delete_many()</code> to delete multiple documents by their IDs:</p>
+<pre><code class="language-python"># Delete multiple products
+ids = [&quot;id1&quot;, &quot;id2&quot;, &quot;id3&quot;, &quot;id4&quot;, &quot;id5&quot;]
+await Product.delete_many(ids)
+
+# Verify deletions
+for id in ids:
+    exists = await Product.exists(id)
+    print(f&quot;{id} exists: {exists}&quot;)  # All False
+</code></pre>
+<p>This uses Redis pipelines for efficient batch deletion.</p>
+<h2 id="delete-all-documents">Delete All Documents</h2>
+<p>Use <code>delete_all()</code> to remove all documents of a type:</p>
+<pre><code class="language-python"># Delete all products
+await Product.delete_all()
+
+# Verify
+count = await Product.count()
+print(count)  # 0
+</code></pre>
+<p><strong>Warning:</strong> This deletes ALL documents and cannot be undone!</p>
+<h2 id="check-before-delete">Check Before Delete</h2>
+<p>Always check if a document exists before attempting deletion:</p>
+<pre><code class="language-python"># Safe deletion
+if await Product.exists(&quot;product_id_123&quot;):
+    await Product.delete(&quot;product_id_123&quot;)
+    print(&quot;Deleted&quot;)
+else:
+    print(&quot;Product not found&quot;)
+</code></pre>
+<h2 id="delete-with-event-hooks">Delete with Event Hooks</h2>
+<p>Run custom logic before/after deletions:</p>
+<pre><code class="language-python">from beanis import before_event, after_event, Delete
+from datetime import datetime
+
+class Product(Document):
+    name: str
+    price: float
+
+    @before_event(Delete)
+    async def backup_before_delete(self):
+        &quot;&quot;&quot;Log deletion for audit trail&quot;&quot;&quot;
+        print(f&quot;Deleting product: {self.name} at {datetime.now()}&quot;)
+
+    @after_event(Delete)
+    async def cleanup_after_delete(self):
+        &quot;&quot;&quot;Clean up related resources&quot;&quot;&quot;
+        print(f&quot;Product {self.id} deleted successfully&quot;)
+
+product = await Product.get(&quot;product_id_123&quot;)
+await product.delete_self()
+# Output: Deleting product: Test Product at 2025-01-15 10:30:00
+#         Product product_id_123 deleted successfully
+</code></pre>
+<h2 id="what-gets-deleted">What Gets Deleted</h2>
+<p>When you delete a document, Beanis removes:</p>
+<ol>
+<li><strong>The document Hash</strong> - <code>Product:{id}</code></li>
+<li><strong>Index entries</strong> - All sorted set/set entries for indexed fields</li>
+<li><strong>Tracking entry</strong> - Entry in <code>all:Product</code> sorted set</li>
+</ol>
+<pre><code class="language-python"># For this document:
+class Product(Document):
+    name: str
+    price: Indexed(float)
+    category: Indexed(str)
+
+# Deletion removes:
+# 1. Hash: Product:{id}
+# 2. Index: idx:Product:price (sorted set entry)
+# 3. Index: idx:Product:category:{value} (set entry)
+# 4. Tracking: all:Product (sorted set entry)
+</code></pre>
+<h2 id="bulk-delete-pattern">Bulk Delete Pattern</h2>
+<p>Efficient pattern for conditional bulk deletion:</p>
+<pre><code class="language-python"># Delete all products below $5
+cheap_products = await Product.find(Product.price &lt; 5.0).to_list()
+ids_to_delete = [p.id for p in cheap_products]
+
+if ids_to_delete:
+    await Product.delete_many(ids_to_delete)
+    print(f&quot;Deleted {len(ids_to_delete)} products&quot;)
+</code></pre>
+<h2 id="delete-with-ttl-alternative">Delete with TTL Alternative</h2>
+<p>Instead of deleting, consider using TTL for automatic expiration:</p>
+<pre><code class="language-python"># Instead of deleting immediately
+await product.delete_self()
+
+# Consider expiring after 30 days
+await product.set_ttl(30 * 24 * 3600)  # 30 days
+
+# Document auto-deletes after TTL expires
+</code></pre>
+<p>This is useful for soft-deletes and compliance requirements.</p>
+<h2 id="delete-vs-expire">Delete vs Expire</h2>
+<p><strong>Delete (Immediate)</strong>:</p>
+<pre><code class="language-python">await product.delete_self()  # Gone immediately
+</code></pre>
+<p><strong>Expire (Scheduled)</strong>:</p>
+<pre><code class="language-python">await product.set_ttl(3600)  # Gone in 1 hour
+</code></pre>
+<p>Choose based on your use case:
+- <strong>Delete</strong>: When you need immediate removal
+- <strong>Expire</strong>: For automatic cleanup, soft deletes, caching</p>
+<h2 id="transaction-safe-deletion">Transaction-Safe Deletion</h2>
+<p>For critical operations, verify deletion succeeded:</p>
+<pre><code class="language-python">async def safe_delete(product_id: str) -&gt; bool:
+    &quot;&quot;&quot;Delete and verify&quot;&quot;&quot;
+    if not await Product.exists(product_id):
+        return False
+
+    await Product.delete(product_id)
+
+    # Verify deletion
+    still_exists = await Product.exists(product_id)
+    return not still_exists
+
+success = await safe_delete(&quot;product_id_123&quot;)
+if success:
+    print(&quot;Successfully deleted&quot;)
+else:
+    print(&quot;Deletion failed&quot;)
+</code></pre>
+<h2 id="cascade-deletion-pattern">Cascade Deletion Pattern</h2>
+<p>Beanis doesn't support automatic cascade deletes, but you can implement them:</p>
+<pre><code class="language-python">class Order(Document):
+    product_id: str
+    quantity: int
+
+    class Settings:
+        name = &quot;orders&quot;
+
+async def delete_product_cascade(product_id: str):
+    &quot;&quot;&quot;Delete product and all related orders&quot;&quot;&quot;
+    # Find all related orders
+    # Note: This requires get_all and filter in memory
+    # since we can't query on non-indexed product_id
+    all_orders = await Order.all()
+    related_orders = [o for o in all_orders if o.product_id == product_id]
+
+    # Delete related orders
+    if related_orders:
+        order_ids = [o.id for o in related_orders]
+        await Order.delete_many(order_ids)
+
+    # Delete product
+    await Product.delete(product_id)
+
+    print(f&quot;Deleted product and {len(related_orders)} related orders&quot;)
+
+await delete_product_cascade(&quot;product_id_123&quot;)
+</code></pre>
+<h2 id="delete-performance">Delete Performance</h2>
+<p>Deletion performance by method:</p>
+<ul>
+<li><code>delete(id)</code> - O(1) - Fast, single Redis DEL command</li>
+<li><code>delete_self()</code> - O(1) - Same as delete(id)</li>
+<li><code>delete_many(ids)</code> - O(N) - Uses pipeline, efficient for bulk</li>
+<li><code>delete_all()</code> - O(N) - Deletes all documents, can be slow for large collections</li>
+</ul>
+<h2 id="important-notes">Important Notes</h2>
+<ol>
+<li><strong>Deletion is permanent</strong> - No undo unless you have backups</li>
+<li><strong>Indexes are cleaned up</strong> - All index entries automatically removed</li>
+<li><strong>Use pipelines for bulk</strong> - <code>delete_many()</code> is optimized</li>
+<li><strong>Consider TTL instead</strong> - For temporary data or soft deletes</li>
+<li><strong>Event hooks run</strong> - Before/after delete hooks are triggered</li>
+</ol>
+<h2 id="examples">Examples</h2>
+<h3 id="soft-delete-with-flag">Soft Delete with Flag</h3>
+<pre><code class="language-python">class Product(Document):
+    name: str
+    price: float
+    deleted: bool = False
+
+    async def soft_delete(self):
+        &quot;&quot;&quot;Mark as deleted instead of removing&quot;&quot;&quot;
+        await self.update(deleted=True)
+        # Optionally set TTL for eventual removal
+        await self.set_ttl(30 * 24 * 3600)  # Remove after 30 days
+
+    @classmethod
+    async def get_active(cls, product_id: str):
+        &quot;&quot;&quot;Get only non-deleted products&quot;&quot;&quot;
+        product = await cls.get(product_id)
+        if product and not product.deleted:
+            return product
+        return None
+
+# Soft delete
+product = await Product.get(&quot;prod_123&quot;)
+await product.soft_delete()
+
+# Won't find soft-deleted
+active = await Product.get_active(&quot;prod_123&quot;)
+print(active)  # None
+</code></pre>
+<h3 id="batch-delete-with-confirmation">Batch Delete with Confirmation</h3>
+<pre><code class="language-python">async def batch_delete_with_confirm(ids: list[str], model_class):
+    &quot;&quot;&quot;Delete multiple documents with confirmation&quot;&quot;&quot;
+    # Check how many exist
+    existing = []
+    for id in ids:
+        if await model_class.exists(id):
+            existing.append(id)
+
+    if not existing:
+        print(&quot;No documents to delete&quot;)
+        return 0
+
+    print(f&quot;Found {len(existing)} documents to delete&quot;)
+
+    # Delete
+    await model_class.delete_many(existing)
+
+    # Verify
+    deleted_count = 0
+    for id in existing:
+        if not await model_class.exists(id):
+            deleted_count += 1
+
+    print(f&quot;Successfully deleted {deleted_count}/{len(existing)} documents&quot;)
+    return deleted_count
+
+# Use it
+ids = [&quot;id1&quot;, &quot;id2&quot;, &quot;id3&quot;, &quot;id4&quot;, &quot;id5&quot;]
+deleted = await batch_delete_with_confirm(ids, Product)
+</code></pre>
+<h3 id="delete-old-records">Delete Old Records</h3>
+<pre><code class="language-python">from datetime import datetime, timedelta
+
+class Product(Document):
+    name: str
+    created_at: datetime
+
+    class Settings:
+        name = &quot;products&quot;
+
+async def delete_old_products(days: int = 30):
+    &quot;&quot;&quot;Delete products older than N days&quot;&quot;&quot;
+    cutoff = datetime.now() - timedelta(days=days)
+
+    # Get all products (Redis doesn't support date queries without custom indexing)
+    all_products = await Product.all()
+
+    # Filter in memory
+    old_products = [
+        p for p in all_products 
+        if p.created_at &lt; cutoff
+    ]
+
+    if old_products:
+        ids = [p.id for p in old_products]
+        await Product.delete_many(ids)
+        print(f&quot;Deleted {len(ids)} old products&quot;)
+    else:
+        print(&quot;No old products to delete&quot;)
+
+# Delete products older than 90 days
+await delete_old_products(days=90)
+</code></pre>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li><a href="../indexes/">Indexes</a> - Learn about Redis indexing</li>
+<li><a href="actions.md">Event Hooks</a> - Document lifecycle events</li>
+<li><a href="find.md">Find Operations</a> - Query documents before deletion</li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

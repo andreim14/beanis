@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+        
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>My Project</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/fontawesome.min.css" rel="stylesheet">
+        <link href="css/brands.min.css" rel="stylesheet">
+        <link href="css/solid.min.css" rel="stylesheet">
+        <link href="css/v4-font-face.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body class="homepage">
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href=".">My Project</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="." class="nav-link active" aria-current="page">Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="getting-started/" class="nav-link">Getting started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="tutorial/tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="tutorial/defining-a-document/" class="dropdown-item">Defining a document</a>
+</li>
+                                    
+<li>
+    <a href="tutorial/initialization/" class="dropdown-item">Initialization</a>
+</li>
+                                    
+<li>
+    <a href="tutorial/inserting-into-the-database/" class="dropdown-item">Inserting into the database</a>
+</li>
+                                    
+<li>
+    <a href="tutorial/finding-documents/" class="dropdown-item">Finding documents</a>
+</li>
+                                    
+<li>
+    <a href="tutorial/updating-documents/" class="dropdown-item">Updating documents</a>
+</li>
+                                    
+<li>
+    <a href="tutorial/deleting-documents/" class="dropdown-item">Deleting documents</a>
+</li>
+                                    
+<li>
+    <a href="tutorial/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="tutorial/event-based-actions/" class="dropdown-item">Event-based actions</a>
+</li>
+                                    
+<li>
+    <a href="tutorial/custom-encoders/" class="dropdown-item">Custom encoders</a>
+</li>
+                                    
+<li>
+    <a href="tutorial/geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="api-documentation/document/" class="dropdown-item">Document</a>
+</li>
+                                    
+<li>
+    <a href="api-documentation/interfaces/" class="dropdown-item">Interfaces</a>
+</li>
+                                    
+<li>
+    <a href="api-documentation/indexes/" class="dropdown-item">Indexes</a>
+</li>
+                                    
+<li>
+    <a href="api-documentation/actions/" class="dropdown-item">Actions</a>
+</li>
+                                    
+<li>
+    <a href="api-documentation/fields/" class="dropdown-item">Fields</a>
+</li>
+                                    
+<li>
+    <a href="api-documentation/custom-encoders/" class="dropdown-item">Custom Encoders</a>
+</li>
+                                    
+<li>
+    <a href="api-documentation/custom-types/" class="dropdown-item">Custom Types</a>
+</li>
+                                    
+<li>
+    <a href="api-documentation/utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="development/" class="nav-link">Development</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="code-of-conduct/" class="nav-link">Code of conduct</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="changelog/" class="nav-link">Changelog</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" class="nav-link disabled">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="getting-started/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#overview" class="nav-link">Overview</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#installation" class="nav-link">Installation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#quick-example" class="nav-link">Quick Example</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#key-features" class="nav-link">Key Features</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#documentation" class="nav-link">Documentation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#credits" class="nav-link">Credits</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="2"><a href="#license" class="nav-link">License</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><a href="https://github.com/andreim14/beanis"><img alt="Beanis" src="https://raw.githubusercontent.com/andreim14/beanis/main/assets/logo/logo-no-background.svg" /></a></p>
+<div align="center">
+  <a href="https://pypi.python.org/pypi/beanis"><img src="https://img.shields.io/pypi/v/beanis" alt="PyPI version"></a>
+</div>
+
+<h2 id="overview">Overview</h2>
+<p><a href="https://github.com/andreim14/beanis">Beanis</a> - <strong>"Beanie for Redis"</strong> - is an asynchronous Python object-document mapper (ODM) for Redis. Data models are based on <a href="https://pydantic-docs.helpmanual.io/">Pydantic</a>.</p>
+<p>When using Beanis each document has a corresponding <code>Document</code> class that is used to interact with Redis. In addition to retrieving data, Beanis allows you to add, update, or delete documents as well.</p>
+<p>Beanis saves you time by removing boilerplate code, and it helps you focus on the parts of your app that actually matter.</p>
+<p><strong>Works with vanilla Redis</strong> - no RedisJSON or RediSearch modules required!</p>
+<h2 id="installation">Installation</h2>
+<h3 id="pip">PIP</h3>
+<pre><code class="language-shell">pip install beanis
+</code></pre>
+<h3 id="poetry">Poetry</h3>
+<pre><code class="language-shell">poetry add beanis
+</code></pre>
+<h2 id="quick-example">Quick Example</h2>
+<pre><code class="language-python">import asyncio
+from typing import Optional
+from redis.asyncio import Redis
+from pydantic import BaseModel
+from beanis import Document, init_beanis
+
+
+class Category(BaseModel):
+    name: str
+    description: str
+
+
+class Product(Document):
+    name: str  # You can use normal types just like in pydantic
+    description: Optional[str] = None
+    price: float
+    category: Category  # You can include pydantic models as well
+    stock: int = 0
+
+    class Settings:
+        name = &quot;products&quot;
+
+
+# This is an asynchronous example, so we will access it from an async function
+async def example():
+    # Beanis uses Redis async client
+    client = Redis(host=&quot;localhost&quot;, port=6379, db=0, decode_responses=True)
+
+    # Initialize beanis with the Product document class
+    await init_beanis(database=client, document_models=[Product])
+
+    chocolate = Category(
+        name=&quot;Chocolate&quot;,
+        description=&quot;A preparation of roasted and ground cacao seeds.&quot;
+    )
+
+    # Beanis documents work just like pydantic models
+    product = Product(name=&quot;Tony's Chocolonely&quot;, price=5.95, category=chocolate, stock=100)
+
+    # And can be inserted into Redis
+    await product.insert()
+
+    # You can retrieve documents by ID
+    found = await Product.get(product.id)
+
+    # Update documents
+    await product.update(price=6.95, stock=150)
+
+    # Get all products
+    all_products = await Product.all()
+
+    # Clean up
+    await client.close()
+
+
+if __name__ == &quot;__main__&quot;:
+    asyncio.run(example())
+</code></pre>
+<h2 id="key-features">Key Features</h2>
+<ul>
+<li>✅ <strong>Beanie-like API</strong> - Familiar interface for MongoDB/Beanie developers</li>
+<li>✅ <strong>Works with vanilla Redis</strong> - No modules required</li>
+<li>✅ <strong>Type Safety</strong> - Full Pydantic validation</li>
+<li>✅ <strong>Fast</strong> - Only 8% overhead vs raw Redis</li>
+<li>✅ <strong>Custom Encoders</strong> - Store NumPy arrays, PyTorch tensors, any type</li>
+<li>✅ <strong>TTL Support</strong> - Built-in expiration</li>
+<li>✅ <strong>Batch Operations</strong> - Efficient pipelines</li>
+<li>✅ <strong>Event Hooks</strong> - Before/after insert, update, delete</li>
+</ul>
+<h2 id="documentation">Documentation</h2>
+<p>For detailed documentation, visit the main <a href="../README.md">README</a> or check out:</p>
+<ul>
+<li><a href="../CUSTOM_ENCODERS.md">Custom Encoders Guide</a> - Store any Python type</li>
+<li><a href="getting-started/">Getting Started</a> - Complete tutorial</li>
+<li><a href="tutorial/defining-a-document/">Tutorial</a> - Step-by-step guides</li>
+</ul>
+<h2 id="credits">Credits</h2>
+<p>Beanis is inspired by <a href="https://github.com/BeanieODM/beanie">Beanie</a> - the amazing MongoDB ODM.</p>
+<p>We took the Beanie philosophy and adapted it for Redis, creating a simple yet powerful ODM that works with vanilla Redis.</p>
+<h2 id="license">License</h2>
+<p>Apache License 2.0</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = ".",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="js/base.js"></script>
+        <script src="search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+<!--
+MkDocs version : 1.6.1
+Build Date UTC : 2025-10-24 11:04:47.840439+00:00
+-->
