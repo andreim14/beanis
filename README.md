@@ -430,7 +430,6 @@ Beanis is optimized for speed with minimal overhead:
 - Beanis: 1.08x (only 8% slower)
 - Redis OM: 1.20x (20% slower)
 
-See [FINAL_FAIR_BENCHMARK_RESULTS.md](FINAL_FAIR_BENCHMARK_RESULTS.md) for detailed benchmarks.
 
 ### 🎯 Pythonic API
 
@@ -486,7 +485,7 @@ register_type(
 )
 ```
 
-See [CUSTOM_ENCODERS.md](CUSTOM_ENCODERS.md) for detailed documentation.
+See tutorial on how to create them!
 
 ### 🔧 Production Ready Features
 
@@ -579,12 +578,6 @@ await Product.delete_all()
 - Don't mind installing Redis modules
 - Want Redis Stack integration
 - Need advanced full-text search
-
-## Documentation
-
-- **[Custom Encoders Guide](CUSTOM_ENCODERS.md)** - Store NumPy, PyTorch, and custom types
-- **[Complex Types Reference](COMPLEX_TYPES_SUPPORT.md)** - Built-in type support
-- **[Performance Guide](FINAL_FAIR_BENCHMARK_RESULTS.md)** - Benchmarks and optimization
 
 ## Requirements
 
