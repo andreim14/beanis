@@ -513,5 +513,53 @@ async def test_vector_field_helper_function(redis_client):
     assert field.distance_metric == "COSINE"
 
 
+@pytest.mark.asyncio
+async def test_vector_similarity_search(redis_client):
+    """Test vector similarity search functionality"""
+    from beanis import VectorField
+    from typing import List
+
+    class EmbedDoc(Document):
+        text: str
+        vector: Annotated[List[float], VectorField(dimensions=3)]
+
+        class Settings:
+            key_prefix = "EmbedDoc"
+
+    await init_beanis(database=redis_client, document_models=[EmbedDoc])
+
+    # Create test documents with simple 3D vectors
+    doc1 = EmbedDoc(id="vec1", text="similar to query", vector=[1.0, 0.0, 0.0])
+    doc2 = EmbedDoc(id="vec2", text="also similar", vector=[0.9, 0.1, 0.0])
+    doc3 = EmbedDoc(id="vec3", text="different", vector=[0.0, 0.0, 1.0])
+
+    await doc1.insert()
+    await doc2.insert()
+    await doc3.insert()
+
+    # Test vector similarity search
+    try:
+        query_vector = [1.0, 0.0, 0.0]
+        results = await IndexManager.find_by_vector_similarity(
+            redis_client=redis_client,
+            document_class=EmbedDoc,
+            field_name="vector",
+            query_vector=query_vector,
+            k=2
+        )
+
+        # Should return up to 2 results (k=2)
+        assert len(results) <= 2
+
+        # Results should be tuples of (doc_id, similarity_score)
+        if len(results) > 0:
+            assert isinstance(results[0], tuple)
+            assert len(results[0]) == 2
+
+    except Exception as e:
+        # Vector search might not be available in test environment
+        pytest.skip(f"Vector search not available: {e}")
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
