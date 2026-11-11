@@ -1,0 +1,12 @@
+<svg viewBox="54 100 380 380" xmlns="http://www.w3.org/2000/svg" width="380" height="380">
+  <title>beanis</title>
+  <g id="bean">
+    <ellipse cx="244" cy="290" rx="132" ry="177" transform="rotate(30 244 290)" fill="#D8362A" />
+    <path d="M164 376C178 326 207 307 250 289S316 253 327 202" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" />
+    <g id="memory-nodes" fill="#FFFFFF">
+      <circle cx="164" cy="376" r="21" />
+      <circle cx="250" cy="289" r="21" />
+      <circle cx="327" cy="202" r="21" />
+    </g>
+  </g>
+</svg>

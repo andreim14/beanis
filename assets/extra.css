@@ -1,0 +1,26 @@
+:root, [data-md-color-scheme="default"] {
+  --md-primary-fg-color: #16191d;
+  --md-primary-fg-color--light: #2a2f35;
+  --md-primary-fg-color--dark: #0d0f12;
+  --md-primary-bg-color: #f3efe9;
+  --md-accent-fg-color: #c8322a;
+  --md-typeset-a-color: #b12a23;
+}
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #0d0f12;
+  --md-primary-fg-color--light: #1d2228;
+  --md-primary-fg-color--dark: #08090b;
+  --md-primary-bg-color: #f3efe9;
+  --md-accent-fg-color: #ff6a5c;
+  --md-typeset-a-color: #ff7d71;
+  --md-default-bg-color: #111418;
+}
+.md-header__button.md-logo img { height: 1.6rem; }
+.md-typeset h1, .md-typeset h2 { font-weight: 600; letter-spacing: -0.01em; }
+.hero-logo { display: block; max-width: 360px; width: 80%; margin: 0.5rem 0 1.2rem; }
+.md-typeset .grid.cards > ul > li { border-radius: 8px; }
+.md-typeset h1 { color: var(--md-default-fg-color); }
+.md-typeset h1.page-title-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); margin: 0; }
+.md-typeset .md-button { color: var(--md-accent-fg-color); border-color: var(--md-accent-fg-color); }
+.md-typeset .md-button--primary { background-color: var(--md-accent-fg-color); border-color: var(--md-accent-fg-color); color: #fff; }
+.md-typeset .md-button:hover, .md-typeset .md-button:focus { background-color: var(--md-accent-fg-color); border-color: var(--md-accent-fg-color); color: #fff; }

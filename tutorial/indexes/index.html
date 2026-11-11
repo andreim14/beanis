@@ -1,252 +1,1724 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Async Pydantic ODM for Redis, with vector search on Redis 8 and long-term memory for AI agents.">
+      
+      
+      
+        <link rel="canonical" href="https://andreim14.github.io/beanis/tutorial/indexes/">
+      
+      
+        <link rel="prev" href="../delete/">
+      
+      
+        <link rel="next" href="../actions/">
+      
+      
         
+      
+      
+      <link rel="icon" href="../../assets/beanis-mark.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Indexes - Beanis</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
         
-        
-        <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Indexes - My Project</title>
-        <link href="../../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/fontawesome.min.css" rel="stylesheet">
-        <link href="../../css/brands.min.css" rel="stylesheet">
-        <link href="../../css/solid.min.css" rel="stylesheet">
-        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
-        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
-        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-        <script>hljs.highlightAll();</script> 
-    </head>
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
 
-    <body>
-        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
-            <div class="container">
-                <a class="navbar-brand" href="../..">My Project</a>
-                <!-- Expander button -->
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- Expanded navigation -->
-                <div id="navbar-collapse" class="navbar-collapse collapse">
-                        <!-- Main navigation -->
-                        <ul class="nav navbar-nav">
-                            <li class="nav-item">
-                                <a href="../.." class="nav-link">Overview</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../../getting-started/" class="nav-link">Getting started</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Tutorial</a>
-                                <ul class="dropdown-menu">
-                                    
-<li>
-    <a href="../tutorial-overview/" class="dropdown-item">Tutorial Overview</a>
-</li>
-                                    
-<li>
-    <a href="../defining-a-document/" class="dropdown-item">Defining a document</a>
-</li>
-                                    
-<li>
-    <a href="../initialization/" class="dropdown-item">Initialization</a>
-</li>
-                                    
-<li>
-    <a href="../inserting-into-the-database/" class="dropdown-item">Inserting into the database</a>
-</li>
-                                    
-<li>
-    <a href="../finding-documents/" class="dropdown-item">Finding documents</a>
-</li>
-                                    
-<li>
-    <a href="../updating-documents/" class="dropdown-item">Updating documents</a>
-</li>
-                                    
-<li>
-    <a href="../deleting-documents/" class="dropdown-item">Deleting documents</a>
-</li>
-                                    
-<li>
-    <a href="./" class="dropdown-item active" aria-current="page">Indexes</a>
-</li>
-                                    
-<li>
-    <a href="../event-based-actions/" class="dropdown-item">Event-based actions</a>
-</li>
-                                    
-<li>
-    <a href="../custom-encoders/" class="dropdown-item">Custom encoders</a>
-</li>
-                                    
-<li>
-    <a href="../geo-spatial-indexing/" class="dropdown-item">Geo-spatial indexing</a>
-</li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">API Documentation</a>
-                                <ul class="dropdown-menu">
-                                    
-<li>
-    <a href="../../api-documentation/document/" class="dropdown-item">Document</a>
-</li>
-                                    
-<li>
-    <a href="../../api-documentation/interfaces/" class="dropdown-item">Interfaces</a>
-</li>
-                                    
-<li>
-    <a href="../../api-documentation/indexes/" class="dropdown-item">Indexes</a>
-</li>
-                                    
-<li>
-    <a href="../../api-documentation/actions/" class="dropdown-item">Actions</a>
-</li>
-                                    
-<li>
-    <a href="../../api-documentation/fields/" class="dropdown-item">Fields</a>
-</li>
-                                    
-<li>
-    <a href="../../api-documentation/custom-encoders/" class="dropdown-item">Custom Encoders</a>
-</li>
-                                    
-<li>
-    <a href="../../api-documentation/custom-types/" class="dropdown-item">Custom Types</a>
-</li>
-                                    
-<li>
-    <a href="../../api-documentation/utils/" class="dropdown-item">Utils</a>
-</li>
-                                </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../../development/" class="nav-link">Development</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../../code-of-conduct/" class="nav-link">Code of conduct</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../../changelog/" class="nav-link">Changelog</a>
-                            </li>
-                        </ul>
-
-                    <ul class="nav navbar-nav ms-md-auto">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
-                                <i class="fa fa-search"></i> Search
-                            </a>
-                        </li>
-                            <li class="nav-item">
-                                <a rel="prev" href="../deleting-documents/" class="nav-link">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a rel="next" href="../event-based-actions/" class="nav-link">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
-            <span class="fa fa-angle-down"></span>
-        </button>
-    </div>
 
     
-    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
-        <ul class="nav flex-column">
-            
-            <li class="nav-item" data-bs-level="1"><a href="#indexes" class="nav-link">Indexes</a>
-              <ul class="nav flex-column">
-            <li class="nav-item" data-bs-level="2"><a href="#overview" class="nav-link">Overview</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#defining-indexes" class="nav-link">Defining Indexes</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#numeric-indexes-sorted-sets" class="nav-link">Numeric Indexes (Sorted Sets)</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#categorical-indexes-sets" class="nav-link">Categorical Indexes (Sets)</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#index-creation" class="nav-link">Index Creation</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#index-updates" class="nav-link">Index Updates</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#multiple-indexes" class="nav-link">Multiple Indexes</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#query-performance" class="nav-link">Query Performance</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#index-storage-cost" class="nav-link">Index Storage Cost</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#compound-queries" class="nav-link">Compound Queries</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#index-limitations" class="nav-link">Index Limitations</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#index-maintenance" class="nav-link">Index Maintenance</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#advanced-patterns" class="nav-link">Advanced Patterns</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#best-practices" class="nav-link">Best Practices</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#comparison-with-mongodb" class="nav-link">Comparison with MongoDB</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#next-steps" class="nav-link">Next Steps</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-              </ul>
-            </li>
-        </ul>
-    </div>
-</div></div>
-                    <div class="col-md-9" role="main">
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CIBM+Plex+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"IBM Plex Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
 
-<h1 id="indexes">Indexes</h1>
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#indexes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Beanis" class="md-header__button md-logo" aria-label="Beanis" data-md-component="logo">
+      
+  <img src="../../assets/beanis-mark.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Beanis
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Indexes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Dark theme"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dark theme" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Light theme"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light theme" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/andreim14/beanis" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    andreim14/beanis
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Beanis" class="md-nav__button md-logo" aria-label="Beanis" data-md-component="logo">
+      
+  <img src="../../assets/beanis-mark.svg" alt="logo">
+
+    </a>
+    Beanis
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/andreim14/beanis" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    andreim14/beanis
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorial
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../defining-a-document/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defining a document
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../init/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Initialization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../insert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inserting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../find/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../update/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Updating
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delete/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deleting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Indexes
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Indexes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining Indexes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numeric-indexes-sorted-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numeric Indexes (Sorted Sets)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#categorical-indexes-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Categorical Indexes (Sets)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Creation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Updates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple Indexes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Performance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#indexed-queries-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Indexed Queries (Fast)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-indexed-queries-slow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Non-Indexed Queries (Slow)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-storage-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Storage Cost
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compound-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compound Queries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Limitations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Index Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-full-text-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No Full-Text Search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-case-insensitive-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No Case-Insensitive Search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-date-range-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No Date Range Queries
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Maintenance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Index Maintenance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automatic-cleanup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automatic Cleanup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-index-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual Index Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#geo-spatial-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Geo-Spatial Indexing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vector-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vector Indexing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-value-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Value Indexing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-with-mongodb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison with MongoDB
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event hooks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom-encoders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom encoders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../geo-spatial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geo search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vector-search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vector search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent memory and MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/document/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Document
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/indexes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fields and indexes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/init/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Initialization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code-of-conduct/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code of conduct
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining Indexes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numeric-indexes-sorted-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numeric Indexes (Sorted Sets)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#categorical-indexes-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Categorical Indexes (Sets)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Creation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Updates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple Indexes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Performance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#indexed-queries-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Indexed Queries (Fast)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-indexed-queries-slow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Non-Indexed Queries (Slow)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-storage-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Storage Cost
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compound-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compound Queries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Limitations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Index Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-full-text-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No Full-Text Search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-case-insensitive-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No Case-Insensitive Search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-date-range-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No Date Range Queries
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Maintenance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Index Maintenance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automatic-cleanup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automatic Cleanup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-index-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual Index Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#geo-spatial-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Geo-Spatial Indexing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vector-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vector Indexing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-value-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Value Indexing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-with-mongodb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison with MongoDB
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="indexes">Indexes<a class="headerlink" href="#indexes" title="Permanent link">&para;</a></h1>
 <p>Beanis uses Redis data structures (Sorted Sets and Sets) to enable fast queries on your documents.</p>
-<h2 id="overview">Overview</h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Unlike MongoDB which has a flexible indexing system, Redis indexing in Beanis is simpler but powerful:</p>
 <ul>
 <li><strong>Sorted Sets</strong> - For numeric fields (support range queries)</li>
@@ -254,321 +1726,335 @@
 <li><strong>Geo Indexes</strong> - For geo-spatial fields (proximity queries)</li>
 <li><strong>Hash</strong> - Document storage (no indexing)</li>
 </ul>
-<h2 id="defining-indexes">Defining Indexes</h2>
-<p>Use the <code>Indexed()</code> type annotation to mark fields for indexing:</p>
-<pre><code class="language-python">from beanis import Document, Indexed, GeoPoint
-
-class Product(Document):
-    name: str                    # Not indexed - no queries
-    price: Indexed[float]        # Indexed - range queries
-    category: Indexed[str]       # Indexed - exact match
-    stock: int                   # Not indexed - no queries
-    location: Indexed[GeoPoint]  # Indexed - geo queries
-
-    class Settings:
-        name = &quot;products&quot;
-</code></pre>
-<h2 id="numeric-indexes-sorted-sets">Numeric Indexes (Sorted Sets)</h2>
+<h2 id="defining-indexes">Defining Indexes<a class="headerlink" href="#defining-indexes" title="Permanent link">&para;</a></h2>
+<p>Use <code>Indexed(type)</code>, or the equivalent <code>Annotated[type, IndexedField()]</code>, to mark fields for indexing:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">beanis</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">Indexed</span><span class="p">,</span> <span class="n">GeoPoint</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>                    <span class="c1"># Not indexed - no queries</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">price</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>        <span class="c1"># Indexed - range queries</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">category</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>       <span class="c1"># Indexed - exact match</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">stock</span><span class="p">:</span> <span class="nb">int</span>                   <span class="c1"># Not indexed - no queries</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">location</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="n">GeoPoint</span><span class="p">)</span>  <span class="c1"># Indexed - geo queries</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="n">name</span> <span class="o">=</span> <span class="s2">"products"</span>
+</code></pre></div>
+<h2 id="numeric-indexes-sorted-sets">Numeric Indexes (Sorted Sets)<a class="headerlink" href="#numeric-indexes-sorted-sets" title="Permanent link">&para;</a></h2>
 <p>Numeric fields (<code>int</code>, <code>float</code>) are stored in Redis Sorted Sets:</p>
-<pre><code class="language-python">class Product(Document):
-    name: str
-    price: Indexed(float)  # Stored in sorted set
-    stock: Indexed(int)    # Stored in sorted set
-
-# Enables range queries
-expensive = await Product.find(Product.price &gt; 100).to_list()
-affordable = await Product.find(
-    Product.price &gt;= 10,
-    Product.price &lt;= 50
-).to_list()
-
-# Stock queries
-low_stock = await Product.find(Product.stock &lt; 10).to_list()
-</code></pre>
-<p><strong>Redis Structure</strong>:</p>
-<pre><code>Key: idx:Product:price
-Type: Sorted Set
-Content: {document_id: price_value, ...}
-
-Example:
-idx:Product:price -&gt; {
-    &quot;prod_1&quot;: 9.99,
-    &quot;prod_2&quot;: 15.50,
-    &quot;prod_3&quot;: 25.00
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">price</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>  <span class="c1"># Stored in sorted set</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">stock</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>    <span class="c1"># Stored in sorted set</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># Enables range queries</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">expensive</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">price__gt</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">affordable</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">price__gte</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">price__lte</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># Stock queries</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="n">low_stock</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">stock__lt</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Redis Structure</strong>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Key: idx:Product:price
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Type: Sorted Set
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Content: {document_id: price_value, ...}
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Example:
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>idx:Product:price -&gt; {
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    "prod_1": 9.99,
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    "prod_2": 15.50,
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    "prod_3": 25.00
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>}
+</code></pre></div></p>
 <p><strong>Supported Operations</strong>:
-- <code>==</code> - Exact match
-- <code>&gt;</code>, <code>&gt;=</code> - Greater than
-- <code>&lt;</code>, <code>&lt;=</code> - Less than
-- Range combinations</p>
-<h2 id="categorical-indexes-sets">Categorical Indexes (Sets)</h2>
+- <code>field__gt=</code>, <code>field__gte=</code> - Greater than
+- <code>field__lt=</code>, <code>field__lte=</code> - Less than
+- Range combinations; for an exact value use <code>__gte</code> and <code>__lte</code> with the same bound</p>
+<h2 id="categorical-indexes-sets">Categorical Indexes (Sets)<a class="headerlink" href="#categorical-indexes-sets" title="Permanent link">&para;</a></h2>
 <p>String fields are stored in Redis Sets (one set per unique value):</p>
-<pre><code class="language-python">class Product(Document):
-    name: str
-    category: Indexed(str)  # Stored in sets
-    brand: Indexed(str)     # Stored in sets
-
-# Enables exact match queries
-books = await Product.find(Product.category == &quot;books&quot;).to_list()
-nike = await Product.find(Product.brand == &quot;Nike&quot;).to_list()
-</code></pre>
-<p><strong>Redis Structure</strong>:</p>
-<pre><code>Key: idx:Product:category:books
-Type: Set
-Content: {document_id, document_id, ...}
-
-Example:
-idx:Product:category:books -&gt; {&quot;prod_1&quot;, &quot;prod_2&quot;, &quot;prod_5&quot;}
-idx:Product:category:electronics -&gt; {&quot;prod_3&quot;, &quot;prod_4&quot;}
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">category</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>  <span class="c1"># Stored in sets</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">brand</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>     <span class="c1"># Stored in sets</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># Enables exact match queries</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">books</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">"books"</span><span class="p">)</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">nike</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">brand</span><span class="o">=</span><span class="s2">"Nike"</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Redis Structure</strong>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Key: idx:Product:category:books
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Type: Set
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Content: {document_id, document_id, ...}
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Example:
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>idx:Product:category:books -&gt; {"prod_1", "prod_2", "prod_5"}
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>idx:Product:category:electronics -&gt; {"prod_3", "prod_4"}
+</code></pre></div></p>
 <p><strong>Supported Operations</strong>:
-- <code>==</code> - Exact match only</p>
+- <code>field=value</code> - Exact match only</p>
 <p><strong>Not Supported</strong>:
 - Partial matches (use full-text search module)
 - Case-insensitive search
 - Wildcards</p>
-<h2 id="index-creation">Index Creation</h2>
+<h2 id="index-creation">Index Creation<a class="headerlink" href="#index-creation" title="Permanent link">&para;</a></h2>
 <p>Indexes are created automatically when you insert documents:</p>
-<pre><code class="language-python"># Define indexed fields
-class Product(Document):
-    price: Indexed(float)
-    category: Indexed(str)
-
-# Initialize
-await init_beanis(database=redis_client, document_models=[Product])
-
-# Insert - indexes created automatically
-product = Product(
-    name=&quot;Laptop&quot;,
-    price=999.99,
-    category=&quot;electronics&quot;
-)
-await product.insert()
-
-# This creates:
-# 1. Hash: Product:{id}
-# 2. Sorted Set entry: idx:Product:price
-# 3. Set entry: idx:Product:category:electronics
-</code></pre>
-<h2 id="index-updates">Index Updates</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Define indexed fields</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">price</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">category</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1"># Initialize</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="k">await</span> <span class="n">init_beanis</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="n">redis_client</span><span class="p">,</span> <span class="n">document_models</span><span class="o">=</span><span class="p">[</span><span class="n">Product</span><span class="p">])</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># Insert - indexes created automatically</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="p">(</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">"Laptop"</span><span class="p">,</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="n">price</span><span class="o">=</span><span class="mf">999.99</span><span class="p">,</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    <span class="n">category</span><span class="o">=</span><span class="s2">"electronics"</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="p">)</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="k">await</span> <span class="n">product</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c1"># This creates:</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="c1"># 1. Hash: Product:{id}</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="c1"># 2. Sorted Set entry: idx:Product:price</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="c1"># 3. Set entry: idx:Product:category:electronics</span>
+</code></pre></div>
+<h2 id="index-updates">Index Updates<a class="headerlink" href="#index-updates" title="Permanent link">&para;</a></h2>
 <p>Indexes are automatically updated when documents change:</p>
-<pre><code class="language-python">product = await Product.get(&quot;product_id_123&quot;)
-
-# Update price - sorted set automatically updated
-await product.update(price=799.99)
-
-# Update category - sets automatically updated
-await product.update(category=&quot;computers&quot;)
-# Old set entry removed, new set entry added
-</code></pre>
-<h2 id="multiple-indexes">Multiple Indexes</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">product</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"product_id_123"</span><span class="p">)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># Update price - sorted set automatically updated</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="k">await</span> <span class="n">product</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">price</span><span class="o">=</span><span class="mf">799.99</span><span class="p">)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="c1"># Update category - sets automatically updated</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="k">await</span> <span class="n">product</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">"computers"</span><span class="p">)</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1"># Old set entry removed, new set entry added</span>
+</code></pre></div>
+<h2 id="multiple-indexes">Multiple Indexes<a class="headerlink" href="#multiple-indexes" title="Permanent link">&para;</a></h2>
 <p>You can index multiple fields on the same document:</p>
-<pre><code class="language-python">class Product(Document):
-    name: str
-    price: Indexed(float)
-    stock: Indexed(int)
-    category: Indexed(str)
-    brand: Indexed(str)
-
-# Each indexed field has its own Redis structure
-# - idx:Product:price (sorted set)
-# - idx:Product:stock (sorted set)
-# - idx:Product:category:{value} (sets)
-# - idx:Product:brand:{value} (sets)
-</code></pre>
-<h2 id="query-performance">Query Performance</h2>
-<h3 id="indexed-queries-fast">Indexed Queries (Fast)</h3>
-<pre><code class="language-python"># These queries use indexes - O(log N) or O(1)
-products = await Product.find(Product.price &lt; 100).to_list()
-books = await Product.find(Product.category == &quot;books&quot;).to_list()
-</code></pre>
-<h3 id="non-indexed-queries-slow">Non-Indexed Queries (Slow)</h3>
-<pre><code class="language-python"># This field is NOT indexed - requires full scan
-class Product(Document):
-    name: str  # Not indexed!
-    price: Indexed(float)
-
-# This will NOT work (name not indexed):
-# products = await Product.find(Product.name == &quot;Laptop&quot;).to_list()
-
-# You must use get_all() and filter manually:
-all_products = await Product.all()
-laptops = [p for p in all_products if p.name == &quot;Laptop&quot;]
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">price</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">stock</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">category</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">brand</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># Each indexed field has its own Redis structure</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="c1"># - idx:Product:price (sorted set)</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="c1"># - idx:Product:stock (sorted set)</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="c1"># - idx:Product:category:{value} (sets)</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="c1"># - idx:Product:brand:{value} (sets)</span>
+</code></pre></div>
+<h2 id="query-performance">Query Performance<a class="headerlink" href="#query-performance" title="Permanent link">&para;</a></h2>
+<h3 id="indexed-queries-fast">Indexed Queries (Fast)<a class="headerlink" href="#indexed-queries-fast" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># These queries use indexes - O(log N) or O(1)</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">products</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">price__lt</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">books</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">"books"</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="non-indexed-queries-slow">Non-Indexed Queries (Slow)<a class="headerlink" href="#non-indexed-queries-slow" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># This field is NOT indexed - requires full scan</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># Not indexed!</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">price</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># This raises ValueError (name not indexed):</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># products = await Product.find(name="Laptop")</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="c1"># Load with all() and filter manually:</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="n">all_products</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="n">laptops</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">all_products</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"Laptop"</span><span class="p">]</span>
+</code></pre></div>
 <p><strong>Rule</strong>: Only <code>Indexed()</code> fields support <code>.find()</code> queries!</p>
-<h2 id="index-storage-cost">Index Storage Cost</h2>
+<h2 id="index-storage-cost">Index Storage Cost<a class="headerlink" href="#index-storage-cost" title="Permanent link">&para;</a></h2>
 <p>Each index uses Redis memory:</p>
-<pre><code class="language-python">class Product(Document):
-    price: Indexed(float)     # ~50 bytes per document
-    category: Indexed(str)    # ~40 bytes per document per unique value
-
-# For 10,000 products with 5 categories:
-# - price index: ~500 KB
-# - category index: ~200 KB (5 sets)
-# - documents: ~5-10 MB (depends on size)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="n">price</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>     <span class="c1"># ~50 bytes per document</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">category</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>    <span class="c1"># ~40 bytes per document per unique value</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="c1"># For 10,000 products with 5 categories:</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="c1"># - price index: ~500 KB</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># - category index: ~200 KB (5 sets)</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="c1"># - documents: ~5-10 MB (depends on size)</span>
+</code></pre></div>
 <p><strong>Best Practice</strong>: Only index fields you'll query frequently.</p>
-<h2 id="compound-queries">Compound Queries</h2>
+<h2 id="compound-queries">Compound Queries<a class="headerlink" href="#compound-queries" title="Permanent link">&para;</a></h2>
 <p>Beanis supports querying multiple indexed fields:</p>
-<pre><code class="language-python"># Both fields must be indexed
-products = await Product.find(
-    Product.price &gt;= 10,
-    Product.price &lt;= 50,
-    Product.category == &quot;electronics&quot;
-).to_list()
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Both fields must be indexed</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">products</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">price__gte</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">price__lte</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="n">category</span><span class="o">=</span><span class="s2">"electronics"</span><span class="p">,</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="p">)</span>
+</code></pre></div>
 <p><strong>How it works</strong>:
 1. Query price index (sorted set range)
 2. Query category index (set members)
 3. Intersect results (in Python)</p>
-<h2 id="index-limitations">Index Limitations</h2>
-<h3 id="no-full-text-search">No Full-Text Search</h3>
-<pre><code class="language-python"># Not supported - no partial matching
-# products = await Product.find(Product.name.contains(&quot;Lap&quot;)).to_list()
-
-# Use Redis RediSearch module for full-text search
-# Or filter in memory:
-all_products = await Product.all()
-matches = [p for p in all_products if &quot;Lap&quot; in p.name]
-</code></pre>
-<h3 id="no-case-insensitive-search">No Case-Insensitive Search</h3>
-<pre><code class="language-python"># Case-sensitive only
-books = await Product.find(Product.category == &quot;Books&quot;).to_list()  # Won't find &quot;books&quot;
-
-# Workaround: Store lowercase
-class Product(Document):
-    category_lower: Indexed(str)
-
-    @before_event(Insert, Update)
-    async def normalize_category(self):
-        self.category_lower = self.category.lower()
-
-# Query lowercase
-books = await Product.find(Product.category_lower == &quot;books&quot;).to_list()
-</code></pre>
-<h3 id="no-date-range-queries">No Date Range Queries</h3>
-<pre><code class="language-python">from datetime import datetime
-
-class Product(Document):
-    created_at: datetime  # Can't index datetime directly
-
-# Workaround: Store as timestamp (numeric)
-class Product(Document):
-    created_at: datetime
-    created_timestamp: Indexed(float)
-
-    @before_event(Insert)
-    async def set_timestamp(self):
-        self.created_timestamp = self.created_at.timestamp()
-
-# Query by timestamp
-recent = await Product.find(
-    Product.created_timestamp &gt; datetime(2024, 1, 1).timestamp()
-).to_list()
-</code></pre>
-<h2 id="index-maintenance">Index Maintenance</h2>
-<h3 id="automatic-cleanup">Automatic Cleanup</h3>
+<h2 id="index-limitations">Index Limitations<a class="headerlink" href="#index-limitations" title="Permanent link">&para;</a></h2>
+<h3 id="no-full-text-search">No Full-Text Search<a class="headerlink" href="#no-full-text-search" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Not supported - no partial matching</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1"># products = await Product.find(name__contains="Lap")  # ValueError</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Use Redis RediSearch module for full-text search</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="c1"># Or filter in memory:</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="n">all_products</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">all_products</span> <span class="k">if</span> <span class="s2">"Lap"</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+</code></pre></div>
+<h3 id="no-case-insensitive-search">No Case-Insensitive Search<a class="headerlink" href="#no-case-insensitive-search" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Case-sensitive only</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">books</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">"Books"</span><span class="p">)</span>  <span class="c1"># Won't find "books"</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># Workaround: Store lowercase</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="n">category_lower</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    <span class="nd">@before_event</span><span class="p">(</span><span class="n">Insert</span><span class="p">,</span> <span class="n">Update</span><span class="p">)</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">normalize_category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">category_lower</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="c1"># Query lowercase</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="n">books</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">category_lower</span><span class="o">=</span><span class="s2">"books"</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="no-date-range-queries">No Date Range Queries<a class="headerlink" href="#no-date-range-queries" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="n">created_at</span><span class="p">:</span> <span class="n">datetime</span>  <span class="c1"># Can't index datetime directly</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="c1"># Workaround: Store as timestamp (numeric)</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="n">created_at</span><span class="p">:</span> <span class="n">datetime</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    <span class="n">created_timestamp</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>    <span class="nd">@before_event</span><span class="p">(</span><span class="n">Insert</span><span class="p">)</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">created_timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="c1"># Query by timestamp</span>
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="n">recent</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>    <span class="n">created_timestamp__gt</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span>
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="p">)</span>
+</code></pre></div>
+<h2 id="index-maintenance">Index Maintenance<a class="headerlink" href="#index-maintenance" title="Permanent link">&para;</a></h2>
+<h3 id="automatic-cleanup">Automatic Cleanup<a class="headerlink" href="#automatic-cleanup" title="Permanent link">&para;</a></h3>
 <p>Indexes are cleaned up automatically on:
 - Document deletion
 - Field updates
 - Document updates</p>
-<pre><code class="language-python"># Delete - removes from all indexes
-await product.delete_self()
-
-# Update category - removes from old set, adds to new set
-await product.update(category=&quot;new_category&quot;)
-</code></pre>
-<h3 id="manual-index-check">Manual Index Check</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Delete - removes from all indexes</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="k">await</span> <span class="n">product</span><span class="o">.</span><span class="n">delete_self</span><span class="p">()</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># Update category - removes from old set, adds to new set</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="k">await</span> <span class="n">product</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">"new_category"</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="manual-index-check">Manual Index Check<a class="headerlink" href="#manual-index-check" title="Permanent link">&para;</a></h3>
 <p>Check what's in an index:</p>
-<pre><code class="language-python"># Direct Redis access (for debugging)
-redis_client = Product._database
-
-# Check sorted set index
-price_index = await redis_client.zrange(&quot;idx:Product:price&quot;, 0, -1, withscores=True)
-print(price_index)  # [(doc_id, score), ...]
-
-# Check set index
-books_set = await redis_client.smembers(&quot;idx:Product:category:books&quot;)
-print(books_set)  # {doc_id, doc_id, ...}
-</code></pre>
-<h2 id="advanced-patterns">Advanced Patterns</h2>
-<h3 id="geo-spatial-indexing">Geo-Spatial Indexing</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Direct Redis access (for debugging)</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">redis_client</span> <span class="o">=</span> <span class="n">Product</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()</span><span class="o">.</span><span class="n">redis_client</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># Check sorted set index</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">price_index</span> <span class="o">=</span> <span class="k">await</span> <span class="n">redis_client</span><span class="o">.</span><span class="n">zrange</span><span class="p">(</span><span class="s2">"idx:Product:price"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">withscores</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">price_index</span><span class="p">)</span>  <span class="c1"># [(doc_id, score), ...]</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="c1"># Check set index</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="n">books_set</span> <span class="o">=</span> <span class="k">await</span> <span class="n">redis_client</span><span class="o">.</span><span class="n">smembers</span><span class="p">(</span><span class="s2">"idx:Product:category:books"</span><span class="p">)</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">books_set</span><span class="p">)</span>  <span class="c1"># {doc_id, doc_id, ...}</span>
+</code></pre></div>
+<h2 id="advanced-patterns">Advanced Patterns<a class="headerlink" href="#advanced-patterns" title="Permanent link">&para;</a></h2>
+<h3 id="geo-spatial-indexing">Geo-Spatial Indexing<a class="headerlink" href="#geo-spatial-indexing" title="Permanent link">&para;</a></h3>
 <p>Redis supports geo-spatial queries, and Beanis provides built-in support through the GeoPoint type.</p>
-<pre><code class="language-python">from beanis import Document, Indexed, GeoPoint
-from beanis.odm.indexes import IndexManager
-
-class Store(Document):
-    name: str
-    location: Indexed[GeoPoint]  # Geo index
-
-    class Settings:
-        name = &quot;stores&quot;
-
-# Create a store
-store = Store(
-    name=&quot;Downtown Store&quot;,
-    location=GeoPoint(longitude=-122.4, latitude=37.8)
-)
-await store.insert()
-
-# Find nearby stores (within 10km)
-from beanis.odm.indexes import IndexManager
-
-nearby_ids = await IndexManager.find_by_geo_radius(
-    redis_client=Store._database,
-    document_class=Store,
-    field_name=&quot;location&quot;,
-    longitude=-122.4,
-    latitude=37.8,
-    radius=10,
-    unit=&quot;km&quot;
-)
-
-# Get the actual documents
-nearby_stores = await Store.get_many(nearby_ids)
-
-# Find nearby stores with distances
-nearby_with_dist = await IndexManager.find_by_geo_radius_with_distance(
-    redis_client=Store._database,
-    document_class=Store,
-    field_name=&quot;location&quot;,
-    longitude=-122.4,
-    latitude=37.8,
-    radius=10,
-    unit=&quot;km&quot;
-)
-
-for store_id, distance in nearby_with_dist:
-    print(f&quot;Store {store_id} is {distance} km away&quot;)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">beanis</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">Indexed</span><span class="p">,</span> <span class="n">GeoPoint</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">beanis.odm.indexes</span><span class="w"> </span><span class="kn">import</span> <span class="n">IndexManager</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">Store</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="n">location</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="n">GeoPoint</span><span class="p">)</span>  <span class="c1"># Geo index</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>    <span class="k">class</span><span class="w"> </span><span class="nc">Settings</span><span class="p">:</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>        <span class="n">name</span> <span class="o">=</span> <span class="s2">"stores"</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="c1"># Create a store</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="n">store</span> <span class="o">=</span> <span class="n">Store</span><span class="p">(</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">"Downtown Store"</span><span class="p">,</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>    <span class="n">location</span><span class="o">=</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">longitude</span><span class="o">=-</span><span class="mf">122.4</span><span class="p">,</span> <span class="n">latitude</span><span class="o">=</span><span class="mf">37.8</span><span class="p">)</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="p">)</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="k">await</span> <span class="n">store</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="c1"># Find nearby stores (within 10km)</span>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="kn">from</span><span class="w"> </span><span class="nn">beanis.odm.indexes</span><span class="w"> </span><span class="kn">import</span> <span class="n">IndexManager</span>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="n">nearby_ids</span> <span class="o">=</span> <span class="k">await</span> <span class="n">IndexManager</span><span class="o">.</span><span class="n">find_by_geo_radius</span><span class="p">(</span>
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>    <span class="n">redis_client</span><span class="o">=</span><span class="n">Store</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()</span><span class="o">.</span><span class="n">redis_client</span><span class="p">,</span>
+<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>    <span class="n">document_class</span><span class="o">=</span><span class="n">Store</span><span class="p">,</span>
+<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a>    <span class="n">field_name</span><span class="o">=</span><span class="s2">"location"</span><span class="p">,</span>
+<a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a>    <span class="n">longitude</span><span class="o">=-</span><span class="mf">122.4</span><span class="p">,</span>
+<a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a>    <span class="n">latitude</span><span class="o">=</span><span class="mf">37.8</span><span class="p">,</span>
+<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a>    <span class="n">radius</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a>    <span class="n">unit</span><span class="o">=</span><span class="s2">"km"</span>
+<a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a><span class="p">)</span>
+<a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a>
+<a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a><span class="c1"># Get the actual documents</span>
+<a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a><span class="n">nearby_stores</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Store</span><span class="o">.</span><span class="n">get_many</span><span class="p">(</span><span class="n">nearby_ids</span><span class="p">)</span>
+<a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a>
+<a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a><span class="c1"># Find nearby stores with distances</span>
+<a id="__codelineno-17-35" name="__codelineno-17-35" href="#__codelineno-17-35"></a><span class="n">nearby_with_dist</span> <span class="o">=</span> <span class="k">await</span> <span class="n">IndexManager</span><span class="o">.</span><span class="n">find_by_geo_radius_with_distance</span><span class="p">(</span>
+<a id="__codelineno-17-36" name="__codelineno-17-36" href="#__codelineno-17-36"></a>    <span class="n">redis_client</span><span class="o">=</span><span class="n">Store</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()</span><span class="o">.</span><span class="n">redis_client</span><span class="p">,</span>
+<a id="__codelineno-17-37" name="__codelineno-17-37" href="#__codelineno-17-37"></a>    <span class="n">document_class</span><span class="o">=</span><span class="n">Store</span><span class="p">,</span>
+<a id="__codelineno-17-38" name="__codelineno-17-38" href="#__codelineno-17-38"></a>    <span class="n">field_name</span><span class="o">=</span><span class="s2">"location"</span><span class="p">,</span>
+<a id="__codelineno-17-39" name="__codelineno-17-39" href="#__codelineno-17-39"></a>    <span class="n">longitude</span><span class="o">=-</span><span class="mf">122.4</span><span class="p">,</span>
+<a id="__codelineno-17-40" name="__codelineno-17-40" href="#__codelineno-17-40"></a>    <span class="n">latitude</span><span class="o">=</span><span class="mf">37.8</span><span class="p">,</span>
+<a id="__codelineno-17-41" name="__codelineno-17-41" href="#__codelineno-17-41"></a>    <span class="n">radius</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<a id="__codelineno-17-42" name="__codelineno-17-42" href="#__codelineno-17-42"></a>    <span class="n">unit</span><span class="o">=</span><span class="s2">"km"</span>
+<a id="__codelineno-17-43" name="__codelineno-17-43" href="#__codelineno-17-43"></a><span class="p">)</span>
+<a id="__codelineno-17-44" name="__codelineno-17-44" href="#__codelineno-17-44"></a>
+<a id="__codelineno-17-45" name="__codelineno-17-45" href="#__codelineno-17-45"></a><span class="k">for</span> <span class="n">store_id</span><span class="p">,</span> <span class="n">distance</span> <span class="ow">in</span> <span class="n">nearby_with_dist</span><span class="p">:</span>
+<a id="__codelineno-17-46" name="__codelineno-17-46" href="#__codelineno-17-46"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Store </span><span class="si">{</span><span class="n">store_id</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">distance</span><span class="si">}</span><span class="s2"> km away"</span><span class="p">)</span>
+</code></pre></div>
 <p><strong>Supported units</strong>: <code>m</code> (meters), <code>km</code> (kilometers), <code>mi</code> (miles), <code>ft</code> (feet)</p>
 <p><strong>How it works</strong>:
 - Uses Redis GEOADD command to store locations
 - Uses Redis GEORADIUS for proximity queries
 - Automatically maintains geo index on insert/update/delete</p>
-<h3 id="multi-value-indexing">Multi-Value Indexing</h3>
+<h3 id="vector-indexing">Vector Indexing<a class="headerlink" href="#vector-indexing" title="Permanent link">&para;</a></h3>
+<p>A <code>List[float]</code> field marked with <code>VectorField</code> is stored in a Redis 8 vector
+set (HNSW, cosine) and queried with <code>vector_search</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">List</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">beanis</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">Indexed</span><span class="p">,</span> <span class="n">VectorField</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">Chunk</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>    <span class="n">source</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>    <span class="n">embedding</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">VectorField</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="mi">384</span><span class="p">)]</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="c1"># (doc, score) pairs, score in [0, 1], higher is closer</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="n">hits</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Chunk</span><span class="o">.</span><span class="n">vector_search</span><span class="p">(</span><span class="n">query_vec</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="s1">'.source == "faq"'</span><span class="p">,</span> <span class="n">min_score</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="k">for</span> <span class="n">chunk</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">hits</span><span class="p">:</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">chunk</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+<p><code>filter</code> is a vector-set expression over the document's scalar fields. This
+needs Redis 8 or newer.</p>
+<h3 id="multi-value-indexing">Multi-Value Indexing<a class="headerlink" href="#multi-value-indexing" title="Permanent link">&para;</a></h3>
 <p>For list fields, consider storing as separate documents or using a workaround:</p>
-<pre><code class="language-python"># Not directly supported
-class Product(Document):
-    tags: List[str]  # Can't index list
-
-# Workaround 1: Store each tag as indexed field (if few tags)
-class Product(Document):
-    tag1: Indexed(str) = &quot;&quot;
-    tag2: Indexed(str) = &quot;&quot;
-    tag3: Indexed(str) = &quot;&quot;
-
-# Workaround 2: Manual secondary index
-class Product(Document):
-    tags: List[str]
-
-    async def index_tags(self):
-        &quot;&quot;&quot;Manually add to tag sets&quot;&quot;&quot;
-        for tag in self.tags:
-            await self._database.sadd(f&quot;tags:{tag}&quot;, self.id)
-</code></pre>
-<h2 id="best-practices">Best Practices</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Not directly supported</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="n">tags</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="c1"># Can't index list</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1"># Workaround 1: Store each tag as indexed field (if few tags)</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="n">tag1</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">=</span> <span class="s2">""</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>    <span class="n">tag2</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">=</span> <span class="s2">""</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>    <span class="n">tag3</span><span class="p">:</span> <span class="n">Indexed</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">=</span> <span class="s2">""</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="c1"># Workaround 2: Manual secondary index</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>    <span class="n">tags</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">index_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="w">        </span><span class="sd">"""Manually add to tag sets"""</span>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>        <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()</span><span class="o">.</span><span class="n">redis_client</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="sa">f</span><span class="s2">"tags:</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
 <ol>
 <li><strong>Index selectively</strong> - Only fields you'll query frequently</li>
 <li><strong>Use correct types</strong> - Numeric for ranges, strings for exact match</li>
@@ -577,7 +2063,7 @@ class Product(Document):
 <li><strong>Timestamps for dates</strong> - Convert datetime to float for range queries</li>
 <li><strong>Test performance</strong> - Profile with realistic data volumes</li>
 </ol>
-<h2 id="comparison-with-mongodb">Comparison with MongoDB</h2>
+<h2 id="comparison-with-mongodb">Comparison with MongoDB<a class="headerlink" href="#comparison-with-mongodb" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -624,87 +2110,116 @@ class Product(Document):
 </tr>
 </tbody>
 </table>
-<h2 id="next-steps">Next Steps</h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="find.md">Find Operations</a> - Query using indexes</li>
-<li><a href="actions.md">Event Hooks</a> - Maintain custom indexes</li>
-<li><a href="../CUSTOM_ENCODERS.md">Custom Encoders</a> - Store complex types</li>
-</ul></div>
-            </div>
-        </div>
+<li><a href="../find/">Find Operations</a> - Query using indexes</li>
+<li><a href="../actions/">Event Hooks</a> - Maintain custom indexes</li>
+<li><a href="../custom-encoders/">Custom Encoders</a> - Store complex types</li>
+</ul>
 
-        <footer class="col-md-12">
-            <hr>
-            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
-        </footer>
-        <script src="../../js/bootstrap.bundle.min.js"></script>
-        <script>
-            var base_url = "../..",
-                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
-        </script>
-        <script src="../../js/base.js"></script>
-        <script src="../../search/main.js"></script>
 
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="searchModalLabel">Search</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
             </div>
-            <div class="modal-body">
-                <p>From here you can search these documents. Enter your search terms below.</p>
-                <form>
-                    <div class="form-group">
-                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
-                    </div>
-                </form>
-                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
-            </div>
-            <div class="modal-footer">
-            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../delete/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Deleting">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Deleting
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../actions/" class="md-footer__link md-footer__link--next" aria-label="Next: Event hooks">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Event hooks
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Apache License 2.0
     </div>
-</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th style="width: 20%;">Keys</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="help shortcut"><kbd>?</kbd></td>
-                    <td>Open this help</td>
-                  </tr>
-                  <tr>
-                    <td class="next shortcut"><kbd>n</kbd></td>
-                    <td>Next page</td>
-                  </tr>
-                  <tr>
-                    <td class="prev shortcut"><kbd>p</kbd></td>
-                    <td>Previous page</td>
-                  </tr>
-                  <tr>
-                    <td class="search shortcut"><kbd>s</kbd></td>
-                    <td>Search</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
 </div>
-
-    </body>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "content.code.copy", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
 </html>
