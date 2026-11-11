@@ -2,10 +2,11 @@
   "mcpServers": {
     "memory": {
       "command": "uvx",
-      "args": ["--python", ">=3.10", "--from", "beanis[mcp]>=0.3.1", "beanis-mcp"],
+      "args": ["--python", ">=3.10", "--from", "beanis[mcp]>=0.3.2", "beanis-mcp"],
       "env": {
         "REDIS_URL": "${REDIS_URL:-redis://localhost:6379/0}",
-        "BEANIS_MEMORY_NAMESPACE": "${BEANIS_MEMORY_NAMESPACE:-default}"
+        "BEANIS_MEMORY_NAMESPACE": "${BEANIS_MEMORY_NAMESPACE:-auto}",
+        "BEANIS_PROJECT_DIR": "${CLAUDE_PROJECT_DIR}"
       }
     }
   }

@@ -151,9 +151,10 @@ beanis memory remember "Deploys go out on Tuesdays" --kind decision
 beanis memory recall "when do we deploy?" -k 3
 beanis memory recent --limit 5
 beanis memory forget <id>
+beanis context                                  # newest memories as plain text, for session hooks
 ```
 
-Configuration is by environment: `REDIS_URL` (default `redis://localhost:6379/0`, or pass `--url`), `BEANIS_MEMORY_NAMESPACE` (default `default`), `BEANIS_EMBED_MODEL` (default `BAAI/bge-small-en-v1.5`).
+Configuration is by environment: `REDIS_URL` (default `redis://localhost:6379/0`, or pass `--url`), `BEANIS_MEMORY_NAMESPACE` (default `default`; `auto` gives each git project its own namespace), `BEANIS_EMBED_MODEL` (default `BAAI/bge-small-en-v1.5`).
 
 ### As an MCP server
 
@@ -166,7 +167,7 @@ claude plugin marketplace add andreim14/beanis
 claude plugin install beanis@beanis
 ```
 
-The plugin starts the server with `uvx`, so it needs [uv](https://docs.astral.sh/uv/) and a Redis 8 at `REDIS_URL`. Without the plugin:
+The plugin gives each project its own namespace and, at the start of every session, puts that project's newest memories into Claude's context, so a new session does not start from zero. Sessions and subagents share the store: what one remembers, the next one knows. It starts everything with `uvx`, so it needs [uv](https://docs.astral.sh/uv/) and a Redis 8 at `REDIS_URL`. Without the plugin:
 
 ```bash
 claude mcp add beanis-memory --env REDIS_URL=redis://localhost:6379/0 -- beanis-mcp

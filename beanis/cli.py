@@ -6,10 +6,11 @@ beanis command line: check a Redis server, use agent memory, run the MCP server.
     beanis memory recall "when do we deploy?" --user alice
     beanis memory recent
     beanis memory forget <id>
+    beanis context            # plain text, for agent session hooks
     beanis mcp
 
-Every command prints one JSON value on stdout, so agents and scripts can
-parse it. Errors go to stderr with a non-zero exit code.
+Every command except `context` prints one JSON value on stdout, so agents
+and scripts can parse it. Errors go to stderr with a non-zero exit code.
 """
 
 import argparse
@@ -202,6 +203,34 @@ async def memory_command(args: argparse.Namespace) -> Any:
         await memory.redis.aclose()
 
 
+CONTEXT_GUIDE = (
+    "This project's long-term memory is a shared Beanis store on Redis. "
+    "Other sessions, subagents and coding agents on this project read and "
+    "write the same store through the beanis memory tools (recall, "
+    "remember, forget, recent). Entries are single self-contained "
+    "sentences with a kind: decision, fact, preference or note. Durable "
+    "decisions, conventions, gotchas and user preferences saved with "
+    "remember become available to every later session; secrets are never "
+    "stored there."
+)
+
+
+async def context_text(namespace: Optional[str], limit: int) -> str:
+    """Newest memories of a namespace as plain text, for a session hook."""
+    from beanis.memory import memory_from_env
+
+    memory = memory_from_env(namespace=namespace)
+    try:
+        records = await memory.recent(limit=limit)
+    finally:
+        await memory.redis.aclose()
+    lines = [f"# Project memory (beanis namespace: {memory.namespace})", ""]
+    lines += [f"- [{r.kind}] {r.text} (id {r.id})" for r in records]
+    if not records:
+        lines.append("(empty so far)")
+    return "\n".join(lines + ["", CONTEXT_GUIDE])
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="beanis",
@@ -223,11 +252,21 @@ def _parser() -> argparse.ArgumentParser:
         "mcp", help="run the memory MCP server on stdio (same as beanis-mcp)"
     )
 
+    ctx = sub.add_parser(
+        "context",
+        help="print a namespace's newest memories as plain text "
+        "(for SessionStart hooks); prints nothing if Redis is unreachable",
+    )
+    ctx.add_argument("--namespace", help="default: $BEANIS_MEMORY_NAMESPACE")
+    ctx.add_argument("--limit", type=int, default=40)
+
     mem = sub.add_parser(
         "memory", help="long-term memory: remember, recall, forget, recent"
     )
     mem.add_argument(
-        "--namespace", help="default: $BEANIS_MEMORY_NAMESPACE or 'default'"
+        "--namespace",
+        help="default: $BEANIS_MEMORY_NAMESPACE or 'default'; "
+        "'auto' = current git project",
     )
     actions = mem.add_subparsers(dest="action", required=True)
 
@@ -273,6 +312,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.url:
         os.environ["REDIS_URL"] = args.url
     url = os.environ.get("REDIS_URL", REDIS_URL_DEFAULT)
+
+    if args.command == "context":
+        try:
+            print(asyncio.run(context_text(args.namespace, args.limit)))
+        except Exception as e:  # a hook must never block the session
+            print(f"beanis: context unavailable: {e}", file=sys.stderr)
+        return 0
 
     try:
         if args.command == "mcp":

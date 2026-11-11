@@ -205,11 +205,16 @@ def fastembed_embedder(model_name: str = DEFAULT_EMBED_MODEL) -> EmbedFn:
             'Local embeddings need fastembed: pip install "beanis[mcp]"'
         ) from e
 
-    model = TextEmbedding(model_name)
+    model = None  # loaded on first use, so commands that never embed stay fast
+
+    def _embed_sync(text: str):
+        nonlocal model
+        if model is None:
+            model = TextEmbedding(model_name)
+        return next(iter(model.embed([text])))
 
     async def embed(text: str) -> List[float]:
-        vec = await asyncio.to_thread(lambda: next(iter(model.embed([text]))))
-        return vec.tolist()
+        return (await asyncio.to_thread(_embed_sync, text)).tolist()
 
     return embed
 
@@ -218,8 +223,8 @@ def memory_from_env(namespace: Optional[str] = None) -> Memory:
     """
     Memory configured from the environment, as used by the CLI and MCP server.
 
-    REDIS_URL (redis://localhost:6379/0), BEANIS_MEMORY_NAMESPACE (default),
-    BEANIS_EMBED_MODEL (BAAI/bge-small-en-v1.5). All memories share one
+    REDIS_URL (redis://localhost:6379/0), BEANIS_MEMORY_NAMESPACE (default;
+    "auto" for one namespace per project), BEANIS_EMBED_MODEL (BAAI/bge-small-en-v1.5). All memories share one
     vector set, so every writer must use the same embedding model.
     """
     from redis.asyncio import Redis
@@ -233,6 +238,31 @@ def memory_from_env(namespace: Optional[str] = None) -> Memory:
         embed=fastembed_embedder(
             os.environ.get("BEANIS_EMBED_MODEL", DEFAULT_EMBED_MODEL)
         ),
-        namespace=namespace
-        or os.environ.get("BEANIS_MEMORY_NAMESPACE", "default"),
+        namespace=resolve_namespace(namespace),
     )
+
+
+def resolve_namespace(namespace: Optional[str] = None) -> str:
+    """
+    The namespace argument, else $BEANIS_MEMORY_NAMESPACE, else "default".
+
+    "auto" means the current project: the name of the git repository that
+    contains $BEANIS_PROJECT_DIR, $CLAUDE_PROJECT_DIR or the working
+    directory (the directory's own name outside git).
+    """
+    name = namespace or os.environ.get("BEANIS_MEMORY_NAMESPACE") or "default"
+    if name != "auto":
+        return name
+    cwd = os.path.abspath(
+        os.environ.get("BEANIS_PROJECT_DIR")
+        or os.environ.get("CLAUDE_PROJECT_DIR")
+        or os.getcwd()
+    )
+    path = cwd
+    while True:
+        if os.path.exists(os.path.join(path, ".git")):
+            return os.path.basename(path) or "default"
+        parent = os.path.dirname(path)
+        if parent == path:
+            return os.path.basename(cwd) or "default"
+        path = parent

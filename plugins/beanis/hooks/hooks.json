@@ -1,0 +1,17 @@
+{
+  "description": "Load this project's shared Beanis memory at session start",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uvx --python '>=3.10' --from 'beanis[mcp]>=0.3.2' beanis context --namespace \"${BEANIS_MEMORY_NAMESPACE:-auto}\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

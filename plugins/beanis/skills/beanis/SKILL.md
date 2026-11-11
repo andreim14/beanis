@@ -107,7 +107,8 @@ beanis memory remember "text" [--user U] [--session S] [--kind K] [--ttl N]
 beanis memory recall "query" [-k 5] [--user U] [--kind K] [--min-score 0.3]
 beanis memory recent [--limit 10]
 beanis memory forget <id>
+beanis context        # newest memories as plain text (SessionStart hook)
 beanis mcp            # stdio MCP server, same as beanis-mcp
 ```
 
-Environment: `REDIS_URL`, `BEANIS_MEMORY_NAMESPACE`, `BEANIS_EMBED_MODEL`.
+Environment: `REDIS_URL`, `BEANIS_MEMORY_NAMESPACE` (`auto` = one namespace per git project, from `$CLAUDE_PROJECT_DIR` or the working directory), `BEANIS_EMBED_MODEL`.

@@ -2,6 +2,13 @@
 
 Beanis - Redis ODM for Python
 
+## [0.3.2] - 2026-11-11
+
+- `beanis context`: a namespace's newest memories as plain text, for agent session hooks. Prints nothing (exit 0) if Redis is unreachable.
+- Namespace `auto`: one namespace per git project, from `$BEANIS_PROJECT_DIR`, `$CLAUDE_PROJECT_DIR` or the working directory.
+- Claude Code plugin: a SessionStart hook loads the project's memory into context; memory is scoped per project by default.
+- The fastembed model loads on first embedding, so commands that do not embed start fast.
+
 ## [0.3.1] - 2026-11-11
 
 - `beanis` command line: `doctor` (checks Redis, vector sets, extras and the stored memory's embedding size), `memory remember|recall|forget|recent`, `mcp`. Output is JSON.

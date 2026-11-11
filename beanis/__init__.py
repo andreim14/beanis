@@ -25,7 +25,7 @@ from beanis.odm.documents import (
 from beanis.odm.indexes import GeoPoint, Indexed, IndexedField, VectorField
 from beanis.odm.utils.init import init_beanis
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 __all__ = [
     # ODM
     "Document",
