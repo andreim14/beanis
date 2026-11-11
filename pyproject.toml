@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "beanis"
-version = "0.2.0"
+version = "0.3.0"
 description = "Asynchronous Python ODM for Redis"
 readme = "README.md"
 requires-python = ">=3.9,<4.0"
@@ -44,6 +44,10 @@ test = [
     "pydantic-extra-types>=2",
     "pydantic[email]",
 ]
+mcp = [
+    "mcp>=2.3; python_version >= '3.10'",
+    "fastembed>=0.9; python_version >= '3.10'",
+]
 doc = [
     "Pygments>=2.8.0",
     "Markdown>=3.3",
@@ -57,7 +61,8 @@ doc = [
 homepage = "https://github.com/andreim14/beanis"
 repository = "https://github.com/andreim14/beanis"
 
-# No CLI scripts for now
+[project.scripts]
+beanis-mcp = "beanis.mcp_server:main"
 
 # TOOLS
 

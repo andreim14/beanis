@@ -25,7 +25,7 @@ from beanis.odm.documents import (
 from beanis.odm.indexes import GeoPoint, Indexed, IndexedField, VectorField
 from beanis.odm.utils.init import init_beanis
 
-__version__ = "0.0.8"
+__version__ = "0.3.0"
 __all__ = [
     # ODM
     "Document",
@@ -56,3 +56,7 @@ __all__ = [
     "register_type",
     "CustomEncoderRegistry",
 ]
+
+from beanis.memory import Memory, MemoryRecord  # noqa: E402
+
+__all__ += ["Memory", "MemoryRecord"]

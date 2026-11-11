@@ -395,6 +395,59 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+## For agents: vector search, memory and MCP
+
+Beanis stores embeddings in **Redis 8 vector sets** (`VADD` / `VSIM`), which ship with Redis 8.0+ itself: no RediSearch, no Redis Stack. Every scalar field of the document is attached to its vector, so you can filter a similarity search on it.
+
+```python
+from typing import List
+from typing_extensions import Annotated
+from beanis import Document, IndexedField, VectorField, init_beanis
+
+class Chunk(Document):
+    text: str
+    source: Annotated[str, IndexedField()]
+    embedding: Annotated[List[float], VectorField(dimensions=384)]
+
+await init_beanis(database=redis, document_models=[Chunk])
+await Chunk(text="Refunds take 5 days", source="faq", embedding=embed("Refunds take 5 days")).insert()
+
+for chunk, score in await Chunk.vector_search(embed("how long do refunds take?"), k=3, filter='.source == "faq"'):
+    print(round(score, 3), chunk.text)   # score in [0, 1], higher is closer
+```
+
+`VectorField` uses HNSW with cosine similarity and int8 quantization by default (`quantization="NOQUANT"` keeps float32). `init_beanis` raises if a model has vector fields and the server has no vector sets.
+
+### Agent memory
+
+`Memory` is long-term memory for an agent in four calls, scoped by namespace, user and session, with near-duplicate merging and optional TTL:
+
+```python
+from beanis import Memory
+
+memory = Memory(redis, embed=embed, namespace="support-bot")
+await memory.remember("Prefers answers in Italian", user_id="u42")
+hits = await memory.recall("which language should I use?", user_id="u42", k=3)
+await memory.forget(hits[0][0].id)
+```
+
+`embed` is any function from text to a vector (sync or async). `beanis.memory.fastembed_embedder()` gives you a local one with no API key.
+
+### MCP server
+
+Give any MCP client (Claude Code, Claude Desktop, Cursor, LangGraph via an MCP adapter) the same memory as tools: `remember`, `recall`, `forget`, `recent`.
+
+```bash
+pip install "beanis[mcp]"
+claude mcp add beanis-memory --env REDIS_URL=redis://localhost:6379/0 -- beanis-mcp
+```
+
+```json
+{ "mcpServers": { "beanis-memory": { "command": "beanis-mcp", "env": { "REDIS_URL": "redis://localhost:6379/0" } } } }
+```
+
+Embeddings run locally with fastembed (`BAAI/bge-small-en-v1.5`, override with `BEANIS_EMBED_MODEL`). Separate agents with `BEANIS_MEMORY_NAMESPACE`.
+
 ## Core Features
 
 ### 🚀 Type Safety & Validation
@@ -581,8 +634,8 @@ await Product.delete_all()
 
 ## Requirements
 
-- Python 3.8+
-- Redis 5.0+
+- Python 3.9+ (3.10+ for the MCP server)
+- Redis 5.0+; Redis 8.0+ for `VectorField`, `Memory` and the MCP server (vector sets)
 - Pydantic 1.10+ or 2.0+
 
 ## Testing
@@ -596,6 +649,9 @@ pytest --cov=beanis
 
 # Run specific test
 pytest tests/test_core.py::test_insert_and_get
+
+# Vector, memory and MCP tests need a real Redis 8 (skipped otherwise)
+REDIS_PORT=6379 pytest tests/test_real_redis_regressions.py tests/test_memory_real_redis.py
 ```
 
 ## Credits

@@ -99,7 +99,7 @@ class IndexedField:
 
 
 def VectorField(
-    dimensions: int,
+    dimensions: Optional[int],
     algorithm: str = "HNSW",
     distance_metric: str = "COSINE",
     m: int = 16,
@@ -114,7 +114,8 @@ def VectorField(
             embedding: Annotated[List[float], VectorField(dimensions=1024)]
 
     Args:
-        dimensions: Vector dimensionality (e.g., 1024 for Jina v4)
+        dimensions: Vector dimensionality (e.g., 1024 for Jina v4), or None to
+            take it from the first vector written
         algorithm: "HNSW" (default) or "FLAT"
         distance_metric: "COSINE" (default), "L2", or "IP" (inner product)
         m: HNSW M parameter (connections per node)
@@ -755,9 +756,9 @@ def _vector_attributes(document_class: Type, values: Dict[str, Any]) -> str:
     for name, value in values.items():
         if name.startswith("_"):
             continue
-        if isinstance(value, (str, int, float, bool)) and not isinstance(
-            value, bytes
-        ):
+        if isinstance(value, str) and len(value) > 256:
+            continue  # keep long text out of the vector set; filter on short fields
+        if isinstance(value, (str, int, float, bool)):
             attrs[name] = value
     return json.dumps(attrs)
 
