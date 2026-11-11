@@ -104,6 +104,7 @@ def VectorField(
     distance_metric: str = "COSINE",
     m: int = 16,
     ef_construction: int = 200,
+    quantization: str = "Q8",
 ) -> IndexedField:
     """
     Helper to create a vector field for similarity search
@@ -118,8 +119,18 @@ def VectorField(
         distance_metric: "COSINE" (default), "L2", or "IP" (inner product)
         m: HNSW M parameter (connections per node)
         ef_construction: HNSW ef_construction parameter
+        quantization: "Q8" (default, int8), "NOQUANT" (float32) or "BIN"
+
+    Backed by a Redis 8 vector set (VADD/VSIM): HNSW with cosine similarity.
     """
+    if algorithm.upper() != "HNSW":
+        raise ValueError("Redis vector sets only support algorithm='HNSW'")
+    if distance_metric.upper() != "COSINE":
+        raise ValueError("Redis vector sets only support distance_metric='COSINE'")
+    if quantization.upper() not in ("Q8", "NOQUANT", "BIN"):
+        raise ValueError("quantization must be 'Q8', 'NOQUANT' or 'BIN'")
     indexed_field = IndexedField(index_type=IndexType.VECTOR)
+    indexed_field.quantization = quantization.upper()
     indexed_field.dimensions = dimensions
     indexed_field.algorithm = algorithm
     indexed_field.distance_metric = distance_metric
@@ -376,6 +387,11 @@ class IndexManager:
                         document_class, field_name
                     )
                     pipe.zrem(index_key, document_id)
+                elif index_type == IndexType.VECTOR and new_value is None:
+                    index_key = IndexManager.get_index_key(
+                        document_class, field_name
+                    )
+                    pipe.execute_command("VREM", index_key, document_id)
 
             # Add to new index
             if new_value is not None:
@@ -430,6 +446,19 @@ class IndexManager:
                                 document_id,
                             ),
                         )
+                elif index_type == IndexType.VECTOR:
+                    index_key = IndexManager.get_index_key(
+                        document_class, field_name
+                    )
+                    pipe.execute_command(
+                        *_vadd_args(
+                            index_key,
+                            document_id,
+                            _as_vector(new_value),
+                            indexed_field,
+                            _vector_attributes(document_class, new_values),
+                        )
+                    )
 
         # Execute all operations in a single round-trip
         await pipe.execute()
@@ -474,6 +503,11 @@ class IndexManager:
                     document_class, field_name
                 )
                 pipe.zrem(index_key, document_id)
+            elif index_type == IndexType.VECTOR:
+                index_key = IndexManager.get_index_key(
+                    document_class, field_name
+                )
+                pipe.execute_command("VREM", index_key, document_id)
 
         # Execute all operations in a single round-trip
         await pipe.execute()
@@ -524,12 +558,8 @@ class IndexManager:
             index_key = IndexManager.get_index_key(document_class, field_name)
 
             # Use -inf and +inf as defaults
-            min_score = (
-                float(min_value) if min_value is not None else float("-inf")
-            )
-            max_score = (
-                float(max_value) if max_value is not None else float("+inf")
-            )
+            min_score = _score_bound(min_value, "-inf")
+            max_score = _score_bound(max_value, "+inf")
 
             members = await redis_client.zrangebyscore(
                 index_key, min_score, max_score
@@ -647,30 +677,18 @@ class IndexManager:
         query_vector: List[float],
         k: int = 10,
         ef_runtime: Optional[int] = None,
+        filter: Optional[str] = None,
     ) -> List[Tuple[str, float]]:
         """
-        Find document IDs by vector similarity (KNN search)
+        Find document IDs by vector similarity, using a Redis 8 vector set.
 
-        Returns list of (document_id, similarity_score) tuples sorted by similarity
+        Returns (document_id, similarity) pairs, best first. Similarity is in
+        [0, 1]: 1 is identical, 0.5 orthogonal (cosine).
 
-        Usage:
-            query_embedding = model.encode(["search text"])[0].tolist()
-            results = await IndexManager.find_by_vector_similarity(
-                redis_client, Document, "embedding",
-                query_vector=query_embedding,
-                k=5
-            )
-            for doc_id, score in results:
-                doc = await Document.get(doc_id)
-                print(f"{doc.text}: {score}")
-
-        Args:
-            redis_client: Redis client instance
-            document_class: Document class to search
-            field_name: Name of the vector field
-            query_vector: Query vector as list of floats
-            k: Number of results to return
-            ef_runtime: HNSW ef_runtime parameter (optional, for tuning)
+        ``filter`` is a vector-set filter expression over the document's scalar
+        fields, e.g. ``'.user_id == "u1" and .priority > 2'``.
+        Entries whose document no longer exists (expired by TTL) are dropped
+        from the result and removed from the vector set.
         """
         indexed_fields = IndexManager.get_indexed_fields(document_class)
 
@@ -685,52 +703,97 @@ class IndexManager:
         if index_type != IndexType.VECTOR:
             raise ValueError(f"Field '{field_name}' is not a vector index")
 
-        # Get index name
-        class_name = document_class.__name__
-        index_name = f"idx:{class_name}:vector"
+        index_key = IndexManager.get_index_key(document_class, field_name)
+        vector = _as_vector(query_vector)
+        args = ["VSIM", index_key, "VALUES", len(vector), *vector]
+        args += ["COUNT", k, "WITHSCORES"]
+        if ef_runtime:
+            args += ["EF", ef_runtime]
+        if filter:
+            args += ["FILTER", filter]
 
-        # Convert vector to bytes for Redis
-        import struct
-
-        vector_bytes = struct.pack(f"{len(query_vector)}f", *query_vector)
-
-        # Build FT.SEARCH query
-        # Format: *=>[KNN $K @field_name $BLOB AS score]
-        query_params = {"K": k, "BLOB": vector_bytes}
-
-        # Add ef_runtime if specified (HNSW tuning)
-        ef_param = ""
-        if (
-            ef_runtime
-            and hasattr(indexed_field, "algorithm")
-            and indexed_field.algorithm == "HNSW"
-        ):
-            ef_param = f" EF_RUNTIME {ef_runtime}"
-
-        query = f"*=>[KNN $K @{field_name} $BLOB AS score{ef_param}]"
-
-        try:
-            # Execute search
-            results = await redis_client.ft(index_name).search(
-                query, query_params
-            )
-
-            # Parse results
-            doc_scores = []
-            for doc in results.docs:
-                doc_id = doc.id
-                score = float(doc.score) if hasattr(doc, "score") else 0.0
-                doc_scores.append((doc_id, score))
-
-            return doc_scores
-
-        except Exception as e:
-            # If index doesn't exist, return empty results
-            # This allows graceful handling during development
-            import logging
-
-            logging.warning(f"Vector search failed: {e}")
+        hits = _parse_scored_members(await redis_client.execute_command(*args))
+        if not hits:
             return []
+
+        # Drop ids whose document expired or was deleted outside Beanis
+        async with redis_client.pipeline() as pipe:
+            for doc_id, _ in hits:
+                pipe.exists(document_class._get_redis_key_for_id(doc_id))
+            alive = await pipe.execute()
+        stale = [doc_id for (doc_id, _), ok in zip(hits, alive) if not ok]
+        if stale:
+            async with redis_client.pipeline() as pipe:
+                for doc_id in stale:
+                    pipe.execute_command("VREM", index_key, doc_id)
+                await pipe.execute()
+        return [hit for hit, ok in zip(hits, alive) if ok]
+
+
+def _score_bound(value: Any, default: str):
+    """Sorted-set bound: numbers, or Redis "(x" strings for exclusive bounds."""
+    if value is None:
+        return default
+    if isinstance(value, str) and value.startswith("("):
+        float(value[1:])  # validate
+        return value
+    return float(value)
+
+
+def _as_vector(value: Any) -> List[float]:
+    """Accept a list/tuple of numbers or its JSON encoding as stored in a hash."""
+    if isinstance(value, (bytes, bytearray)):
+        value = value.decode()
+    if isinstance(value, str):
+        value = json.loads(value)
+    return [float(v) for v in value]
+
+
+def _vector_attributes(document_class: Type, values: Dict[str, Any]) -> str:
+    """Scalar fields of the document, stored on the vector-set entry for FILTER."""
+    attrs = {}
+    for name, value in values.items():
+        if name.startswith("_"):
+            continue
+        if isinstance(value, (str, int, float, bool)) and not isinstance(
+            value, bytes
+        ):
+            attrs[name] = value
+    return json.dumps(attrs)
+
+
+def _vadd_args(
+    index_key: str,
+    document_id: str,
+    vector: List[float],
+    indexed_field: "IndexedField",
+    attributes: str,
+) -> list:
+    dims = getattr(indexed_field, "dimensions", None)
+    if dims is not None and len(vector) != dims:
+        raise ValueError(
+            f"Vector has {len(vector)} dimensions, field expects {dims}"
+        )
+    args = ["VADD", index_key, "VALUES", len(vector), *vector, document_id]
+    args.append(getattr(indexed_field, "quantization", "Q8"))
+    args += ["M", getattr(indexed_field, "m", 16)]
+    args += ["EF", getattr(indexed_field, "ef_construction", 200)]
+    args += ["SETATTR", attributes]
+    return args
+
+
+def _parse_scored_members(reply: Any) -> List[Tuple[str, float]]:
+    """VSIM WITHSCORES reply: flat [member, score, ...] (RESP2) or a map (RESP3)."""
+    if not reply:
+        return []
+    if isinstance(reply, dict):
+        items = list(reply.items())
+    else:
+        items = list(zip(reply[0::2], reply[1::2]))
+    return [
+        (m.decode() if isinstance(m, bytes) else str(m), float(score))
+        for m, score in items
+    ]
 
 
 # Convenience type for indexed fields

@@ -470,8 +470,8 @@ async def test_geo_index_delete(redis_client):
 # Vector search index tests
 
 @pytest.mark.asyncio
-async def test_vector_field_index_creation(redis_client):
-    """Test that VectorField creates indexes automatically"""
+async def test_vector_fields_require_vector_sets(redis_client):
+    """init_beanis refuses vector fields on servers without Redis 8 vector sets"""
     from beanis import VectorField
     from typing import List
 
@@ -482,18 +482,9 @@ async def test_vector_field_index_creation(redis_client):
         class Settings:
             key_prefix = "VectorDoc"
 
-    # Init should create vector index automatically
-    await init_beanis(database=redis_client, document_models=[VectorDoc])
-
-    # Try to get index info (will raise exception if index doesn't exist)
-    try:
-        index_info = await redis_client.ft("idx:VectorDoc:vector").info()
-        # If we get here, index was created successfully
-        assert index_info is not None
-    except Exception as e:
-        # Index creation might fail if RediSearch module is not available
-        # That's okay for unit tests - we're just testing the code path
-        pytest.skip(f"RediSearch module not available: {e}")
+    # fakeredis does not implement VADD/VSIM
+    with pytest.raises(RuntimeError, match="vector sets"):
+        await init_beanis(database=redis_client, document_models=[VectorDoc])
 
 
 @pytest.mark.asyncio
@@ -513,53 +504,14 @@ async def test_vector_field_helper_function(redis_client):
     assert field.distance_metric == "COSINE"
 
 
-@pytest.mark.asyncio
-async def test_vector_similarity_search(redis_client):
-    """Test vector similarity search functionality"""
+def test_vector_field_rejects_unsupported_options():
+    """Vector sets are HNSW + cosine only; other options must not be silently ignored"""
     from beanis import VectorField
-    from typing import List
 
-    class EmbedDoc(Document):
-        text: str
-        vector: Annotated[List[float], VectorField(dimensions=3)]
-
-        class Settings:
-            key_prefix = "EmbedDoc"
-
-    await init_beanis(database=redis_client, document_models=[EmbedDoc])
-
-    # Create test documents with simple 3D vectors
-    doc1 = EmbedDoc(id="vec1", text="similar to query", vector=[1.0, 0.0, 0.0])
-    doc2 = EmbedDoc(id="vec2", text="also similar", vector=[0.9, 0.1, 0.0])
-    doc3 = EmbedDoc(id="vec3", text="different", vector=[0.0, 0.0, 1.0])
-
-    await doc1.insert()
-    await doc2.insert()
-    await doc3.insert()
-
-    # Test vector similarity search
-    try:
-        query_vector = [1.0, 0.0, 0.0]
-        results = await IndexManager.find_by_vector_similarity(
-            redis_client=redis_client,
-            document_class=EmbedDoc,
-            field_name="vector",
-            query_vector=query_vector,
-            k=2
-        )
-
-        # Should return up to 2 results (k=2)
-        assert len(results) <= 2
-
-        # Results should be tuples of (doc_id, similarity_score)
-        if len(results) > 0:
-            assert isinstance(results[0], tuple)
-            assert len(results[0]) == 2
-
-    except Exception as e:
-        # Vector search might not be available in test environment
-        pytest.skip(f"Vector search not available: {e}")
+    with pytest.raises(ValueError):
+        VectorField(dimensions=8, distance_metric="L2")
+    with pytest.raises(ValueError):
+        VectorField(dimensions=8, algorithm="FLAT")
+    assert VectorField(dimensions=8, quantization="noquant").quantization == "NOQUANT"
 
 
-if __name__ == "__main__":
-    pytest.main([__file__, "-v"])

@@ -12,6 +12,7 @@ from typing import (
     Iterable,
     List,
     Optional,
+    Tuple,
     Type,
     TypeVar,
     Union,
@@ -87,6 +88,16 @@ def json_schema_extra(schema: Dict[str, Any], model: Type["Document"]) -> None:
 class MergeStrategy(str, Enum):
     local = "local"
     remote = "remote"
+
+
+
+def _decoded(data: Dict[Any, Any]) -> Dict[str, Any]:
+    return {
+        (k.decode() if isinstance(k, bytes) else k): (
+            v.decode() if isinstance(v, bytes) else v
+        )
+        for k, v in data.items()
+    }
 
 
 class Document(
@@ -302,6 +313,11 @@ class Document(
             document.__module__ + "." + document.__class__.__name__
         )
 
+        # Current indexed values, so re-saving a changed document moves its index entries
+        old_index_values = await document.__class__._current_index_values(
+            redis_client, document.id
+        )
+
         # Flatten nested dicts to dot notation for Redis Hash
         flattened = {}
         for key, value in to_save_dict.items():
@@ -343,7 +359,7 @@ class Document(
             redis_client,
             document.__class__,
             document.id,
-            None,  # No old values for insert
+            old_index_values,
             to_save_dict,
         )
 
@@ -367,6 +383,7 @@ class Document(
             return []
 
         redis_client = cls.get_settings().redis_client
+        saved = []
 
         async with redis_client.pipeline() as pipe:
             for document in document_list:
@@ -417,9 +434,15 @@ class Document(
                 # Add to tracking set
                 tracking_key = document._get_tracking_key()
                 await pipe.zadd(tracking_key, {document.id: time.time()})
+                saved.append((document, to_save_dict))
 
             # Execute all operations
             await pipe.execute()
+
+        for document, to_save_dict in saved:
+            await IndexManager.update_indexes(
+                redis_client, cls, document.id, None, to_save_dict
+            )
 
         return document_list
 
@@ -724,6 +747,8 @@ class Document(
 
         redis_client = self.get_settings().redis_client
         redis_key = self._get_redis_key()
+        keep_nulls = self.get_settings().keep_nulls
+        old_values = get_dict(self, to_db=True, keep_nulls=keep_nulls)
 
         # Update fields in the instance
         for field_name, value in fields.items():
@@ -740,6 +765,13 @@ class Document(
                 flattened[key] = str(value) if value is not None else ""
 
         await redis_client.hset(redis_key, mapping=flattened)
+        await IndexManager.update_indexes(
+            redis_client,
+            self.__class__,
+            self.id,
+            old_values,
+            get_dict(self, to_db=True, keep_nulls=keep_nulls),
+        )
 
         return self
 
@@ -934,6 +966,17 @@ class Document(
         redis_client = cls.get_settings().redis_client
         tracking_key = cls._get_tracking_key()
 
+        if IndexManager.get_indexed_fields(cls):
+            async with redis_client.pipeline() as pipe:
+                for doc_id in document_ids:
+                    pipe.hgetall(cls._get_redis_key_for_id(doc_id))
+                stored = await pipe.execute()
+            for doc_id, data in zip(document_ids, stored):
+                if data:
+                    await IndexManager.remove_all_indexes(
+                        redis_client, cls, doc_id, _decoded(data)
+                    )
+
         async with redis_client.pipeline() as pipe:
             for doc_id in document_ids:
                 redis_key = cls._get_redis_key_for_id(doc_id)
@@ -989,6 +1032,96 @@ class Document(
         tracking_key = cls._get_tracking_key()
 
         return await redis_client.zcard(tracking_key)
+
+    @classmethod
+    async def _current_index_values(
+        cls, redis_client, document_id: Any
+    ) -> Optional[Dict[str, Any]]:
+        """Stored values of indexed fields, or None if the document is new."""
+        fields = list(IndexManager.get_indexed_fields(cls))
+        if not fields or document_id is None:
+            return None
+        values = await redis_client.hmget(
+            cls._get_redis_key_for_id(document_id), fields
+        )
+        if all(v is None for v in values):
+            return None
+        return {
+            f: (v.decode() if isinstance(v, bytes) else v)
+            for f, v in zip(fields, values)
+            if v is not None
+        }
+
+    @classmethod
+    def _vector_field_name(cls, field: Optional[str]) -> str:
+        from beanis.odm.indexes import IndexType
+
+        vector_fields = [
+            name
+            for name, idx in IndexManager.get_indexed_fields(cls).items()
+            if IndexManager.determine_index_type(cls, name, idx)
+            == IndexType.VECTOR
+        ]
+        if field is not None:
+            if field not in vector_fields:
+                raise ValueError(
+                    f"'{field}' is not a vector field of {cls.__name__}"
+                )
+            return field
+        if len(vector_fields) != 1:
+            raise ValueError(
+                f"{cls.__name__} has {len(vector_fields)} vector fields; pass field="
+            )
+        return vector_fields[0]
+
+    @classmethod
+    async def find_by_vector_similarity(
+        cls,
+        query_vector: List[float],
+        k: int = 10,
+        field: Optional[str] = None,
+        filter: Optional[str] = None,
+        ef_runtime: Optional[int] = None,
+    ) -> List[Tuple[str, float]]:
+        """
+        Nearest documents by vector similarity, as (id, similarity) pairs.
+
+        Similarity is in [0, 1], higher is closer. ``filter`` is a Redis
+        vector-set expression over the document's scalar fields, for example
+        ``'.user_id == "u1"'`` or ``'.year >= 2024 and .lang == "it"'``.
+        """
+        return await IndexManager.find_by_vector_similarity(
+            cls.get_settings().redis_client,
+            cls,
+            cls._vector_field_name(field),
+            query_vector,
+            k=k,
+            ef_runtime=ef_runtime,
+            filter=filter,
+        )
+
+    @classmethod
+    async def vector_search(
+        cls: Type[DocType],
+        query_vector: List[float],
+        k: int = 10,
+        field: Optional[str] = None,
+        filter: Optional[str] = None,
+        min_score: float = 0.0,
+    ) -> List[Tuple[DocType, float]]:
+        """
+        Nearest documents with their similarity.
+
+            hits = await Chunk.vector_search(embed(q), k=4, filter='.source == "faq"')
+            for chunk, score in hits:
+                print(score, chunk.text)
+        """
+        hits = await cls.find_by_vector_similarity(
+            query_vector, k=k, field=field, filter=filter
+        )
+        hits = [(i, s) for i, s in hits if s >= min_score]
+        docs = await cls.get_many([i for i, _ in hits])
+        return [(d, s) for d, (_, s) in zip(docs, hits) if d is not None]
 
     @classmethod
     async def find(cls: Type[DocType], **filters) -> List[DocType]:

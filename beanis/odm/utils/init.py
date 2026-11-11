@@ -191,80 +191,26 @@ class Initializer:
 
     async def init_vector_indexes(self, cls):
         """
-        Create vector indexes for fields with VectorField
-        :param cls:
-        :return:
+        Vector fields are stored in Redis 8 vector sets (VADD/VSIM), created on
+        first write. Fail early if the server does not support them.
         """
         from beanis.odm.indexes import IndexManager, IndexType
 
-        # Get all indexed fields
-        indexed_fields = IndexManager.get_indexed_fields(cls)
-
-        # Find vector fields
-        for field_name, indexed_field in indexed_fields.items():
-            index_type = IndexManager.determine_index_type(
-                cls, field_name, indexed_field
+        has_vectors = any(
+            IndexManager.determine_index_type(cls, name, idx) == IndexType.VECTOR
+            for name, idx in IndexManager.get_indexed_fields(cls).items()
+        )
+        if not has_vectors:
+            return
+        try:
+            info = await self.database.execute_command("COMMAND", "INFO", "VADD")
+        except Exception:
+            info = None
+        if not info or info == [None]:
+            raise RuntimeError(
+                f"{cls.__name__} has vector fields, which need Redis 8.0+ "
+                "(vector sets: VADD/VSIM). This server does not support them."
             )
-
-            if index_type == IndexType.VECTOR:
-                # Create vector index if it doesn't exist
-                class_name = cls.__name__
-                index_name = f"idx:{class_name}:vector"
-
-                try:
-                    # Check if index exists
-                    await self.database.ft(index_name).info()
-                except Exception:
-                    # Index doesn't exist, create it
-                    try:
-                        dimensions = getattr(indexed_field, "dimensions", 1024)
-                        algorithm = getattr(indexed_field, "algorithm", "HNSW")
-                        distance_metric = getattr(
-                            indexed_field, "distance_metric", "COSINE"
-                        )
-                        m = getattr(indexed_field, "m", 16)
-                        ef_construction = getattr(
-                            indexed_field, "ef_construction", 200
-                        )
-
-                        # Build index schema
-                        from redis.commands.search.field import (
-                            VectorField as RedisVectorField,
-                        )
-                        from redis.commands.search.index_definition import (
-                            IndexDefinition,
-                            IndexType as RedisIndexType,
-                        )
-
-                        schema = (
-                            RedisVectorField(
-                                field_name,
-                                algorithm,
-                                {
-                                    "TYPE": "FLOAT32",
-                                    "DIM": dimensions,
-                                    "DISTANCE_METRIC": distance_metric,
-                                    "M": m,
-                                    "EF_CONSTRUCTION": ef_construction,
-                                },
-                            ),
-                        )
-
-                        definition = IndexDefinition(
-                            prefix=[f"{class_name}:"],
-                            index_type=RedisIndexType.HASH,
-                        )
-
-                        await self.database.ft(index_name).create_index(
-                            schema, definition=definition
-                        )
-
-                        print(f"✓ Created vector index: {index_name}")
-
-                    except Exception as e:
-                        print(
-                            f"⚠ Warning: Could not create vector index {index_name}: {e}"
-                        )
 
     def init_document_collection(self, cls):
         """
