@@ -1,328 +1,46 @@
-# Beanis - Redis ODM for Humans
-
-[![Beanis](https://raw.githubusercontent.com/andreim14/beanis/main/assets/logo/logo-no-background.svg)](https://github.com/andreim14/beanis)
-
-<div align="center">
-  <a href="https://pypi.python.org/pypi/beanis"><img src="https://img.shields.io/pypi/v/beanis?color=blue" alt="PyPI version"></a>
-  <a href="https://pypi.python.org/pypi/beanis"><img src="https://img.shields.io/pypi/dm/beanis?color=blue" alt="Downloads"></a>
-  <a href="https://pypi.python.org/pypi/beanis"><img src="https://img.shields.io/pypi/pyversions/beanis?color=blue" alt="Python versions"></a>
-  <a href="https://github.com/andreim14/beanis/blob/main/LICENSE"><img src="https://img.shields.io/github/license/andreim14/beanis?color=blue" alt="License"></a>
-  <a href="https://github.com/andreim14/beanis"><img src="https://img.shields.io/github/stars/andreim14/beanis?style=social" alt="GitHub stars"></a>
-</div>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/andreim14/beanis/main/assets/logo/beanis-dark.svg">
+    <img src="https://raw.githubusercontent.com/andreim14/beanis/main/assets/logo/beanis.svg" alt="beanis" width="420">
+  </picture>
+</p>
 
 <div align="center">
-  <a href="https://github.com/andreim14/beanis/actions/workflows/test.yml"><img src="https://img.shields.io/github/actions/workflow/status/andreim14/beanis/test.yml?branch=main&label=tests" alt="Tests"></a>
-  <a href="https://github.com/andreim14/beanis"><img src="https://img.shields.io/badge/coverage-56%25-yellow" alt="Coverage"></a>
-  <a href="https://github.com/andreim14/beanis"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black"></a>
-  <a href="https://pydantic.dev"><img src="https://img.shields.io/badge/Pydantic-2.x-E92063?logo=pydantic" alt="Pydantic"></a>
-  <a href="https://redis.io"><img src="https://img.shields.io/badge/Redis-7.x-DC382D?logo=redis&logoColor=white" alt="Redis"></a>
+<a href="https://pypi.python.org/pypi/beanis"><img src="https://img.shields.io/pypi/v/beanis?color=blue" alt="PyPI version"></a>
+<a href="https://pypi.python.org/pypi/beanis"><img src="https://img.shields.io/pypi/pyversions/beanis?color=blue" alt="Python versions"></a>
+<a href="https://github.com/andreim14/beanis/blob/main/LICENSE"><img src="https://img.shields.io/github/license/andreim14/beanis?color=blue" alt="License"></a>
 </div>
 
-<div align="center">
-  <b>
-    📚 <a href="https://andreim14.github.io/beanis/">Documentation</a> |
-    🚀 <a href="https://andreim14.github.io/beanis/getting-started/">Getting Started</a> |
-    📖 <a href="https://andreim14.github.io/beanis/tutorial/">Tutorial</a> |
-    🔧 <a href="https://andreim14.github.io/beanis/api-documentation/document/">API Reference</a>
-  </b>
-</div>
+Beanis is an async object-document mapper for Redis, built on Pydantic. You define a model, and Beanis stores each instance as a Redis hash, keeps secondary indexes up to date, and gives you typed objects back.
 
----
+It also does vector search on the vector sets that ship with Redis 8, and it includes long-term memory for AI agents, usable from Python, from the `beanis` command line, or as an MCP server for Claude Code and other agents.
 
-**Stop writing boilerplate Redis code. Focus on your application logic.**
+It works on plain Redis. No RedisJSON, RediSearch or Redis Stack.
 
-Beanis is an async Python ODM (Object-Document Mapper) for Redis that gives you Pydantic models, type safety, and a clean API - while staying fast and working with vanilla Redis.
+[Documentation](https://andreim14.github.io/beanis/) · [PyPI](https://pypi.org/project/beanis/) · [Changelog](docs/changelog.md)
 
-## Why Beanis?
+## Install
 
-### The Problem with Vanilla Redis
-
-❌ **Manual serialization** - You write `json.dumps()` and `json.loads()` everywhere
-❌ **Type conversions** - Strings from Redis need manual `float()`, `int()` conversions
-❌ **Key management** - You track `"Product:123"`, `"all:Product"` keys manually
-❌ **No validation** - Bad data silently corrupts your Redis database
-❌ **Boilerplate code** - 15-20 lines for simple CRUD operations
-
-### The Solution: Beanis
-
-✅ **Automatic serialization** - Nested objects, lists, custom types - all handled
-✅ **Type safety** - Full Pydantic validation + IDE autocomplete
-✅ **Smart key management** - Focus on your data, not Redis internals
-✅ **Data validation** - Catch errors before they hit Redis
-✅ **Write 70% less code** - 5-7 lines for the same operations
-
-**AND it's fast:** Only 8% overhead vs vanilla Redis
-
-### Who Should Use Beanis?
-
-✅ You're building a **production app** that needs Redis but not the boilerplate
-✅ You want **type safety and validation** without sacrificing performance
-✅ You're using **vanilla Redis** (no RedisJSON/RediSearch modules)
-✅ You like **Beanie's MongoDB API** and want the same for Redis
-✅ You're storing **complex data** (nested objects, NumPy arrays, etc.)
-
-### When NOT to Use Beanis?
-
-❌ You need every microsecond of performance (use raw redis-py)
-❌ You need RedisJSON/RediSearch features (use Redis OM)
-❌ You're only storing simple key-value pairs (use raw redis-py)
-
-## Show Me The Code
-
-### Basic CRUD Operation
-
-<table>
-<tr>
-<th>Vanilla Redis (20 lines)</th>
-<th>Beanis (7 lines)</th>
-</tr>
-<tr>
-<td>
-
-```python
-import json
-import time
-from redis.asyncio import Redis
-
-redis = Redis(decode_responses=True)
-
-# Insert
-product_data = {
-    "name": "Tony's Chocolonely",
-    "price": "5.95",
-    "category": json.dumps({
-        "name": "Chocolate",
-        "description": "Roasted cacao"
-    })
-}
-await redis.hset("Product:prod_123",
-                 mapping=product_data)
-await redis.zadd("all:Product",
-                 {"prod_123": time.time()})
-
-# Retrieve
-raw = await redis.hgetall("Product:prod_123")
-product = {
-    "name": raw["name"],
-    "price": float(raw["price"]),
-    "category": json.loads(raw["category"])
-}
+```bash
+pip install beanis               # the ODM
+pip install "beanis[mcp]"        # plus agent memory: CLI embeddings and MCP server (Python 3.10+)
 ```
 
-</td>
-<td>
+You need a Redis server. Redis 5+ is enough for documents and indexes; vector search and memory need Redis 8.0+:
 
-```python
-from beanis import Document
-from pydantic import BaseModel
-
-class Category(BaseModel):
-    name: str
-    description: str
-
-class Product(Document):
-    name: str
-    price: float
-    category: Category
-
-# Insert
-product = Product(
-    name="Tony's Chocolonely",
-    price=5.95,
-    category=Category(
-        name="Chocolate",
-        description="Roasted cacao"
-    )
-)
-await product.insert()
-
-# Retrieve
-found = await Product.get(product.id)
+```bash
+docker run -d -p 6379:6379 redis:8      # or: brew install redis
 ```
 
-</td>
-</tr>
-</table>
-
-**Result:** Type-safe, validated, **65% less code**
-
-### Search/Query Operation
-
-<table>
-<tr>
-<th>Vanilla Redis (25 lines)</th>
-<th>Beanis (4 lines)</th>
-</tr>
-<tr>
-<td>
-
-```python
-# Find products between $10-50
-keys = await redis.zrangebyscore(
-    "idx:Product:price",
-    min=10.0,
-    max=50.0
-)
-
-# Fetch each product using pipeline
-pipe = redis.pipeline()
-for key in keys:
-    pipe.hgetall(f"Product:{key}")
-results = await pipe.execute()
-
-# Parse manually
-products = []
-for data in results:
-    if data:
-        products.append({
-            "name": data["name"],
-            "price": float(data["price"]),
-            "stock": int(data["stock"]),
-            "category": json.loads(
-                data.get("category", "{}")
-            )
-        })
-```
-
-</td>
-<td>
-
-```python
-# Find products between $10-50
-products = await Product.find(
-    Product.price >= 10.0,
-    Product.price <= 50.0
-).to_list()
-```
-
-</td>
-</tr>
-</table>
-
-**Result:** **84% less code**, fully typed results
-
-### Update Operation
-
-<table>
-<tr>
-<th>Vanilla Redis (10 lines)</th>
-<th>Beanis (6 lines)</th>
-</tr>
-<tr>
-<td>
-
-```python
-# Update price and stock
-await redis.hset("Product:123", mapping={
-    "price": "6.95",
-    "stock": "150"
-})
-
-# Atomic increment
-new_stock = await redis.hincrby(
-    "Product:123",
-    "stock",
-    -1
-)
-```
-
-</td>
-<td>
-
-```python
-# Update fields
-await product.update(
-    price=6.95,
-    stock=150
-)
-
-# Atomic increment
-new_stock = await product.increment_field(
-    "stock", -1
-)
-```
-
-</td>
-</tr>
-</table>
-
-**Result:** Same functionality, cleaner API, type-safe
-
-### Batch Operations
-
-<table>
-<tr>
-<th>Vanilla Redis (14 lines)</th>
-<th>Beanis (9 lines)</th>
-</tr>
-<tr>
-<td>
-
-```python
-# Insert 100 products
-pipe = redis.pipeline()
-for i in range(100):
-    product_id = f"prod_{i}"
-    data = {
-        "name": f"Product {i}",
-        "price": str(i * 10),
-        "stock": "100",
-        "category": json.dumps({
-            "name": "Category"
-        })
-    }
-    pipe.hset(f"Product:{product_id}",
-              mapping=data)
-    pipe.zadd("all:Product",
-              {product_id: time.time()})
-await pipe.execute()
-```
-
-</td>
-<td>
-
-```python
-# Insert 100 products
-products = [
-    Product(
-        name=f"Product {i}",
-        price=i * 10,
-        stock=100,
-        category=Category(name="Category")
-    )
-    for i in range(100)
-]
-await Product.insert_many(products)
-```
-
-</td>
-</tr>
-</table>
-
-**Result:** **35% less code**, no manual key management
-
-## Installation
-
-### PIP
-
-```shell
-pip install beanis
-```
-
-### Poetry
-
-```shell
-poetry add beanis
-```
-
-## Quick Start
+## Quick start
 
 ```python
 import asyncio
-from typing import Optional
-from redis.asyncio import Redis
+
 from pydantic import BaseModel
-from beanis import Document, init_beanis, Indexed
+from redis.asyncio import Redis
+
+from beanis import Document, Indexed, init_beanis
 
 
 class Category(BaseModel):
@@ -332,340 +50,198 @@ class Category(BaseModel):
 
 class Product(Document):
     name: str
-    description: Optional[str] = None
-    price: Indexed(float)  # Indexed for range queries
-    category: Category
+    price: Indexed(float)            # sorted-set index: range queries
+    category: Indexed(str)           # set index: exact match
+    tags: list[str] = []
     stock: int = 0
 
     class Settings:
-        name = "products"
+        key_prefix = "Product"
 
 
 async def main():
-    # Initialize Redis client
-    client = Redis(host="localhost", port=6379, db=0, decode_responses=True)
+    redis = Redis(decode_responses=True)
+    await init_beanis(database=redis, document_models=[Product])
 
-    # Initialize Beanis
-    await init_beanis(database=client, document_models=[Product])
+    bar = Product(name="Dark chocolate", price=5.95, category="chocolate", stock=100)
+    await bar.insert()
 
-    # Create a product
-    chocolate = Category(
-        name="Chocolate",
-        description="A preparation of roasted and ground cacao seeds."
-    )
+    same = await Product.get(bar.id)
+    cheap = await Product.find(price__lt=10)
+    chocolate = await Product.find(category="chocolate", price__gte=5)
 
-    product = Product(
-        name="Tony's Chocolonely",
-        price=5.95,
-        category=chocolate,
-        stock=100
-    )
-
-    # Insert into Redis
-    await product.insert()
-
-    # Retrieve by ID
-    found = await Product.get(product.id)
-    print(f"Found: {found.name} - ${found.price}")
-
-    # Query by price range
-    affordable = await Product.find(
-        Product.price < 10.0
-    ).to_list()
-    print(f"Affordable products: {len(affordable)}")
-
-    # Update specific fields
-    await product.update(price=6.95, stock=150)
-
-    # Atomic increment
-    new_stock = await product.increment_field("stock", -1)
-    print(f"Stock after sale: {new_stock}")
-
-    # Get all products
-    all_products = await Product.all()
-    print(f"Total products: {len(all_products)}")
-
-    # Delete
-    await product.delete_self()
-
-    await client.close()
+    await bar.update(price=6.50)
+    await bar.increment_field("stock", -1)
+    await bar.delete_self()
 
 
-if __name__ == "__main__":
-    asyncio.run(main())
+asyncio.run(main())
 ```
 
-## For agents: vector search, memory and MCP
+`decode_responses=True` is required. Each document is the hash `Product:<id>`; nested models, lists, dicts, `datetime`, `Decimal`, `UUID` and enums are encoded for you and decoded on read.
 
-Beanis stores embeddings in **Redis 8 vector sets** (`VADD` / `VSIM`), which ship with Redis 8.0+ itself: no RediSearch, no Redis Stack. Every scalar field of the document is attached to its vector, so you can filter a similarity search on it.
+## Queries
+
+`find()` takes keyword filters on indexed fields. Several filters are combined with AND.
+
+```python
+await Product.find(category="chocolate")              # exact match
+await Product.find(price__gte=10, price__lte=50)      # range: __gte, __lte, __gt, __lt
+await Product.find(price=12.0)                        # exact match on a number
+await Product.all(skip=0, limit=20)                   # every document, by insertion time
+await Product.count()
+```
+
+Filtering on a field that is not indexed raises `ValueError`. Sorting by other fields and full-text search are not built in; sort the returned list in Python, or use Redis's query engine directly if you need them.
+
+Declare indexes with `Indexed(type)` or `Annotated[type, IndexedField()]`. Numbers get a sorted set, strings and other scalars get a set, `GeoPoint` gets a geo index (see the [geo tutorial](docs/tutorial/geo-spatial.md)).
+
+## Vector search
+
+Embeddings live in a Redis 8 vector set (`VADD` / `VSIM`), next to the document's short fields so you can filter a search:
 
 ```python
 from typing import List
+
 from typing_extensions import Annotated
-from beanis import Document, IndexedField, VectorField, init_beanis
+
+from beanis import Document, IndexedField, VectorField
+
 
 class Chunk(Document):
     text: str
     source: Annotated[str, IndexedField()]
     embedding: Annotated[List[float], VectorField(dimensions=384)]
 
-await init_beanis(database=redis, document_models=[Chunk])
+
 await Chunk(text="Refunds take 5 days", source="faq", embedding=embed("Refunds take 5 days")).insert()
 
-for chunk, score in await Chunk.vector_search(embed("how long do refunds take?"), k=3, filter='.source == "faq"'):
-    print(round(score, 3), chunk.text)   # score in [0, 1], higher is closer
+for chunk, score in await Chunk.vector_search(embed("how long is a refund?"), k=3, filter='.source == "faq"'):
+    print(round(score, 3), chunk.text)        # score: cosine similarity in [0, 1]
 ```
 
-`VectorField` uses HNSW with cosine similarity and int8 quantization by default (`quantization="NOQUANT"` keeps float32). `init_beanis` raises if a model has vector fields and the server has no vector sets.
+`embed` is any function from text to a list of floats. Vectors use HNSW with int8 quantization by default (`VectorField(quantization="NOQUANT")` keeps float32). Updating or deleting a document updates its vector. `init_beanis` raises at startup if a model has vector fields and the server has no vector sets (Redis 7, Valkey).
 
-### Agent memory
+## Memory for agents
 
-`Memory` is long-term memory for an agent in four calls, scoped by namespace, user and session, with near-duplicate merging and optional TTL:
+`Memory` stores what an agent should keep between conversations and finds it again by meaning. Memories are scoped by namespace, user, session and kind; a new memory that is nearly identical to an old one replaces it instead of piling up.
 
 ```python
 from beanis import Memory
+from beanis.memory import fastembed_embedder
 
-memory = Memory(redis, embed=embed, namespace="support-bot")
-await memory.remember("Prefers answers in Italian", user_id="u42")
-hits = await memory.recall("which language should I use?", user_id="u42", k=3)
-await memory.forget(hits[0][0].id)
+memory = Memory(redis, embed=fastembed_embedder(), namespace="support-bot")
+
+await memory.remember("Prefers answers in Italian", user_id="u42", kind="preference")
+for record, score in await memory.recall("which language should I answer in?", user_id="u42"):
+    print(round(score, 3), record.text)
+await memory.recent(user_id="u42")
+await memory.forget(record.id)
 ```
 
-`embed` is any function from text to a vector (sync or async). `beanis.memory.fastembed_embedder()` gives you a local one with no API key.
+`fastembed_embedder()` runs `BAAI/bge-small-en-v1.5` locally on the CPU (no API key). Any embedding function works, sync or async; use the same one for every writer of a namespace.
 
-### MCP server
+### From the command line
 
-Give any MCP client (Claude Code, Claude Desktop, Cursor, LangGraph via an MCP adapter) the same memory as tools: `remember`, `recall`, `forget`, `recent`.
+`pip install "beanis[mcp]"` installs a `beanis` command. Every command prints JSON, so shell scripts and coding agents can use it directly.
 
 ```bash
-pip install "beanis[mcp]"
+beanis doctor                                   # checks Redis, vector sets, extras, stored memory
+beanis memory remember "Deploys go out on Tuesdays" --kind decision
+beanis memory recall "when do we deploy?" -k 3
+beanis memory recent --limit 5
+beanis memory forget <id>
+```
+
+Configuration is by environment: `REDIS_URL` (default `redis://localhost:6379/0`, or pass `--url`), `BEANIS_MEMORY_NAMESPACE` (default `default`), `BEANIS_EMBED_MODEL` (default `BAAI/bge-small-en-v1.5`).
+
+### As an MCP server
+
+`beanis-mcp` (or `beanis mcp`) serves the same memory over MCP stdio with four tools: `remember`, `recall`, `forget`, `recent`.
+
+Claude Code, as a plugin (MCP server plus a skill that teaches Claude the Beanis API):
+
+```bash
+claude plugin marketplace add andreim14/beanis
+claude plugin install beanis@beanis
+```
+
+The plugin starts the server with `uvx`, so it needs [uv](https://docs.astral.sh/uv/) and a Redis 8 at `REDIS_URL`. Without the plugin:
+
+```bash
 claude mcp add beanis-memory --env REDIS_URL=redis://localhost:6379/0 -- beanis-mcp
 ```
 
+Claude Desktop, Cursor and other MCP clients:
+
 ```json
-{ "mcpServers": { "beanis-memory": { "command": "beanis-mcp", "env": { "REDIS_URL": "redis://localhost:6379/0" } } } }
+{
+  "mcpServers": {
+    "beanis-memory": {
+      "command": "beanis-mcp",
+      "env": { "REDIS_URL": "redis://localhost:6379/0" }
+    }
+  }
+}
 ```
 
-Embeddings run locally with fastembed (`BAAI/bge-small-en-v1.5`, override with `BEANIS_EMBED_MODEL`). Separate agents with `BEANIS_MEMORY_NAMESPACE`.
-
-## Core Features
-
-### 🚀 Type Safety & Validation
-
-Beanis uses Pydantic models, giving you automatic validation and type checking:
+## More
 
 ```python
-class Product(Document):
-    name: str
-    price: float  # Must be a number
-    stock: int    # Must be an integer
-    category: Category  # Must be a valid Category object
+await product.insert(ttl=3600)                 # expire after an hour
+await product.set_ttl(7200); await product.get_ttl(); await product.persist()
 
-# This will raise a validation error BEFORE hitting Redis
-product = Product(
-    name="Invalid",
-    price="not a number",  # ❌ ValidationError!
-    stock=100
-)
+price = await product.get_field("price")       # read or write one field
+await product.set_field("stock", 200)
+
+await Product.insert_many(products)            # pipelined batches
+await Product.get_many(ids)
+await Product.delete_many(ids)
 ```
 
-### ⚡ High Performance
-
-Beanis is optimized for speed with minimal overhead:
-
-- **8% overhead** vs vanilla Redis (benchmarked)
-- Uses `msgspec` for ultra-fast JSON parsing (2x faster than orjson)
-- Skips Pydantic validation on reads by default (data from Redis is trusted)
-- Efficient pipeline usage for batch operations
-
-**Benchmark Results** (Get by ID):
-- Vanilla Redis: 1.00x (baseline)
-- Beanis: 1.08x (only 8% slower)
-- Redis OM: 1.20x (20% slower)
-
-
-### 🎯 Pythonic API
-
-Familiar Beanie-style interface for MongoDB developers:
+Event hooks run around inserts, updates and deletes:
 
 ```python
-# Query with Pythonic operators
-products = await Product.find(
-    Product.price >= 10.0,
-    Product.price <= 50.0,
-    Product.stock > 0
-).to_list()
+from beanis import Document, Insert, before_event
 
-# Chaining operations
-expensive = await Product.find(
-    Product.price > 100
-).sort(Product.price).limit(10).to_list()
-
-# Batch operations
-await Product.insert_many([product1, product2, product3])
-products = await Product.get_many([id1, id2, id3])
-await Product.delete_many([id1, id2])
-```
-
-### 📦 Store Anything
-
-Beanis handles complex types automatically:
-
-**Built-in support:**
-- Nested Pydantic models
-- Lists, dicts, tuples, sets
-- Decimal, UUID, Enum
-- datetime, date, time, timedelta
-
-**Custom types via encoders:**
-```python
-from beanis import Document, register_type
-import numpy as np
-
-# NumPy arrays work automatically (auto-registered)
-class MLModel(Document):
-    name: str
-    weights: Any  # Stores np.ndarray!
-
-model = MLModel(name="v1", weights=np.random.rand(100, 100))
-await model.insert()  # Just works!
-
-# Custom types
-register_type(
-    MyCustomType,
-    encoder=lambda obj: str(obj),
-    decoder=lambda s: MyCustomType.from_string(s)
-)
-```
-
-See tutorial on how to create them!
-
-### 🔧 Production Ready Features
-
-**TTL Support:**
-```python
-# Insert with TTL
-await product.insert(ttl=3600)  # Expires in 1 hour
-
-# Set TTL on existing document
-await product.set_ttl(7200)
-ttl = await product.get_ttl()
-await product.persist()  # Remove TTL
-```
-
-**Event Hooks:**
-```python
-from beanis import before_event, after_event, Insert, Update
 
 class Product(Document):
     name: str
     price: float
 
     @before_event(Insert)
-    async def validate_price(self):
+    def check_price(self):
         if self.price < 0:
-            raise ValueError("Price cannot be negative")
-
-    @after_event(Insert)
-    async def log_creation(self):
-        print(f"Created product: {self.name}")
+            raise ValueError("price cannot be negative")
 ```
 
-**Field-Level Operations:**
-```python
-# Get/set single field without loading entire document
-price = await product.get_field("price")
-await product.set_field("stock", 200)
+Custom types are registered once with `register_type(cls, encoder=..., decoder=...)`; NumPy arrays are supported when NumPy is installed. See the [custom encoders tutorial](docs/tutorial/custom-encoders.md).
 
-# Atomic increment
-new_stock = await product.increment_field("stock", 5)
-```
+## When to use it
 
-**Document Tracking:**
-```python
-# Get all documents (sorted by insertion time)
-all_products = await Product.all()
+Use Beanis when you want typed models on Redis without running Redis modules: caches with structure, session and user state, job metadata, small catalogues, retrieval for RAG, and agent memory.
 
-# Pagination
-page1 = await Product.all(limit=10)
-page2 = await Product.all(skip=10, limit=10)
-
-# Count and delete all
-count = await Product.count()
-await Product.delete_all()
-```
-
-## Comparison
-
-| Feature | Vanilla Redis | Beanis | Redis OM |
-|---------|--------------|---------|----------|
-| **Code volume** | 100% | **30%** ⭐ | 50% |
-| **Type safety** | Manual | **Automatic** ⭐ | Automatic |
-| **Performance** | **100%** ⭐ | 108% | 120% |
-| **Vanilla Redis** | ✅ | **✅** ⭐ | ❌ Requires modules |
-| **Validation** | Manual | **Automatic** ⭐ | Automatic |
-| **API Style** | Redis commands | **Pythonic** ⭐ | Redis OM |
-| **Learning curve** | Medium | **Easy** ⭐ | Medium |
-| **Nested objects** | Manual | **Automatic** ⭐ | Automatic |
-| **Custom types** | Manual | **Easy** ⭐ | Limited |
-| **Event hooks** | ❌ | **✅** ⭐ | ❌ |
-| **All DBs (0-15)** | ✅ | **✅** ⭐ | ❌ DB 0 only |
-
-## Choosing the Right Tool
-
-### Choose Vanilla Redis when:
-- Every microsecond matters (high-frequency trading, etc.)
-- Simple key-value storage
-- You're a Redis expert and don't need abstractions
-
-### Choose Beanis when: ⭐
-- **Building production applications** with complex data models
-- Want **type safety + performance** (8% overhead is acceptable)
-- Using **vanilla Redis** (no RedisJSON/RediSearch modules)
-- Need to store **nested objects, custom types, NumPy arrays**, etc.
-- Coming from **MongoDB/Beanie** and want familiar API
-- Want **event hooks** for validation and lifecycle management
-
-### Choose Redis OM when:
-- You need **RedisJSON/RediSearch** features
-- Don't mind installing Redis modules
-- Want Redis Stack integration
-- Need advanced full-text search
+Use something else when you need complex queries across many fields, full-text search or aggregations: a document database, or Redis's query engine with [Redis OM](https://github.com/redis/redis-om-python) or [RedisVL](https://github.com/redis/redis-vl-python).
 
 ## Requirements
 
-- Python 3.9+ (3.10+ for the MCP server)
-- Redis 5.0+; Redis 8.0+ for `VectorField`, `Memory` and the MCP server (vector sets)
-- Pydantic 1.10+ or 2.0+
+- Python 3.9+ (3.10+ for the `mcp` extra)
+- Redis 5.0+; Redis 8.0+ for `VectorField`, `Memory`, the CLI memory commands and the MCP server
+- Pydantic 1.10+ or 2.x
 
-## Testing
+## Development
 
 ```bash
-# Run tests
-pytest
-
-# Run with coverage
-pytest --cov=beanis
-
-# Run specific test
-pytest tests/test_core.py::test_insert_and_get
-
-# Vector, memory and MCP tests need a real Redis 8 (skipped otherwise)
-REDIS_PORT=6379 pytest tests/test_real_redis_regressions.py tests/test_memory_real_redis.py
+pip install -e ".[test,mcp]"
+pytest                                        # unit tests, on fakeredis
+REDIS_PORT=6379 pytest tests/test_real_redis_regressions.py tests/test_memory_real_redis.py   # needs Redis 8
 ```
+
+See [AGENTS.md](AGENTS.md) for repository conventions.
 
 ## Credits
 
-Beanis is a fork of [Beanie](https://github.com/BeanieODM/beanie) - the amazing MongoDB ODM created by Roman Right and contributors.
-
-We took the Beanie codebase and completely reimagined it for Redis, replacing MongoDB operations with Redis commands while preserving the elegant API design. If you're using MongoDB, check out the original [Beanie](https://github.com/BeanieODM/beanie) - it's awesome!
-
-**Special thanks to:**
-- Roman Right and the Beanie community for creating the foundation
-- All Beanie contributors whose code inspired this project
-- The Redis and Pydantic teams for their excellent libraries
-
-[![Beanie](https://raw.githubusercontent.com/roman-right/beanie/main/assets/logo/white_bg.svg)](https://github.com/BeanieODM/beanie)
+Beanis started as a fork of [Beanie](https://github.com/BeanieODM/beanie), the MongoDB ODM by Roman Right and contributors, rewritten for Redis.
 
 ## License
 

@@ -2,6 +2,22 @@
 
 Beanis - Redis ODM for Python
 
+## [0.3.1] - 2026-11-11
+
+- `beanis` command line: `doctor` (checks Redis, vector sets, extras and the stored memory's embedding size), `memory remember|recall|forget|recent`, `mcp`. Output is JSON.
+- Claude Code plugin in this repository: memory MCP server plus a skill with the Beanis API (`claude plugin marketplace add andreim14/beanis`).
+- `beanis.memory.memory_from_env()`, shared by the CLI and MCP server.
+- Fix: `find(price=12.0)` on a numeric index returned every document.
+- Fix: a connection error at `init_beanis` was reported as missing vector sets.
+- README, tutorials and docs use the real query API (no Beanie query builder); `AGENTS.md` and `llms.txt` added.
+- New logo.
+
+## [0.3.0] - 2026-11-10
+
+- Vector search on Redis 8 vector sets (`VADD`/`VSIM`): `VectorField`, `Document.vector_search`, filters on scalar fields. No RediSearch needed.
+- Index maintenance fixes for `save`, `insert_many`, `update` and `delete_many`.
+- `Memory` for agents and the `beanis-mcp` MCP server (`pip install "beanis[mcp]"`).
+
 ## [0.1.0] - 2025-01-15
 
 ### Major Release - Complete Redis Refactor

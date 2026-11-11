@@ -4,12 +4,13 @@ Regression tests that need a real Redis server (8.0+ for vector sets).
 Run with a server on REDIS_PORT (default 6379); they are skipped when none is reachable.
 fakeredis does not implement every command these paths use (vector sets in particular).
 """
+
 from typing import List, Optional
 
 import pytest
 from typing_extensions import Annotated
 
-from beanis import Document, IndexedField, VectorField, init_beanis
+from beanis import Document, Indexed, IndexedField, VectorField, init_beanis
 
 
 class Note(Document):
@@ -29,8 +30,12 @@ async def _init(client):
 @pytest.mark.asyncio
 async def test_vector_search_returns_inserted_documents(redis_client_real):
     await _init(redis_client_real)
-    await Note(id="a", text="cats", topic="pets", embedding=[1.0, 0.0, 0.0]).insert()
-    await Note(id="b", text="stocks", topic="money", embedding=[0.0, 1.0, 0.0]).insert()
+    await Note(
+        id="a", text="cats", topic="pets", embedding=[1.0, 0.0, 0.0]
+    ).insert()
+    await Note(
+        id="b", text="stocks", topic="money", embedding=[0.0, 1.0, 0.0]
+    ).insert()
 
     hits = await Note.find_by_vector_similarity([0.9, 0.1, 0.0], k=2)
 
@@ -41,7 +46,9 @@ async def test_vector_search_returns_inserted_documents(redis_client_real):
 @pytest.mark.asyncio
 async def test_document_with_vector_round_trips(redis_client_real):
     await _init(redis_client_real)
-    await Note(id="a", text="cats", topic="pets", embedding=[0.25, 0.5, 0.75]).insert()
+    await Note(
+        id="a", text="cats", topic="pets", embedding=[0.25, 0.5, 0.75]
+    ).insert()
 
     loaded = await Note.get("a")
 
@@ -78,7 +85,13 @@ async def test_update_moves_secondary_index(redis_client_real):
 async def test_exclusive_range_filters(redis_client_real):
     await _init(redis_client_real)
     for i, p in enumerate([1, 2, 3]):
-        await Note(id=f"n{i}", text="x", topic="t", priority=p, embedding=[1.0, 0.0, 0.0]).insert()
+        await Note(
+            id=f"n{i}",
+            text="x",
+            topic="t",
+            priority=p,
+            embedding=[1.0, 0.0, 0.0],
+        ).insert()
 
     assert {n.priority for n in await Note.find(priority__gt=1)} == {2, 3}
     assert {n.priority for n in await Note.find(priority__lt=3)} == {1, 2}
@@ -87,10 +100,31 @@ async def test_exclusive_range_filters(redis_client_real):
 @pytest.mark.asyncio
 async def test_delete_many_cleans_indexes(redis_client_real):
     await _init(redis_client_real)
-    await Note(id="a", text="x", topic="pets", embedding=[1.0, 0.0, 0.0]).insert()
-    await Note(id="b", text="y", topic="pets", embedding=[0.0, 1.0, 0.0]).insert()
+    await Note(
+        id="a", text="x", topic="pets", embedding=[1.0, 0.0, 0.0]
+    ).insert()
+    await Note(
+        id="b", text="y", topic="pets", embedding=[0.0, 1.0, 0.0]
+    ).insert()
 
     await Note.delete_many(["a", "b"])
 
     assert await redis_client_real.smembers("idx:Note:topic:pets") == set()
     assert await Note.find_by_vector_similarity([1.0, 0.0, 0.0], k=2) == []
+
+
+class PricedItem(Document):
+    price: Indexed(float)
+
+    class Settings:
+        key_prefix = "test:priced"
+
+
+@pytest.mark.asyncio
+async def test_exact_match_on_numeric_index(redis_client_real):
+    await init_beanis(database=redis_client_real, document_models=[PricedItem])
+    await PricedItem.insert_many(
+        [PricedItem(price=p) for p in (5.0, 12.0, 20.0)]
+    )
+
+    assert [d.price for d in await PricedItem.find(price=12.0)] == [12.0]

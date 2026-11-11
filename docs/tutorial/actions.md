@@ -381,20 +381,20 @@ class Product(Document):
         """Maintain custom tag indexes"""
         # Add to Redis sets for each tag
         for tag in self.tags:
-            await self._database.sadd(f"tag_index:{tag}", self.id)
+            await self.get_settings().redis_client.sadd(f"tag_index:{tag}", self.id)
     
     @after_event(Delete)
     async def cleanup_tag_indexes(self):
         """Remove from tag indexes"""
         for tag in self.tags:
-            await self._database.srem(f"tag_index:{tag}", self.id)
+            await self.get_settings().redis_client.srem(f"tag_index:{tag}", self.id)
 
 # Tags are automatically indexed
 product = Product(name="Laptop", tags=["electronics", "computers"])
 await product.insert()
 
 # Find products by tag (using custom index)
-laptop_ids = await Product._database.smembers("tag_index:electronics")
+laptop_ids = await Product.get_settings().redis_client.smembers("tag_index:electronics")
 laptops = await Product.get_many(list(laptop_ids))
 ```
 
@@ -420,7 +420,7 @@ class Product(Document):
     async def check_price_drop(self):
         """Notify customers of price drop"""
         # Get old price from Redis
-        old_data = await self._database.hgetall(f"Product:{self.id}")
+        old_data = await self.get_settings().redis_client.hgetall(f"Product:{self.id}")
         old_price = float(old_data.get("price", self.price))
         
         if self.price < old_price * 0.9:  # 10% drop

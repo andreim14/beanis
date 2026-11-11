@@ -12,10 +12,10 @@ Environment:
     BEANIS_MEMORY_NAMESPACE    default "default"
     BEANIS_EMBED_MODEL         default BAAI/bge-small-en-v1.5
 """
-import os
+
 from typing import List, Optional
 
-from beanis.memory import Memory, fastembed_embedder
+from beanis.memory import Memory, memory_from_env
 
 try:
     from mcp.server.mcpserver import MCPServer
@@ -37,19 +37,7 @@ _memory: Optional[Memory] = None
 async def _get_memory() -> Memory:
     global _memory
     if _memory is None:
-        from redis.asyncio import Redis
-
-        client = Redis.from_url(
-            os.environ.get("REDIS_URL", "redis://localhost:6379/0"),
-            decode_responses=True,
-        )
-        _memory = await Memory(
-            client,
-            embed=fastembed_embedder(
-                os.environ.get("BEANIS_EMBED_MODEL", "BAAI/bge-small-en-v1.5")
-            ),
-            namespace=os.environ.get("BEANIS_MEMORY_NAMESPACE", "default"),
-        ).setup()
+        _memory = await memory_from_env().setup()
     return _memory
 
 

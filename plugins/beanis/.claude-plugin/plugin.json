@@ -1,0 +1,10 @@
+{
+  "name": "beanis",
+  "description": "Long-term memory MCP server on Redis 8 (remember, recall, forget, recent) and a skill for writing correct Beanis code",
+  "version": "0.3.1",
+  "author": { "name": "Andrei Stefan Bejgu", "url": "https://github.com/andreim14" },
+  "homepage": "https://github.com/andreim14/beanis",
+  "repository": "https://github.com/andreim14/beanis",
+  "license": "Apache-2.0",
+  "keywords": ["redis", "memory", "mcp", "odm", "vector-search"]
+}

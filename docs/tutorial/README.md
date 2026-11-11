@@ -155,8 +155,8 @@ async def example():
     found = await Product.get(product.id)
     
     # Query by indexed field
-    expensive = await Product.find(Product.price > 500).to_list()
-    electronics = await Product.find(Product.category == "electronics").to_list()
+    expensive = await Product.find(price__gt=500)
+    electronics = await Product.find(category="electronics")
     
     # Update
     await product.update(price=899.99)

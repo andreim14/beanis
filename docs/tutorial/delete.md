@@ -141,7 +141,7 @@ Efficient pattern for conditional bulk deletion:
 
 ```python
 # Delete all products below $5
-cheap_products = await Product.find(Product.price < 5.0).to_list()
+cheap_products = await Product.find(price__lt=5.0)
 ids_to_delete = [p.id for p in cheap_products]
 
 if ids_to_delete:

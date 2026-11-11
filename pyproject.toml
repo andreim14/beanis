@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "beanis"
-version = "0.3.0"
+version = "0.3.1"
 description = "Asynchronous Python ODM for Redis"
 readme = "README.md"
 requires-python = ">=3.9,<4.0"
@@ -23,7 +23,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "redis[hiredis]>=5.0.0",  # Redis async client with hiredis for performance
+    "redis[hiredis]>=5.0.1",  # Redis async client with hiredis for performance
     "pydantic>=1.10,<3.0",
     "lazy-model==0.2.0",
     "msgspec>=0.18.0",  # Ultra-fast JSON parsing (10-40x faster, 2x faster than orjson)
@@ -62,6 +62,7 @@ homepage = "https://github.com/andreim14/beanis"
 repository = "https://github.com/andreim14/beanis"
 
 [project.scripts]
+beanis = "beanis.cli:main"
 beanis-mcp = "beanis.mcp_server:main"
 
 # TOOLS

@@ -197,14 +197,21 @@ class Initializer:
         from beanis.odm.indexes import IndexManager, IndexType
 
         has_vectors = any(
-            IndexManager.determine_index_type(cls, name, idx) == IndexType.VECTOR
+            IndexManager.determine_index_type(cls, name, idx)
+            == IndexType.VECTOR
             for name, idx in IndexManager.get_indexed_fields(cls).items()
         )
         if not has_vectors:
             return
+        from redis.exceptions import ConnectionError, TimeoutError
+
         try:
-            info = await self.database.execute_command("COMMAND", "INFO", "VADD")
-        except Exception:
+            info = await self.database.execute_command(
+                "COMMAND", "INFO", "VADD"
+            )
+        except (ConnectionError, TimeoutError):
+            raise
+        except Exception:  # no COMMAND INFO (some proxies, test fakes)
             info = None
         if not info or info == [None]:
             raise RuntimeError(

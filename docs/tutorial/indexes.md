@@ -13,17 +13,17 @@ Unlike MongoDB which has a flexible indexing system, Redis indexing in Beanis is
 
 ## Defining Indexes
 
-Use the `Indexed()` type annotation to mark fields for indexing:
+Use `Indexed(type)`, or the equivalent `Annotated[type, IndexedField()]`, to mark fields for indexing:
 
 ```python
 from beanis import Document, Indexed, GeoPoint
 
 class Product(Document):
     name: str                    # Not indexed - no queries
-    price: Indexed[float]        # Indexed - range queries
-    category: Indexed[str]       # Indexed - exact match
+    price: Indexed(float)        # Indexed - range queries
+    category: Indexed(str)       # Indexed - exact match
     stock: int                   # Not indexed - no queries
-    location: Indexed[GeoPoint]  # Indexed - geo queries
+    location: Indexed(GeoPoint)  # Indexed - geo queries
 
     class Settings:
         name = "products"
@@ -40,14 +40,11 @@ class Product(Document):
     stock: Indexed(int)    # Stored in sorted set
 
 # Enables range queries
-expensive = await Product.find(Product.price > 100).to_list()
-affordable = await Product.find(
-    Product.price >= 10,
-    Product.price <= 50
-).to_list()
+expensive = await Product.find(price__gt=100)
+affordable = await Product.find(price__gte=10, price__lte=50)
 
 # Stock queries
-low_stock = await Product.find(Product.stock < 10).to_list()
+low_stock = await Product.find(stock__lt=10)
 ```
 
 **Redis Structure**:
@@ -65,10 +62,9 @@ idx:Product:price -> {
 ```
 
 **Supported Operations**:
-- `==` - Exact match
-- `>`, `>=` - Greater than
-- `<`, `<=` - Less than
-- Range combinations
+- `field__gt=`, `field__gte=` - Greater than
+- `field__lt=`, `field__lte=` - Less than
+- Range combinations; for an exact value use `__gte` and `__lte` with the same bound
 
 ## Categorical Indexes (Sets)
 
@@ -81,8 +77,8 @@ class Product(Document):
     brand: Indexed(str)     # Stored in sets
 
 # Enables exact match queries
-books = await Product.find(Product.category == "books").to_list()
-nike = await Product.find(Product.brand == "Nike").to_list()
+books = await Product.find(category="books")
+nike = await Product.find(brand="Nike")
 ```
 
 **Redis Structure**:
@@ -97,7 +93,7 @@ idx:Product:category:electronics -> {"prod_3", "prod_4"}
 ```
 
 **Supported Operations**:
-- `==` - Exact match only
+- `field=value` - Exact match only
 
 **Not Supported**:
 - Partial matches (use full-text search module)
@@ -171,8 +167,8 @@ class Product(Document):
 
 ```python
 # These queries use indexes - O(log N) or O(1)
-products = await Product.find(Product.price < 100).to_list()
-books = await Product.find(Product.category == "books").to_list()
+products = await Product.find(price__lt=100)
+books = await Product.find(category="books")
 ```
 
 ### Non-Indexed Queries (Slow)
@@ -183,10 +179,10 @@ class Product(Document):
     name: str  # Not indexed!
     price: Indexed(float)
 
-# This will NOT work (name not indexed):
-# products = await Product.find(Product.name == "Laptop").to_list()
+# This raises ValueError (name not indexed):
+# products = await Product.find(name="Laptop")
 
-# You must use get_all() and filter manually:
+# Load with all() and filter manually:
 all_products = await Product.all()
 laptops = [p for p in all_products if p.name == "Laptop"]
 ```
@@ -217,10 +213,10 @@ Beanis supports querying multiple indexed fields:
 ```python
 # Both fields must be indexed
 products = await Product.find(
-    Product.price >= 10,
-    Product.price <= 50,
-    Product.category == "electronics"
-).to_list()
+    price__gte=10,
+    price__lte=50,
+    category="electronics",
+)
 ```
 
 **How it works**:
@@ -234,7 +230,7 @@ products = await Product.find(
 
 ```python
 # Not supported - no partial matching
-# products = await Product.find(Product.name.contains("Lap")).to_list()
+# products = await Product.find(name__contains="Lap")  # ValueError
 
 # Use Redis RediSearch module for full-text search
 # Or filter in memory:
@@ -246,7 +242,7 @@ matches = [p for p in all_products if "Lap" in p.name]
 
 ```python
 # Case-sensitive only
-books = await Product.find(Product.category == "Books").to_list()  # Won't find "books"
+books = await Product.find(category="Books")  # Won't find "books"
 
 # Workaround: Store lowercase
 class Product(Document):
@@ -257,7 +253,7 @@ class Product(Document):
         self.category_lower = self.category.lower()
 
 # Query lowercase
-books = await Product.find(Product.category_lower == "books").to_list()
+books = await Product.find(category_lower="books")
 ```
 
 ### No Date Range Queries
@@ -279,8 +275,8 @@ class Product(Document):
 
 # Query by timestamp
 recent = await Product.find(
-    Product.created_timestamp > datetime(2024, 1, 1).timestamp()
-).to_list()
+    created_timestamp__gt=datetime(2024, 1, 1).timestamp()
+)
 ```
 
 ## Index Maintenance
@@ -306,7 +302,7 @@ Check what's in an index:
 
 ```python
 # Direct Redis access (for debugging)
-redis_client = Product._database
+redis_client = Product.get_settings().redis_client
 
 # Check sorted set index
 price_index = await redis_client.zrange("idx:Product:price", 0, -1, withscores=True)
@@ -329,7 +325,7 @@ from beanis.odm.indexes import IndexManager
 
 class Store(Document):
     name: str
-    location: Indexed[GeoPoint]  # Geo index
+    location: Indexed(GeoPoint)  # Geo index
 
     class Settings:
         name = "stores"
@@ -345,7 +341,7 @@ await store.insert()
 from beanis.odm.indexes import IndexManager
 
 nearby_ids = await IndexManager.find_by_geo_radius(
-    redis_client=Store._database,
+    redis_client=Store.get_settings().redis_client,
     document_class=Store,
     field_name="location",
     longitude=-122.4,
@@ -359,7 +355,7 @@ nearby_stores = await Store.get_many(nearby_ids)
 
 # Find nearby stores with distances
 nearby_with_dist = await IndexManager.find_by_geo_radius_with_distance(
-    redis_client=Store._database,
+    redis_client=Store.get_settings().redis_client,
     document_class=Store,
     field_name="location",
     longitude=-122.4,
@@ -378,6 +374,29 @@ for store_id, distance in nearby_with_dist:
 - Uses Redis GEOADD command to store locations
 - Uses Redis GEORADIUS for proximity queries
 - Automatically maintains geo index on insert/update/delete
+
+### Vector Indexing
+
+A `List[float]` field marked with `VectorField` is stored in a Redis 8 vector
+set (HNSW, cosine) and queried with `vector_search`:
+
+```python
+from typing import Annotated, List
+from beanis import Document, Indexed, VectorField
+
+class Chunk(Document):
+    text: str
+    source: Indexed(str)
+    embedding: Annotated[List[float], VectorField(dimensions=384)]
+
+# (doc, score) pairs, score in [0, 1], higher is closer
+hits = await Chunk.vector_search(query_vec, k=5, filter='.source == "faq"', min_score=0.0)
+for chunk, score in hits:
+    print(score, chunk.text)
+```
+
+`filter` is a vector-set expression over the document's scalar fields. This
+needs Redis 8 or newer.
 
 ### Multi-Value Indexing
 
@@ -401,7 +420,7 @@ class Product(Document):
     async def index_tags(self):
         """Manually add to tag sets"""
         for tag in self.tags:
-            await self._database.sadd(f"tags:{tag}", self.id)
+            await self.get_settings().redis_client.sadd(f"tags:{tag}", self.id)
 ```
 
 ## Best Practices

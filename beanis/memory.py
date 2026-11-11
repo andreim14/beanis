@@ -9,11 +9,22 @@ Long-term memory for agents, on plain Redis 8.
 Each memory is a Beanis document; its embedding lives in a Redis vector set,
 so recall is one VSIM call filtered by user, session, kind and namespace.
 """
+
 import asyncio
 import inspect
 import json
+import os
 import time
-from typing import Any, Awaitable, Callable, List, Optional, Sequence, Tuple, Union
+from typing import (
+    Any,
+    Awaitable,
+    Callable,
+    List,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
 
 from pydantic import Field
 from typing_extensions import Annotated
@@ -71,7 +82,9 @@ class Memory:
 
     async def setup(self) -> "Memory":
         if not self._ready:
-            await init_beanis(database=self.redis, document_models=[MemoryRecord])
+            await init_beanis(
+                database=self.redis, document_models=[MemoryRecord]
+            )
             self._ready = True
         return self
 
@@ -180,9 +193,17 @@ class Memory:
         return records[:limit]
 
 
-def fastembed_embedder(model_name: str = "BAAI/bge-small-en-v1.5") -> EmbedFn:
+DEFAULT_EMBED_MODEL = "BAAI/bge-small-en-v1.5"
+
+
+def fastembed_embedder(model_name: str = DEFAULT_EMBED_MODEL) -> EmbedFn:
     """Local CPU embeddings via fastembed (pip install fastembed); no API key."""
-    from fastembed import TextEmbedding
+    try:
+        from fastembed import TextEmbedding
+    except ImportError as e:
+        raise ImportError(
+            'Local embeddings need fastembed: pip install "beanis[mcp]"'
+        ) from e
 
     model = TextEmbedding(model_name)
 
@@ -191,3 +212,27 @@ def fastembed_embedder(model_name: str = "BAAI/bge-small-en-v1.5") -> EmbedFn:
         return vec.tolist()
 
     return embed
+
+
+def memory_from_env(namespace: Optional[str] = None) -> Memory:
+    """
+    Memory configured from the environment, as used by the CLI and MCP server.
+
+    REDIS_URL (redis://localhost:6379/0), BEANIS_MEMORY_NAMESPACE (default),
+    BEANIS_EMBED_MODEL (BAAI/bge-small-en-v1.5). All memories share one
+    vector set, so every writer must use the same embedding model.
+    """
+    from redis.asyncio import Redis
+
+    client = Redis.from_url(
+        os.environ.get("REDIS_URL", "redis://localhost:6379/0"),
+        decode_responses=True,
+    )
+    return Memory(
+        client,
+        embed=fastembed_embedder(
+            os.environ.get("BEANIS_EMBED_MODEL", DEFAULT_EMBED_MODEL)
+        ),
+        namespace=namespace
+        or os.environ.get("BEANIS_MEMORY_NAMESPACE", "default"),
+    )

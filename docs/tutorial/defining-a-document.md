@@ -43,7 +43,7 @@ class Sample(Document):
     num: int
     description: str
 
-foo = await Sample.find(Sample.num > 5).first_or_none()
+foo = await Sample(num=6, description="six").insert()
 
 print(foo.id)  # This will print the id
 
@@ -72,7 +72,7 @@ from beanis import Document, Indexed
 
 
 class Sample(Document):
-    num: Indexed(int)  # Indexed for exact match queries
+    num: Indexed(int)  # Indexed for range queries
     price: Indexed(float)  # Indexed for range queries
     description: str
 ```
@@ -86,15 +86,10 @@ class Sample(Document):
 
 ```python
 # Range query on indexed field (uses Redis Sorted Set)
-products = await Product.find(
-    Product.price >= 10.0,
-    Product.price <= 50.0
-).to_list()
+products = await Product.find(price__gte=10.0, price__lte=50.0)
 
 # Exact match on indexed field (uses Redis Set)
-electronics = await Product.find(
-    Product.category == "electronics"
-).to_list()
+electronics = await Product.find(category="electronics")
 ```
 
 ## Settings

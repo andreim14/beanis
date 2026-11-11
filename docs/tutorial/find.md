@@ -1,6 +1,6 @@
 # Find Documents
 
-Beanis provides a powerful query interface for finding documents in Redis.
+Beanis finds documents by ID or by keyword filters on indexed fields.
 
 ## Find One
 
@@ -27,45 +27,34 @@ class Product(Document):
     class Settings:
         name = "products"
 
-# Range query on numeric field
-products = await Product.find(
-    Product.price >= 10.0,
-    Product.price <= 50.0
-).to_list()
+# Range query on numeric field (bounds are inclusive)
+products = await Product.find(price__gte=10.0, price__lte=50.0)
 
-# Exact match on categorical field  
-electronics = await Product.find(
-    Product.category == "electronics"
-).to_list()
+# Exact match on categorical field
+electronics = await Product.find(category="electronics")
+
+# Several filters are ANDed
+cheap_books = await Product.find(category="books", price__lt=20.0)
 ```
 
-## Query Methods
+`find()` takes keyword filters and returns a `List[Product]` directly; there is
+no query builder to chain or `.to_list()` to call. Supported suffixes on numeric
+indexed fields are `__gte`, `__lte`, `__gt` and `__lt`. Calling `find()` with no
+filters returns every document, like `all()`.
 
-### to_list()
+## First Match, Sorting and Limits
 
-Get all matching documents as a list:
-
-```python
-products = await Product.find(Product.price < 100).to_list()
-```
-
-### first_or_none()
-
-Get the first matching document or None:
+`find()` has no `first_or_none()`, `sort()` or `limit()`. Results come back in
+no particular order, so sort and slice in Python:
 
 ```python
-product = await Product.find(Product.price > 1000).first_or_none()
-if product:
-    print(product.name)
-```
+products = await Product.find(price__gt=10)
 
-### limit()
+# First match, or None
+product = products[0] if products else None
 
-Limit the number of results:
-
-```python
-# Get first 10 products
-products = await Product.find(Product.price > 10).limit(10).to_list()
+# Ten cheapest
+cheapest = sorted(products, key=lambda p: p.price)[:10]
 ```
 
 ## Get All Documents
@@ -118,35 +107,35 @@ for product in products:
 
 ## Important Notes
 
-1. **Indexed fields required for queries** - Only indexed fields support `find()` queries
+1. **Indexed fields required for queries** - `find()` only accepts indexed
+   fields; filtering on any other field raises `ValueError`
 2. **Exact match vs range queries**:
-   - Numeric fields (int, float): Support range queries (>, <, >=, <=, ==)
-   - String fields: Support exact match only (==)
+   - Numeric fields (int, float): ranges only (`__gte`, `__lte`, `__gt`,
+     `__lt`); for an exact value use `price__gte=10, price__lte=10`
+   - String fields: exact match only (`category="books"`)
 3. **all() uses document tracking** - Returns documents in insertion order
 
 ## Query Examples
 
 ### Find by price range:
 ```python
-affordable = await Product.find(
-    Product.price >= 5.0,
-    Product.price <= 20.0
-).to_list()
+affordable = await Product.find(price__gte=5.0, price__lte=20.0)
 ```
 
 ### Find by category:
 ```python
-books = await Product.find(Product.category == "books").to_list()
+books = await Product.find(category="books")
 ```
 
-### Find with limit:
+### Find most expensive 10:
 ```python
-top_10 = await Product.find(Product.price > 0).limit(10).to_list()
+top_10 = sorted(await Product.find(price__gt=0), key=lambda p: p.price, reverse=True)[:10]
 ```
 
 ### Find first match:
 ```python
-expensive = await Product.find(Product.price > 1000).first_or_none()
+matches = await Product.find(price__gt=1000)
+expensive = matches[0] if matches else None
 ```
 
 ## Next Steps

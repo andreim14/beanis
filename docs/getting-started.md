@@ -86,7 +86,7 @@ async def main():
     print(f"Found: {found.name} - ${found.price}")
 
     # Query by price
-    affordable = await Product.find(Product.price < 10.0).to_list()
+    affordable = await Product.find(price__lt=10.0)
     print(f"Affordable products: {len(affordable)}")
 
     # Update

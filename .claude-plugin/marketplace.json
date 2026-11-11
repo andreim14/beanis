@@ -1,0 +1,12 @@
+{
+  "name": "beanis",
+  "description": "Claude Code plugin for Beanis, the async Redis ODM with vector search and agent memory",
+  "owner": { "name": "Andrei Stefan Bejgu" },
+  "plugins": [
+    {
+      "name": "beanis",
+      "source": "./plugins/beanis",
+      "description": "Long-term memory MCP server on Redis 8, plus a skill for writing correct Beanis code"
+    }
+  ]
+}

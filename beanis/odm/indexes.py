@@ -557,6 +557,8 @@ class IndexManager:
         elif index_type == IndexType.SORTED_SET:
             # Range query using Sorted Set
             index_key = IndexManager.get_index_key(document_class, field_name)
+            if value is not None:  # exact match is the range [value, value]
+                min_value = max_value = value
 
             # Use -inf and +inf as defaults
             min_score = _score_bound(min_value, "-inf")

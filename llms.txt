@@ -1,0 +1,17 @@
+# Beanis
+
+> Async Pydantic ODM for plain Redis: documents as hashes, secondary indexes, vector search on Redis 8 vector sets, and long-term memory for AI agents (Python API, `beanis` CLI, `beanis-mcp` MCP server, Claude Code plugin). Not Beanie: no query builder; `find()` takes keyword filters on indexed fields.
+
+Install: `pip install beanis` (ODM) or `pip install "beanis[mcp]"` (adds the CLI memory commands and MCP server; Python 3.10+). Needs Redis 5+, and Redis 8.0+ for vector search and memory.
+
+## Docs
+
+- [API reference for agents](https://raw.githubusercontent.com/andreim14/beanis/main/plugins/beanis/skills/beanis/SKILL.md): models, indexes, CRUD, find, vector_search, Memory, CLI. Follow this over older tutorials.
+- [README](https://raw.githubusercontent.com/andreim14/beanis/main/README.md): overview, install, examples, MCP setup.
+- [Geo search tutorial](https://raw.githubusercontent.com/andreim14/beanis/main/docs/tutorial/geo-spatial.md)
+- [Custom encoders tutorial](https://raw.githubusercontent.com/andreim14/beanis/main/docs/tutorial/custom-encoders.md)
+
+## Optional
+
+- [Repository notes for coding agents](https://raw.githubusercontent.com/andreim14/beanis/main/AGENTS.md)
+- [Changelog](https://raw.githubusercontent.com/andreim14/beanis/main/docs/changelog.md)
