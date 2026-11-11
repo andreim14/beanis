@@ -117,7 +117,7 @@ Now that you have Beanis set up, you can explore:
 - [Insert Operations](tutorial/insert.md) - How to create documents
 - [Find Operations](tutorial/find.md) - How to query documents
 - [Update Operations](tutorial/update.md) - How to modify documents
-- [Custom Encoders](../CUSTOM_ENCODERS.md) - Store NumPy arrays, custom types
+- [Custom Encoders](tutorial/custom-encoders.md) - Store NumPy arrays, custom types
 
 ## Key Differences from Beanie (MongoDB)
 
@@ -206,5 +206,5 @@ product = Product(name="Test", price=9.99)
 ## Next Steps
 
 - Explore the [tutorial](tutorial/defining-a-document.md) for in-depth guides
-- Check out [custom encoders](../CUSTOM_ENCODERS.md) for storing complex types
-- Read the [README](../README.md) for feature comparisons
+- Check out [custom encoders](tutorial/custom-encoders.md) for storing complex types
+- Read the [README](https://github.com/andreim14/beanis#readme) for feature comparisons

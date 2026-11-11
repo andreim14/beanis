@@ -523,7 +523,7 @@ class Doc(Document):
 - [Defining Documents](defining-a-document.md) - Using custom types in documents
 - [Indexes](indexes.md) - Index limitations with custom types
 - [Event Hooks](actions.md) - Derive searchable fields from custom types
-- [API Reference](../api/custom-encoders.md) - Full encoder API
+- [API Reference](https://github.com/andreim14/beanis/blob/main/beanis/odm/custom_encoders.py) - Full encoder API
 
 ## Examples Repository
 

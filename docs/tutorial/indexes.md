@@ -448,4 +448,4 @@ class Product(Document):
 
 - [Find Operations](find.md) - Query using indexes
 - [Event Hooks](actions.md) - Maintain custom indexes
-- [Custom Encoders](../CUSTOM_ENCODERS.md) - Store complex types
+- [Custom Encoders](custom-encoders.md) - Store complex types

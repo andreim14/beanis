@@ -49,12 +49,9 @@ mcp = [
     "fastembed>=0.9; python_version >= '3.10'",
 ]
 doc = [
-    "Pygments>=2.8.0",
-    "Markdown>=3.3",
-    "pydoc-markdown>=4.8",
-    "mkdocs>=1.4",
-    "mkdocs-material>=9.0",
-    "jinja2>=3.0.3"
+    "mkdocs>=1.6,<2",
+    "mkdocs-material>=9.6,<10",
+    "mkdocstrings[python]>=0.29",
 ]
 
 [project.urls]

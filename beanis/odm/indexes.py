@@ -107,22 +107,21 @@ def VectorField(
     quantization: str = "Q8",
 ) -> IndexedField:
     """
-    Helper to create a vector field for similarity search
+    A vector field stored in a Redis 8 vector set (VADD/VSIM), for
+    similarity search with ``Document.vector_search``.
 
-    Usage:
-        class Document(Document):
-            embedding: Annotated[List[float], VectorField(dimensions=1024)]
+    Usage::
 
-    Args:
-        dimensions: Vector dimensionality (e.g., 1024 for Jina v4), or None to
-            take it from the first vector written
-        algorithm: "HNSW" (default) or "FLAT"
-        distance_metric: "COSINE" (default), "L2", or "IP" (inner product)
-        m: HNSW M parameter (connections per node)
-        ef_construction: HNSW ef_construction parameter
-        quantization: "Q8" (default, int8), "NOQUANT" (float32) or "BIN"
+        class Chunk(Document):
+            embedding: Annotated[List[float], VectorField(dimensions=384)]
 
-    Backed by a Redis 8 vector set (VADD/VSIM): HNSW with cosine similarity.
+    :param dimensions: vector size, or None to take it from the first vector
+        written
+    :param algorithm: only "HNSW" (vector sets have no other index)
+    :param distance_metric: only "COSINE"
+    :param m: HNSW connections per node
+    :param ef_construction: HNSW build-time search width
+    :param quantization: "Q8" (default, int8), "NOQUANT" (float32) or "BIN"
     """
     if algorithm.upper() != "HNSW":
         raise ValueError("Redis vector sets only support algorithm='HNSW'")

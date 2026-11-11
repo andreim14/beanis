@@ -29,4 +29,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Publish docs
-        run: bash scripts/publish_docs.sh
+        run: mkdocs gh-deploy --force

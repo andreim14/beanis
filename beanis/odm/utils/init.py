@@ -300,7 +300,7 @@ class Initializer:
             raise Deprecation(
                 "Collection inner class is not supported more. "
                 "Please use Settings instead. "
-                "https://beanie-odm.dev/tutorial/defining-a-document/#settings"
+                "https://andreim14.github.io/beanis/tutorial/defining-a-document/"
             )
 
     # Final

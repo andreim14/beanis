@@ -665,7 +665,7 @@ await IndexManager.add_to_index(
 
 - [Indexes Overview](indexes.md) - Learn about other index types
 - [Custom Encoders](custom-encoders.md) - Extend GeoPoint with custom fields
-- [API Reference](../api/indexes.md) - Full IndexManager documentation
+- [API Reference](../reference/indexes.md) - Full IndexManager documentation
 
 ## Further Reading
 

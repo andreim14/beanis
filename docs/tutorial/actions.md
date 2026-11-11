@@ -538,4 +538,4 @@ except Exception as e:
 - [Insert Operations](insert.md) - Using hooks with inserts
 - [Update Operations](update.md) - Using hooks with updates
 - [Delete Operations](delete.md) - Using hooks with deletes
-- [Custom Encoders](../CUSTOM_ENCODERS.md) - Transform data in hooks
+- [Custom Encoders](custom-encoders.md) - Transform data in hooks

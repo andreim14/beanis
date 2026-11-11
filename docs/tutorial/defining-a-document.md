@@ -174,7 +174,7 @@ model = MLModel(name="model_v1", weights=np.random.rand(100, 100))
 await model.insert()  # NumPy array is automatically encoded
 ```
 
-See the [Custom Encoders Guide](../../CUSTOM_ENCODERS.md) for more details.
+See the [Custom Encoders Guide](custom-encoders.md) for more details.
 
 ## Document Storage
 

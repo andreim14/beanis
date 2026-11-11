@@ -1,0 +1,97 @@
+site_name: Beanis
+site_description: Async Pydantic ODM for Redis, with vector search on Redis 8 and long-term memory for AI agents.
+site_url: https://andreim14.github.io/beanis/
+repo_url: https://github.com/andreim14/beanis
+repo_name: andreim14/beanis
+edit_uri: edit/main/docs/
+copyright: Apache License 2.0
+
+theme:
+  name: material
+  logo: assets/beanis-mark.svg
+  favicon: assets/beanis-mark.svg
+  font:
+    text: IBM Plex Sans
+    code: IBM Plex Mono
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Dark theme
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Light theme
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - content.code.copy
+    - search.suggest
+    - toc.follow
+
+extra_css:
+  - assets/extra.css
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: sphinx
+            show_source: false
+            show_root_heading: true
+            show_root_full_path: false
+            members_order: source
+            filters: ["!^_"]
+            separate_signature: true
+            show_signature_annotations: true
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Tutorial:
+      - tutorial/README.md
+      - Defining a document: tutorial/defining-a-document.md
+      - Initialization: tutorial/init.md
+      - Inserting: tutorial/insert.md
+      - Finding: tutorial/find.md
+      - Updating: tutorial/update.md
+      - Deleting: tutorial/delete.md
+      - Indexes: tutorial/indexes.md
+      - Event hooks: tutorial/actions.md
+      - Custom encoders: tutorial/custom-encoders.md
+      - Geo search: tutorial/geo-spatial.md
+  - Vector search: vector-search.md
+  - Agent memory and MCP: agents.md
+  - API reference:
+      - Document: reference/document.md
+      - Fields and indexes: reference/indexes.md
+      - Memory: reference/memory.md
+      - Initialization: reference/init.md
+  - Development: development.md
+  - Changelog: changelog.md
+  - Code of conduct: code-of-conduct.md

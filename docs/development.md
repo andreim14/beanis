@@ -92,35 +92,17 @@ The documentation is located in the `docs/` folder and written in Markdown.
 - `docs/index.md` - Main documentation landing page
 - `docs/getting-started.md` - Getting started guide
 - `docs/tutorial/` - Step-by-step tutorials
-- `docs/api/` - API reference (auto-generated)
+- `docs/reference/` - API reference, generated from docstrings by mkdocstrings
 
-### Regenerating API documentation
+### Building the documentation
 
-The API documentation in `docs/api/` is auto-generated from docstrings in the source code using [pydoc-markdown](https://niklasrosenstein.github.io/pydoc-markdown/).
-
-To regenerate the API documentation after updating docstrings:
+The site uses [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/); the configuration is `mkdocs.yml`.
 
 ```shell
-pydoc-markdown
+pip install -e ".[doc]"
+mkdocs serve          # preview at http://127.0.0.1:8000/beanis/
+mkdocs gh-deploy      # publish to the gh-pages branch
 ```
-
-This will:
-1. Extract docstrings from the `beanis` package
-2. Generate markdown files in `docs/build/content/api-documentation/`
-3. Copy the files to `docs/api/`
-
-The configuration is in `pydoc-markdown.yml`. If you add new modules, update this file accordingly.
-
-### Preview documentation locally
-
-You can preview documentation changes by serving the `docs/` folder with any static file server:
-
-```shell
-# Using Python's built-in server
-cd docs && python -m http.server 8000
-```
-
-Then visit `http://localhost:8000` in your browser.
 
 ## Project structure
 
