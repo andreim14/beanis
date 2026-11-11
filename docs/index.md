@@ -1,5 +1,5 @@
 ---
-title: Beanis
+title: Async Redis ODM for Python, with agent memory
 hide:
   - navigation
 ---

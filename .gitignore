@@ -185,3 +185,6 @@ tilt_modules
 # Poetry stuff
 poetry.lock
 .pdm-python
+
+# mkdocs build output
+site/
